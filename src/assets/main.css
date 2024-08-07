@@ -1,15 +1,14 @@
-@import './base.css';
+@import "./base.css";
 
-#app { 
+#app {
   margin: 0 auto;
   padding: 2rem;
   font-weight: normal;
 }
-.bcnaColor { 
+.bcnaColor {
   color: red;
 }
 
- 
 /*
 @media (hover: hover) {
   a:hover {

@@ -1,183 +1,160 @@
-<template> 
-      <v-sheet border rounded="lg" class="mb-2 pa-4"> 
-
-        
-
-
-        <v-row
- 
-        no-gutters
-      >
-        <v-col> 
-          <h4 class="text-h5 font-weight-bold ">{{ address }}</h4>
-        </v-col>
-        <v-col cols="auto" class="mt-1">
-          <h4 class="text-h5 font-weight-bold">$ {{ store.fiatWalletValue }}</h4>
-        </v-col>
-      </v-row>
-      </v-sheet>
- 
-
+<template>
+  <v-sheet border rounded="lg" class="mb-2 pa-4">
     <v-row no-gutters>
-      <v-col
-        cols="12"
-        sm="8"
-      >
-        <v-sheet min-height="430" border rounded="lg" class="mb-2 pa-4">
-          <h4 class="text-h5 font-weight-bold mb-4">Delegations</h4>
- 
-          <v-data-table :items="store.allAddressDelegations" items-per-page="4"></v-data-table>
-        </v-sheet>
+      <v-col>
+        <h4 class="text-h5 font-weight-bold">{{ address }}</h4>
       </v-col>
-      <v-col
-        cols="12"
-        sm="4"
-      >
-        <v-sheet min-height="430" border rounded="lg" class="mb-2 ml-4 pa-4">
-          <v-list>
+      <v-col cols="auto" class="mt-1">
+        <h4 class="text-h5 font-weight-bold">$ {{ store.fiatWalletValue }}</h4>
+      </v-col>
+    </v-row>
+  </v-sheet>
+
+  <v-row no-gutters>
+    <v-col cols="12" sm="8">
+      <v-sheet min-height="430" border rounded="lg" class="mb-2 pa-4">
+        <h4 class="text-h5 font-weight-bold mb-4">Delegations</h4>
+
+        <v-data-table
+          :items="store.allAddressDelegations"
+          items-per-page="4"
+        ></v-data-table>
+      </v-sheet>
+    </v-col>
+    <v-col cols="12" sm="4">
+      <v-sheet min-height="430" border rounded="lg" class="mb-2 ml-4 pa-4">
+        <v-list>
           <v-list-item
             prepend-avatar="https://raw.githubusercontent.com/cosmostation/chainlist/master/chain/bitcanna/asset/bcna.png"
             :title="store.totalTokens + ' BCNA'"
             :subtitle="'$ ' + store.fiatWalletValue"
           >
- 
-
           </v-list-item>
         </v-list>
 
         <v-divider class="mt-2"></v-divider>
-          <v-table>
-            <tbody>
-              <tr>
-                <td>Spendable Balances</td>
-                <td align="right">
-                  <v-list>
-                    <v-list-item 
-                      :title="store.spendableBalances"
-                      :subtitle="'$ ' + (store.spendableBalances * store.priceNow).toFixed(2)"
-                    ></v-list-item>
-                  </v-list> 
-                </td>
-              </tr>
-              <tr>
-                <td>Vested</td>
-                <td align="right">
-                  <v-list>
-                    <v-list-item 
-                      :title="0.000000"
-                      :subtitle="'$ 0.00'"
-                    ></v-list-item>
-                  </v-list> 
-                </td>
-              </tr>
-              <tr>
-                <td>Delegations</td>
-                <td align="right"> 
-                  <v-list>
-                    <v-list-item 
-                      :title="this.store.totalDelegations"
-                      :subtitle="'$ ' + (this.store.totalDelegations * store.priceNow).toFixed(2)"
-                    ></v-list-item>
-                  </v-list>
-                </td>
-              </tr>
-              <tr>
-                <td>Unbound</td>
-                <td align="right"> 
-                  <v-list>
-                    <v-list-item 
-                      :title="this.store.totalUnbound"
-                      :subtitle="'$ ' + (this.store.totalUnbound * store.priceNow).toFixed(2)"
-                    ></v-list-item>
-                  </v-list>
+        <v-table>
+          <tbody>
+            <tr>
+              <td>Spendable Balances</td>
+              <td align="right">
+                <v-list>
+                  <v-list-item
+                    :title="store.spendableBalances"
+                    :subtitle="
+                      '$ ' +
+                      (store.spendableBalances * store.priceNow).toFixed(2)
+                    "
+                  ></v-list-item>
+                </v-list>
+              </td>
+            </tr>
+            <tr>
+              <td>Vested</td>
+              <td align="right">
+                <v-list>
+                  <v-list-item :title="0.0" :subtitle="'$ 0.00'"></v-list-item>
+                </v-list>
+              </td>
+            </tr>
+            <tr>
+              <td>Delegations</td>
+              <td align="right">
+                <v-list>
+                  <v-list-item
+                    :title="this.store.totalDelegations"
+                    :subtitle="
+                      '$ ' +
+                      (this.store.totalDelegations * store.priceNow).toFixed(2)
+                    "
+                  ></v-list-item>
+                </v-list>
+              </td>
+            </tr>
+            <tr>
+              <td>Unbound</td>
+              <td align="right">
+                <v-list>
+                  <v-list-item
+                    :title="this.store.totalUnbound"
+                    :subtitle="
+                      '$ ' +
+                      (this.store.totalUnbound * store.priceNow).toFixed(2)
+                    "
+                  ></v-list-item>
+                </v-list>
+              </td>
+            </tr>
+            <tr>
+              <td>Rewards</td>
+              <td align="right">
+                <v-list>
+                  <v-list-item
+                    :title="this.store.totalRewards"
+                    :subtitle="
+                      '$ ' +
+                      (this.store.totalRewards * store.priceNow).toFixed(2)
+                    "
+                  ></v-list-item>
+                </v-list>
+              </td>
+            </tr>
+          </tbody>
+        </v-table>
+      </v-sheet>
+    </v-col>
+  </v-row>
 
-                </td>
-              </tr>
-              <tr>
-                <td>Rewards</td>
-                <td align="right"> 
-                  <v-list>
-                    <v-list-item 
-                      :title="this.store.totalRewards"
-                      :subtitle="'$ ' + (this.store.totalRewards * store.priceNow).toFixed(2)"
-                    ></v-list-item>
-                  </v-list>
-
-                </td>
-              </tr>
-            </tbody>
-          </v-table>
-        </v-sheet>
-      </v-col>
-    </v-row>  
-
-    <v-sheet border rounded="lg">
-      <h4 class="text-h5 font-weight-bold ma-4">Last txs | Total: {{ store.totalAddressTx }}</h4>
-      <v-skeleton-loader
-        v-if="!isLoaded"  
-        class="mx-auto border" 
-        type="table-tbody" 
-      ></v-skeleton-loader>
-      <v-table v-if="isLoaded" id="tx-list">        
-      <thead >
+  <v-sheet border rounded="lg">
+    <h4 class="text-h5 font-weight-bold ma-4">
+      Last txs | Total: {{ store.totalAddressTx }}
+    </h4>
+    <v-skeleton-loader
+      v-if="!isLoaded"
+      class="mx-auto border"
+      type="table-tbody"
+    ></v-skeleton-loader>
+    <v-table v-if="isLoaded" id="tx-list">
+      <thead>
         <tr>
-          <th class="text-left">
-            Transaction type
-          </th>
-          <th class="text-left">
-            Tx Hash  
-          </th>
-          <th class="text-left">
-            Block Height
-          </th>
-          <th class="text-left">
-            Memo 
-          </th>
-          <th class="text-left">
-            Date 
-          </th>
+          <th class="text-left">Transaction type</th>
+          <th class="text-left">Tx Hash</th>
+          <th class="text-left">Block Height</th>
+          <th class="text-left">Memo</th>
+          <th class="text-left">Date</th>
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="item in store.allAddressTx"
-          :key="item.name"
-        >
+        <tr v-for="item in store.allAddressTx" :key="item.name">
           <td>
-            <v-chip
-              class="ma-2"
-              label
-              :color="item.type.color"
-            >
-            {{ item.type.typeReadable }}
+            <v-chip class="ma-2" label :color="item.type.color">
+              {{ item.type.typeReadable }}
             </v-chip>
           </td>
-          
+
           <td>{{ truncate(item.txhash) }}</td>
           <td>
-            <v-chip
-              class="ma-2"
-              label
-            >
+            <v-chip class="ma-2" label>
               {{ item.height }}
             </v-chip>
           </td>
           <td>
-            <span
-              class="d-inline-block text-truncate"
-              style="max-width: 150px;"
-            >
-            {{ item.memo }}
+            <span class="d-inline-block text-truncate" style="max-width: 150px">
+              {{ item.memo }}
             </span>
           </td>
-          <td>{{ moment(item.timestamp).format('MMMM Do YYYY, h:mm:ss a') }} ({{ moment(item.timestamp).fromNow() }})</td>          
+          <td>
+            {{ moment(item.timestamp).format("MMMM Do YYYY, h:mm:ss a") }} ({{
+              moment(item.timestamp).fromNow()
+            }})
+          </td>
         </tr>
       </tbody>
-    </v-table>  
-    <v-pagination 
+    </v-table>
+    <v-pagination
       v-model="currentPage"
       class="mt-2 mb-2"
-      :total-visible="7" 
+      :total-visible="7"
       :length="store.totalAddressTx / 10"
       @click="handlePageChange"
     ></v-pagination>
@@ -186,9 +163,9 @@
 <script>
 import { Tendermint37Client } from "@cosmjs/tendermint-rpc";
 import { useAppStore } from "@/stores/data";
-import moment from 'moment';
+import moment from "moment";
 
-import banner from "@/assets/bitcanna-banner.jpeg"
+import banner from "@/assets/bitcanna-banner.jpeg";
 
 export default {
   name: "BlocksView",
@@ -197,7 +174,7 @@ export default {
     banner,
     address: "",
     currentPage: 1,
-    isLoaded: false
+    isLoaded: false,
   }),
   setup() {
     const store = useAppStore();
@@ -229,7 +206,7 @@ export default {
       strLen = 8,
       separator = "...",
       frontChars = 6,
-      backChars = 6
+      backChars = 6,
     ) {
       if (fullStr.length <= strLen) return fullStr;
 
@@ -238,14 +215,15 @@ export default {
         separator +
         fullStr.substr(fullStr.length - backChars)
       );
-    }
-  }
-}
+    },
+  },
+};
 </script>
 <style>
 .transparent-body {
-  background: transparent
+  background: transparent;
 }
-#tx-list tr:nth-child(even){background-color: #2A2A2A;}
+#tx-list tr:nth-child(even) {
+  background-color: #2a2a2a;
+}
 </style>
- 
