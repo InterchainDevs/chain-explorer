@@ -69,9 +69,18 @@
         height="40"
         variant="outlined"  
         prepend-icon="mdi-gamepad-variant"
-        to="/games"
-        
+        to="/games"        
       >Games</v-btn>
+
+      <v-btn
+        class="me-2"
+        color="#7412a5"
+        height="40"
+        variant="outlined"  
+        prepend-icon="mdi-test-tube"
+        to="/test"
+        
+      >Test</v-btn>
 
       <v-spacer></v-spacer>
 
