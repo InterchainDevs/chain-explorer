@@ -78,8 +78,7 @@
         height="40"
         variant="outlined"  
         prepend-icon="mdi-test-tube"
-        to="/test"
-        
+        to="/test"        
       >Test</v-btn>
 
       <v-spacer></v-spacer>
