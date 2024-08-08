@@ -66,11 +66,6 @@ const router = createRouter({
       name: "parameters",
       component: ParametersView,
     },
-    {
-      path: "/test",
-      name: "test",
-      component: TestView,
-    },
     { path: "/:pathMatch(.*)*", name: "NotFound", component: NotFoundView },
   ],
 });

@@ -227,17 +227,51 @@ export const useAppStore = defineStore("app", {
       this.allAddressDelegations = result.reverse();
     },
     async getAddressTx(addrWallet, page) {
-      const getRecipient = await axios(
-        cosmosConfig[2].apiURL +
-          "/cosmos/tx/v1beta1/txs?events=transfer.recipient=%27" +
-          addrWallet +
-          "%27&page=" +
-          page +
-          "&limit=10&order_by=2",
-      );
-      console.log("getRecipient", getRecipient.data);
+      let getRecipient = [];
+      try {
+        getRecipient = await axios(
+          cosmosConfig[2].apiURL +
+            "/cosmos/tx/v1beta1/txs?events=transfer.recipient=%27" +
+            addrWallet +
+            "%27&page=" +
+            page +
+            "&limit=5&order_by=2",
+        );
+      } catch (error) {
+        //console.error(error);
+      }
 
-      for (let i of getRecipient.data.tx_responses) {
+      let resultSender = [];
+      try {
+        resultSender = await axios(
+          cosmosConfig[2].apiURL +
+            "/cosmos/tx/v1beta1/txs?events=message.sender=%27" +
+            addrWallet +
+            "%27&page=" +
+            page +
+            "&limit=5&order_by=2",
+        );
+      } catch (error) {
+        //console.error(error);
+      }
+
+      let finalTxs = [];
+      if (resultSender.data && getRecipient.data) {
+        finalTxs = resultSender.data.tx_responses.concat(
+          getRecipient.data.tx_responses,
+        );
+        this.totalAddressTx = Number(getRecipient.data.total) + Number(resultSender.data.total);
+      } else if (resultSender.data) {
+        finalTxs = resultSender.data.tx_responses; 
+      } else if (getRecipient.data) {
+        finalTxs = getRecipient.data.tx_responses; 
+      }
+
+
+
+      console.log("finalTxs", finalTxs);
+
+      for (let i of finalTxs) {
         console.log("test", i);
         i.txhash = i.txhash;
         i.height = i.height;
@@ -247,8 +281,8 @@ export const useAppStore = defineStore("app", {
         i.success = i.code === 0 ? "Success" : "Failed";
       }
 
-      this.allAddressTx = getRecipient.data.tx_responses;
-      this.totalAddressTx = getRecipient.data.total;
+      this.allAddressTx = finalTxs;
+      
     },
     async getAllValidators() {
       let getAllValidators = await fetch(

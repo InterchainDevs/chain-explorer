@@ -61,17 +61,6 @@
         to="/games"
         >Games</v-btn
       >
-
-      <v-btn
-        class="me-2"
-        color="#7412a5"
-        height="40"
-        variant="outlined"
-        prepend-icon="mdi-test-tube"
-        to="/test"
-        >Test</v-btn
-      >
-
       <v-spacer></v-spacer>
 
       <v-responsive max-width="500">
@@ -97,7 +86,7 @@
       app
     ></v-footer> -->
 
-    <v-navigation-drawer :width="352" floating>
+    <v-navigation-drawer :width="352">
       <v-table>
         <tbody>
           <tr>
@@ -170,7 +159,17 @@
             <v-divider></v-divider>
           </div>
         </v-list>
+
       </div>
+      <template v-slot:append>
+        <v-footer class="bg-grey-lighten-1">
+          <v-row justify="center" no-gutters>
+            <v-col class="text-center mt-2" cols="12">
+              {{ new Date().getFullYear() }} — <strong>BitCanna</strong>
+            </v-col>
+          </v-row>
+        </v-footer>
+      </template>
     </v-navigation-drawer>
     <v-main>
       <RouterView />
@@ -391,6 +390,15 @@ export default {
   width: 100px;
   /* Animating heart */
   animation: pulse 1.5s infinite;
+}
+.footerNav {
+ 
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: red;
+  color: white;
+  text-align: center;
 }
 
 @keyframes pulse {

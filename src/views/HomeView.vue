@@ -154,8 +154,11 @@
         <v-divider class="mt-8"></v-divider>
         <v-table>
           <tbody>
-            <tr v-for="item in randomValidators" :key="item.name">
-              <td>{{ item.description.moniker.substring(0, 15) }}</td>
+            <tr v-for="item in randomValidators" :key="item.name" >
+              
+              <td>
+                <v-chip label :to="'validator/'+item.operator_address"> {{ item.description.moniker.substring(0, 15) }} </v-chip>
+              </td>
               <td>
                 {{ (item.commission.commission_rates.rate * 100).toFixed(0) }}%
               </td>
@@ -163,6 +166,7 @@
                 <v-chip label color="green"> Online </v-chip>
               </td>
               <td></td>
+ 
             </tr>
           </tbody>
         </v-table>

@@ -132,7 +132,7 @@
             </v-chip>
           </td>
 
-          <td>{{ truncate(item.txhash) }}</td>
+          <td><v-chip label :to="'/tx/'+item.txhash"> {{ truncate(item.txhash) }} </v-chip></td>
           <td>
             <v-chip class="ma-2" label>
               {{ item.height }}

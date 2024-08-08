@@ -59,47 +59,106 @@
         </div>
       </v-card-text>
 
-      <v-divider class="mx-4 mb-1"></v-divider>
-    </v-card>
-    <v-row>
-      <v-col cols="12" sm="2">
+      <v-row justify="center">        
+      <v-col cols="12" sm="2" class="ml-4">
         <v-sheet
           border
           rounded="lg"
           class="mr-4 mb-4 pa-2 animate__animated animate__backInUp"
         >
-          Block Height
+          Commission Rates
           <v-divider class="mb-7"></v-divider>
 
           <div class="text-end">
-            <v-chip label> 14,755,246 </v-chip>
+            <v-chip label>{{ store.detailValidator.commission?.commissionRates.rate / 10000000000000000 }} %</v-chip>
+          </div>
+        </v-sheet>
+      </v-col>
+      <v-col cols="12" sm="2" class="ml-4">
+        <v-sheet
+          border
+          rounded="lg"
+          class="mr-4 mb-4 pa-2 animate__animated animate__backInUp"
+        >
+          Total Bonded
+          <v-divider class="mb-7"></v-divider>
+          <div class="text-end">
+            <v-chip label> {{ store.detailValidator.tokens / 1000000 }} BCNA</v-chip>
+          </div>
+        </v-sheet>
+      </v-col>
+      <v-col cols="12" sm="2" class="ml-4">
+        <v-sheet
+          border
+          rounded="lg"
+          class="mr-4 mb-4 pa-2 animate__animated animate__backInUp"
+        >
+          Last updated
+          <v-divider class="mb-7"></v-divider>
+          <div class="text-end">
+            <v-chip label> {{ store.detailValidator.commission?.updateTime?.seconds }} </v-chip>
+          </div>
+        </v-sheet>
+      </v-col>
+      <v-col cols="12" sm="2" class="ml-4">
+        <v-sheet
+          border
+          rounded="lg"
+          class="mr-4 mb-4 pa-2 animate__animated animate__backInUp"
+        >
+          Identity
+          <v-divider class="mb-7"></v-divider>
+          <div class="text-end">
+            <v-chip label> {{ store.detailValidator.description?.identity }} </v-chip>
+          </div>
+        </v-sheet>
+      </v-col>
+      <v-col cols="12" sm="2" class="ml-4">
+        <v-sheet
+          border
+          rounded="lg"
+          class="mr-4 mb-4 pa-2 animate__animated animate__backInUp"
+        >
+          Total delegations
+          <v-divider class="mb-7"></v-divider>
+          <div class="text-end">
+            <v-chip label> {{ store.allValidatorDelegations.length }} </v-chip>
           </div>
         </v-sheet>
       </v-col>
     </v-row>
+    
+    </v-card>
 
-    <v-table>
-      <tbody>
-        <tr>
-          <td>Commission</td>
-          <td>{{ store.detailValidator.commission }}</td>
-        </tr>
-      </tbody>
-    </v-table>
-
-    {{ store.detailValidator }}
+ 
+ 
   </v-sheet>
 
-  <v-row no-gutters>
+<!--   <v-row no-gutters>
     <v-col cols="12" sm="6">
       <v-sheet border rounded="lg" class="pa-2 mr-4">
-        One of three columns
-        <v-data-table :items="store.allValidatorDelegations"></v-data-table>
+        <h4 class="text-h5 font-weight-bold mb-4">Outstanding Rewards</h4>
+
       </v-sheet>
     </v-col>
     <v-col cols="12" sm="6">
-      <v-sheet border rounded="lg" class="pa-2"> One of three columns </v-sheet>
+      <v-sheet border rounded="lg" class="pa-2"> Commissions </v-sheet>
     </v-col>
+  </v-row> -->
+
+  <v-row no-gutters>
+    <v-col cols="12" sm="12">
+      <v-sheet border rounded="lg" class="pa-2 mt-4">
+        <h4 class="text-h5 font-weight-bold mb-4">All delegations</h4>
+        <v-data-table :items="store.allValidatorDelegations">
+          <template v-slot:item.delegation="{ item }">
+            <v-chip label :to="'../address/'+item.delegation "> {{ item.delegation }}  </v-chip>
+          </template>
+
+        </v-data-table>
+      </v-sheet>
+    </v-col>
+ 
   </v-row>
 </template>
 <script>
