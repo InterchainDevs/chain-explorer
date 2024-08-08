@@ -9,7 +9,6 @@ import ValidatorDetailsView from "../views/ValidatorDetailsView.vue";
 import AddressView from "../views/AddressView.vue";
 import GamesView from "../views/GamesView.vue";
 import ParametersView from "../views/ParametersView.vue";
-import TestView from "../views/TestView.vue";
 
 import NotFoundView from "../views/NotFoundView.vue";
 
