@@ -4,11 +4,11 @@
       <v-col>
         <h1>Validator detail</h1>
       </v-col>
-      <v-col cols="auto" class="mt-1">
+<!--       <v-col cols="auto" class="mt-1">
         <span class="me-1 text-h6">Top validator</span>
 
         <v-icon class="mt-n2" color="error" icon="mdi-fire-circle"></v-icon>
-      </v-col>
+      </v-col> -->
     </v-row>
   </v-sheet>
   <v-sheet border rounded="lg" class="mb-2">

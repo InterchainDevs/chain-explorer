@@ -226,6 +226,32 @@ export const useAppStore = defineStore("app", {
       });
       this.allAddressDelegations = result.reverse();
     },
+    // Default searchTx
+    /* async getAddressTx(addrWallet, page) {
+      const getRecipient = await axios(
+        cosmosConfig[2].apiURL +
+          "/cosmos/tx/v1beta1/txs?events=transfer.recipient=%27" +
+          addrWallet +
+          "%27&page=" +
+          page +
+          "&limit=10&order_by=2",
+      );
+      
+      console.log("getRecipient", getRecipient.data);
+
+      for (let i of getRecipient.data.tx_responses) {
+        console.log("test", i);
+        i.txhash = i.txhash;
+        i.height = i.height;
+        i.timestamp = i.timestamp;
+        i.type = setMsg(i.tx.body.messages[0]["@type"]);
+        i.memo = i.tx.body.memo;
+        i.success = i.code === 0 ? "Success" : "Failed";
+      }
+
+      this.allAddressTx = getRecipient.data.tx_responses;
+      this.totalAddressTx = getRecipient.data.total;
+    }, */
     async getAddressTx(addrWallet, page) {
       let getRecipient = [];
       try {
