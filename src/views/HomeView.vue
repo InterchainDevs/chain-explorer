@@ -288,10 +288,10 @@ export default {
   }),
 
   async mounted() {
-    let getOhlc = await axios.get(
+    /* let getOhlc = await axios.get(
       "https://api.coingecko.com/api/v3/coins/bitcanna/ohlc?days=7&vs_currency=usd",
-    );
-    //let getOhlc = await axios.get('https://gist.githubusercontent.com/atmoner/01b2228336092fce49feee68254617b2/raw/7f90f05dc99e582413903510ad82eadd09d4027b/sample_ohcv.json')
+    ); */
+    let getOhlc = await axios.get('https://gist.githubusercontent.com/atmoner/01b2228336092fce49feee68254617b2/raw/7f90f05dc99e582413903510ad82eadd09d4027b/sample_ohcv.json')
     // handle success
     //console.log(getOhlc);
     for (let i = 0; i < getOhlc.data.length; i++) {

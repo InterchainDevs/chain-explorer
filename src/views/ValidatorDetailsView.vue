@@ -59,7 +59,20 @@
         </div>
       </v-card-text>
 
-      <v-row justify="center">        
+      <v-row justify="center">    
+        <v-col cols="12" sm="5" class="ml-4">
+        <v-sheet
+          border
+          rounded="lg"
+          class="mr-4 mb-4 pa-2 animate__animated animate__backInUp"
+        >
+          Self delegation address
+          <v-divider class="mb-7"></v-divider>
+          <div class="text-end">
+            <v-chip label> {{ selfDelegationAddr }} </v-chip>
+          </div>
+        </v-sheet>
+      </v-col>    
       <v-col cols="12" sm="2" class="ml-4">
         <v-sheet
           border
@@ -87,7 +100,8 @@
           </div>
         </v-sheet>
       </v-col>
-      <v-col cols="12" sm="2" class="ml-4">
+
+<!--       <v-col cols="12" sm="2" class="ml-4">
         <v-sheet
           border
           rounded="lg"
@@ -112,7 +126,7 @@
             <v-chip label> {{ store.detailValidator.description?.identity }} </v-chip>
           </div>
         </v-sheet>
-      </v-col>
+      </v-col> -->
       <v-col cols="12" sm="2" class="ml-4">
         <v-sheet
           border
@@ -163,6 +177,7 @@
 </template>
 <script>
 import { Tendermint37Client } from "@cosmjs/tendermint-rpc";
+import bech32 from "bech32";
 import { useAppStore } from "@/stores/data";
 
 import banner from "@/assets/bitcanna-banner.jpeg";
@@ -172,6 +187,7 @@ export default {
   data: () => ({
     banner,
     valAddress: "",
+    selfDelegationAddr: "",
   }),
   setup() {
     const store = useAppStore();
@@ -179,11 +195,11 @@ export default {
   },
   async mounted() {
     await this.store.initRpc();
-    this.valAddress = this.$route.params.address;
-    console.log(this.valAddress);
-    this.store.getDetailsValidator(this.valAddress);
-
-    console.log("this.store.detailValidator", this.store.detailValidator);
+    this.valAddress = this.$route.params.address; 
+    this.store.getDetailsValidator(this.valAddress); 
+    const decode = bech32.decode(this.valAddress);
+    const encode = bech32.encode("bcna", decode.words);
+    this.selfDelegationAddr = encode
   },
 };
 </script>
