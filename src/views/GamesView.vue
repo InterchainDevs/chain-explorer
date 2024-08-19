@@ -22,8 +22,9 @@
             <v-col
               v-for="item in items"
               :key="item.title"
-              cols="auto"
-              md="4"
+              cols="12"
+              sm="6"
+              lg="4"
               class="animate__animated animate__backInLeft"
             >
               <v-card class="pb-3" border flat>

@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire">
-    <v-app-bar height="72" flat>
+    <v-app-bar height="72" flat="true" >
       <v-avatar class="mx-2" size="40" variant="flat">
         <v-img :src="image"></v-img>
       </v-avatar>

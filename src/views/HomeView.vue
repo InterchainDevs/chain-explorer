@@ -1,11 +1,11 @@
 <template>
   <v-row>
-    <v-col cols="12" sm="8">
+    <v-col cols="12" xs='12' md="8">
       <v-sheet
         border
         rounded="lg"
-        height="345"
-        class="mb-2 pa-2 animate__animated animate__backInDown"
+        height="350"
+        class="mb-sm-2 pa-2 animate__animated animate__backInDown"
       >
         <apexchart
           type="candlestick"
@@ -15,13 +15,13 @@
         ></apexchart>
       </v-sheet>
     </v-col>
-    <v-col cols="12" sm="4">
+    <v-col cols="12" xs='6' md="4">
       <v-row no-gutters>
-        <v-col cols="12" sm="6">
+        <v-col cols="12" sm='6'>
           <v-sheet
             border
             rounded="lg"
-            class="mr-4 mb-4 pa-2 animate__animated animate__backInUp"
+            class="mr-sm-4 mb-4 pa-2 animate__animated animate__backInUp"
           >
             Block Height
             <v-divider class="mb-7"></v-divider>
@@ -35,7 +35,7 @@
           <v-sheet
             border
             rounded="lg"
-            class="pa-2 animate__animated animate__backInUp"
+            class="pa-2 mb-4 animate__animated animate__backInUp"
           >
             Inflation
             <v-divider class="mb-7"></v-divider>
@@ -51,7 +51,7 @@
           <v-sheet
             border
             rounded="lg"
-            class="mr-4 mb-4 pa-2 animate__animated animate__backInUp"
+            class="mr-sm-4 mb-4 pa-2 animate__animated animate__backInUp"
           >
             Total Supply
             <v-divider class="mb-8"></v-divider>
@@ -59,9 +59,13 @@
             <div class="text-end">
               <v-chip label class="mr-2">
                 {{ millify(totalSupply) }} BCNA
+                  <v-tooltip 
+                    activator="parent" 
+                    location="top"
+                      > ${{ millify(totalSupply * tokenPrice) }} 
+                  </v-tooltip>
               </v-chip>
 
-              <v-chip label> ${{ millify(totalSupply * tokenPrice) }} </v-chip>
             </div>
           </v-sheet>
         </v-col>
@@ -69,7 +73,7 @@
           <v-sheet
             border
             rounded="lg"
-            class="pa-2 animate__animated animate__backInUp"
+            class="pa-2 mb-4 animate__animated animate__backInUp"
           >
             Bonded Tokens
             <v-divider class="mb-8"></v-divider>
@@ -77,9 +81,13 @@
             <div class="text-end">
               <v-chip label class="mr-2">
                 {{ millify(totalBounded) }} BCNA
+                  <v-tooltip 
+                    activator="parent" 
+                    location="top"
+                      > ${{ millify(totalBounded * tokenPrice) }} 
+                  </v-tooltip>
               </v-chip>
 
-              <v-chip label> ${{ millify(totalBounded * tokenPrice) }} </v-chip>
             </div>
           </v-sheet>
         </v-col>
@@ -89,7 +97,7 @@
           <v-sheet
             border
             rounded="lg"
-            class="mr-4 mb-4 pa-2 animate__animated animate__backInUp"
+            class="mr-sm-4 mb-4 pa-2 animate__animated animate__backInUp"
           >
             Community Pool
             <v-divider class="mb-8"></v-divider>
@@ -105,7 +113,7 @@
             rounded="lg"
             class="pa-2 animate__animated animate__backInUp"
           >
-            Community Pool Value
+            Pool Value
             <v-divider class="mb-8"></v-divider>
 
             <div class="text-end">
@@ -121,9 +129,10 @@
   <v-row no-gutters>
     <v-col cols="12" sm="6">
       <v-sheet
+        min-height="900"
         border
         rounded="lg"
-        class="mr-4 mt-4 pa-6 text-white mx-auto animate__animated animate__backInLeft"
+        class="mr-sm-4 mt-4 pa-6 text-white mx-auto animate__animated animate__backInLeft"
       >
         <h4 class="text-h5 font-weight-bold mb-4">Last Proposals</h4>
         <v-divider class="mt-8"></v-divider>
@@ -146,6 +155,7 @@
     </v-col>
     <v-col cols="12" sm="6">
       <v-sheet
+        min-height="900"
         border
         rounded="lg"
         class="pa-6 mt-4 text-white mx-auto animate__animated animate__backInRight"

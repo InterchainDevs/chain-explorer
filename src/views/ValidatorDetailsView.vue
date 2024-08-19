@@ -2,7 +2,7 @@
   <v-sheet border rounded="lg" class="mb-2 pa-4">
     <v-row no-gutters>
       <v-col>
-        <h1>Validator detail</h1>
+        <h1>Validator detail {{ store.detailValidator.jailed }}</h1>
       </v-col>
 <!--       <v-col cols="auto" class="mt-1">
         <span class="me-1 text-h6">Top validator</span>
@@ -182,6 +182,8 @@ export default {
     this.valAddress = this.$route.params.address;
     console.log(this.valAddress);
     this.store.getDetailsValidator(this.valAddress);
+
+    console.log("this.store.detailValidator", this.store.detailValidator);
   },
 };
 </script>

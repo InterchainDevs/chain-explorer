@@ -2,16 +2,16 @@
   <v-sheet border rounded="lg" class="mb-2 pa-4">
     <v-row no-gutters>
       <v-col>
-        <h4 class="text-h5 font-weight-bold">{{ address }}</h4>
+        <h4 class="text-truncate text-sm-h5 font-weight-bold">{{ address }}</h4>
       </v-col>
       <v-col cols="auto" class="mt-1">
-        <h4 class="text-h5 font-weight-bold">$ {{ store.fiatWalletValue }}</h4>
+        <h4 class="text-sm-h5 font-weight-bold">$ {{ store.fiatWalletValue }}</h4>
       </v-col>
     </v-row>
   </v-sheet>
 
   <v-row no-gutters>
-    <v-col cols="12" sm="8">
+    <v-col cols="12"xs='12' md='8'>
       <v-sheet min-height="430" border rounded="lg" class="mb-2 pa-4">
         <h4 class="text-h5 font-weight-bold mb-4">Delegations</h4>
 
@@ -21,8 +21,8 @@
         ></v-data-table>
       </v-sheet>
     </v-col>
-    <v-col cols="12" sm="4">
-      <v-sheet min-height="430" border rounded="lg" class="mb-2 ml-4 pa-4">
+    <v-col cols="12" xs='12' md="4">
+      <v-sheet min-height="430" border rounded="lg" class="mb-2 ml-md-4 pa-4">
         <v-list>
           <v-list-item
             prepend-avatar="https://raw.githubusercontent.com/cosmostation/chainlist/master/chain/bitcanna/asset/bcna.png"
@@ -154,7 +154,8 @@
     <v-pagination
       v-model="currentPage"
       class="mt-2 mb-2"
-      :total-visible="7"
+      size="small"
+      :total-visible="4"
       :length="store.totalAddressTx / 10"
       @click="handlePageChange"
     ></v-pagination>
