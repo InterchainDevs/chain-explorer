@@ -79,6 +79,19 @@
           rounded="lg"
           class="mr-4 mb-4 pa-2 animate__animated animate__backInUp"
         >
+          Self delegation tokens
+          <v-divider class="mb-7"></v-divider>
+          <div class="text-end">
+            <v-chip label> {{ selfDelegationTokens / 1000000 }}  BCNA</v-chip>
+          </div>
+        </v-sheet>
+      </v-col>    
+      <v-col cols="12" sm="2" class="ml-4">
+        <v-sheet
+          border
+          rounded="lg"
+          class="mr-4 mb-4 pa-2 animate__animated animate__backInUp"
+        >
           Commission Rates
           <v-divider class="mb-7"></v-divider>
 
@@ -178,6 +191,7 @@
 <script>
 import { Tendermint37Client } from "@cosmjs/tendermint-rpc";
 import bech32 from "bech32";
+import axios from "axios";
 import { useAppStore } from "@/stores/data";
 
 import banner from "@/assets/bitcanna-banner.jpeg";
@@ -188,6 +202,7 @@ export default {
     banner,
     valAddress: "",
     selfDelegationAddr: "",
+    selfDelegationTokens: "",
   }),
   setup() {
     const store = useAppStore();
@@ -200,8 +215,18 @@ export default {
     const decode = bech32.decode(this.valAddress);
     const encode = bech32.encode("bcna", decode.words);
     this.selfDelegationAddr = encode
+
+    console.log(this.store.detailValidator)
+    const getSelfDelegation = await axios(
+      "https://lcd.bitcanna.io/cosmos/staking/v1beta1/delegations/" + this.selfDelegationAddr
+    );
+
+    const found = getSelfDelegation.data.delegation_responses.find((element) => element.delegation.validator_address === this.valAddress);
+    console.log(found)
+    this.selfDelegationTokens = found?.balance.amount;
   },
 };
+ 
 </script>
 <style>
 .transparent-body {
