@@ -5,7 +5,12 @@
         <v-img :src="image"></v-img>
       </v-avatar>
 
-      <v-btn class="me-2" color="#0FB786" height="40" variant="outlined" to="/"
+      <v-btn 
+        class="me-2" 
+        color="#0FB786" 
+        height="40" 
+        variant="outlined" 
+        to="/" 
         >Dashboard</v-btn
       >
 

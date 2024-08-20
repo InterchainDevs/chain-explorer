@@ -216,14 +216,30 @@ export default {
     const encode = bech32.encode("bcna", decode.words);
     this.selfDelegationAddr = encode
 
-    console.log(this.store.detailValidator)
     const getSelfDelegation = await axios(
       "https://lcd.bitcanna.io/cosmos/staking/v1beta1/delegations/" + this.selfDelegationAddr
     );
-
     const found = getSelfDelegation.data.delegation_responses.find((element) => element.delegation.validator_address === this.valAddress);
-    console.log(found)
     this.selfDelegationTokens = found?.balance.amount;
+
+    const getAddressKey = await axios(
+      "https://lcd.bitcanna.io/cosmos/staking/v1beta1/validators/" + this.valAddress
+    );
+    const addressKey = getAddressKey.data.validator.consensus_pubkey.key;
+    this.addressKey = addressKey;
+
+    const getSigningAddress = await axios(
+      "https://lcd.bitcanna.io/cosmos/base/tendermint/v1beta1/validatorsets/latest"
+    );
+    const signingAddress = getSigningAddress.data.validators.find((element) => element.pub_key.key === this.addressKey);
+    this.signingAddress = signingAddress?.address; 
+
+    const getMissingBlocks = await axios(
+      "https://lcd.bitcanna.io/cosmos/slashing/v1beta1/signing_infos/" + this.signingAddress
+    );
+    const missingBlocks = getMissingBlocks.data.val_signing_info.missed_blocks_counter;
+    console.log(missingBlocks)
+    this.missingBlocks = missingBlocks
   },
 };
  
