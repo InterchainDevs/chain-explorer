@@ -116,7 +116,7 @@
           Missed blocks
           <v-divider class="mb-7"></v-divider>
           <div class="text-end">
-            <v-chip label> {{ this.missingBlocks }} </v-chip>
+            <v-chip v-if="pageLoaded" label> {{ this.missingBlocks }} </v-chip>
           </div>
         </v-sheet>
       </v-col>
@@ -207,6 +207,7 @@ export default {
     valAddress: "",
     selfDelegationAddr: "",
     selfDelegationTokens: "",
+    pageLoaded: false,
   }),
   setup() {
     const store = useAppStore();
@@ -244,6 +245,8 @@ export default {
     const missingBlocks = getMissingBlocks.data.val_signing_info.missed_blocks_counter;
     console.log(missingBlocks)
     this.missingBlocks = missingBlocks
+    this.pageLoaded = true;
+
   },
 };
  
