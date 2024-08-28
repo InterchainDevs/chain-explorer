@@ -2,7 +2,7 @@
   <v-sheet border rounded="lg" class="mb-2 pa-4">
     <v-row no-gutters>
       <v-col>
-        <h1>Validator detail {{ store.detailValidator.jailed }}</h1>
+        <h1>Validator detail</h1>
       </v-col>
 <!--       <v-col cols="auto" class="mt-1">
         <span class="me-1 text-h6">Top validator</span>
@@ -11,7 +11,9 @@
       </v-col> -->
     </v-row>
   </v-sheet>
+
   <v-sheet border rounded="lg" class="mb-2">
+    
     <v-card :disabled="loading" :loading="loading" class="mx-auto">
       <template v-slot:loader="{ isActive }">
         <v-progress-linear
@@ -28,23 +30,8 @@
             <v-col>
               {{ store.detailValidator.description?.moniker }}
             </v-col>
-            <v-col cols="auto">
-              <v-btn
-                class="pa-2"
-                :href="store.detailValidator.description?.website"
-                target="_blank"
-              >
-                Website
-              </v-btn>
-            </v-col>
           </v-row>
         </v-card-title>
-        <v-card-text>
-          <p class="text-h6">{{ store.detailValidator.operatorAddress }}</p>
-          <p class="text-h6">
-            {{ store.detailValidator.description?.securityContact }}
-          </p>
-        </v-card-text>
       </v-img>
 
       <v-card-item>
@@ -59,20 +46,53 @@
         </div>
       </v-card-text>
 
-      <v-row justify="center">    
-        <v-col cols="12" sm="5" class="ml-4">
-        <v-sheet
-          border
-          rounded="lg"
-          class="mr-4 mb-4 pa-2 animate__animated animate__backInUp"
-        >
-          Self delegation address
-          <v-divider class="mb-7"></v-divider>
-          <div class="text-end">
-            <v-chip label> {{ selfDelegationAddr }} </v-chip>
-          </div>
-        </v-sheet>
-      </v-col>    
+    </v-card>
+
+    <v-row>    
+      <v-col cols="12" sm="6" class="ml-2">
+        <v-table>
+          <tbody>
+            <tr>
+              <td>Validator address</td>
+              <td align="right">
+                <v-list>
+                  <v-list-item
+                    :title="this.store.detailValidator.operatorAddress"
+                  ></v-list-item>
+                </v-list>
+              </td>
+            </tr>
+            <tr>
+              <td>Account address</td>
+              <td align="right">
+                <v-list>
+                  <v-list-item 
+                    :title="this.selfDelegationAddr"
+                  ></v-list-item>
+                </v-list>
+              </td>
+            </tr>
+            <tr>
+              <td>Contact</td>
+              <td align="right">
+                <v-list>
+                  <v-btn
+                    class="pa-2"
+                    :href="store.detailValidator.description?.website"
+                    target="_blank"
+                  >
+                    Website
+                  </v-btn>
+                </v-list>
+              </td>
+              </tr>
+            </tbody>
+        </v-table>
+      </v-col>
+
+    </v-row>
+    
+    <v-row >
       <v-col cols="12" sm="2" class="ml-4">
         <v-sheet
           border
@@ -86,60 +106,21 @@
           </div>
         </v-sheet>
       </v-col>    
-      <v-col cols="12" sm="2" class="ml-4">
-        <v-sheet
-          border
-          rounded="lg"
-          class="mr-4 mb-4 pa-2 animate__animated animate__backInUp"
-        >
-          Commission Rates
-          <v-divider class="mb-7"></v-divider>
 
-          <div class="text-end">
-            <v-chip label>{{ store.detailValidator.commission?.commissionRates.rate / 10000000000000000 }} %</v-chip>
-          </div>
-        </v-sheet>
-      </v-col>
       <v-col cols="12" sm="2" class="ml-4">
         <v-sheet
           border
           rounded="lg"
           class="mr-4 mb-4 pa-2 animate__animated animate__backInUp"
         >
-          Total Bonded
+          Missed blocks
           <v-divider class="mb-7"></v-divider>
           <div class="text-end">
-            <v-chip label> {{ store.detailValidator.tokens / 1000000 }} BCNA</v-chip>
+            <v-chip label> {{ this.missingBlocks }} </v-chip>
           </div>
         </v-sheet>
       </v-col>
 
-<!--       <v-col cols="12" sm="2" class="ml-4">
-        <v-sheet
-          border
-          rounded="lg"
-          class="mr-4 mb-4 pa-2 animate__animated animate__backInUp"
-        >
-          Last updated
-          <v-divider class="mb-7"></v-divider>
-          <div class="text-end">
-            <v-chip label> {{ store.detailValidator.commission?.updateTime?.seconds }} </v-chip>
-          </div>
-        </v-sheet>
-      </v-col>
-      <v-col cols="12" sm="2" class="ml-4">
-        <v-sheet
-          border
-          rounded="lg"
-          class="mr-4 mb-4 pa-2 animate__animated animate__backInUp"
-        >
-          Identity
-          <v-divider class="mb-7"></v-divider>
-          <div class="text-end">
-            <v-chip label> {{ store.detailValidator.description?.identity }} </v-chip>
-          </div>
-        </v-sheet>
-      </v-col> -->
       <v-col cols="12" sm="2" class="ml-4">
         <v-sheet
           border
@@ -153,12 +134,35 @@
           </div>
         </v-sheet>
       </v-col>
-    </v-row>
-    
-    </v-card>
+      
+      <v-col cols="12" sm="2" class="ml-2">
+        <v-sheet
+          border
+          rounded="lg"
+          class="mr-4 mb-4 pa-2 animate__animated animate__backInUp"
+        >
+          Total Bonded
+          <v-divider class="mb-7"></v-divider>
+          <div class="text-end">
+            <v-chip label> {{ store.detailValidator.tokens / 1000000 }} BCNA</v-chip>
+          </div>
+        </v-sheet>
+      </v-col> 
 
- 
- 
+      <v-col cols="12" sm="2" class="ml-2">
+        <v-sheet
+          border
+          rounded="lg"
+          class="mr-4 mb-4 pa-2 animate__animated animate__backInUp"
+        >
+          Commission Rates
+          <v-divider class="mb-7"></v-divider>
+          <div class="text-end">
+            <v-chip label> {{ store.detailValidator.commission?.commissionRates.rate / 10000000000000000 }} %</v-chip>
+          </div>
+        </v-sheet>
+      </v-col>
+    </v-row>
   </v-sheet>
 
 <!--   <v-row no-gutters>
