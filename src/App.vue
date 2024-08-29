@@ -1,16 +1,11 @@
 <template>
   <v-app id="inspire">
-    <v-app-bar height="72" flat="true" >
+    <v-app-bar height="72" flat="true">
       <v-avatar class="mx-2" size="40" variant="flat">
         <v-img :src="image"></v-img>
       </v-avatar>
 
-      <v-btn 
-        class="me-2" 
-        color="#0FB786" 
-        height="40" 
-        variant="outlined" 
-        to="/" 
+      <v-btn class="me-2" color="#0FB786" height="40" variant="outlined" to="/"
         >Dashboard</v-btn
       >
 
@@ -65,6 +60,16 @@
         prepend-icon="mdi-gamepad-variant"
         to="/games"
         >Games</v-btn
+      >
+
+      <v-btn
+        class="me-2"
+        color="#9c2bff"
+        height="40"
+        variant="outlined"
+        prepend-icon="mdi-magnify"
+        to="/stores-finder"
+        >Stores Finder</v-btn
       >
       <v-spacer></v-spacer>
 
@@ -164,7 +169,6 @@
             <v-divider></v-divider>
           </div>
         </v-list>
-
       </div>
       <template v-slot:append>
         <v-footer class="bg-grey-lighten-1">
@@ -177,6 +181,15 @@
       </template>
     </v-navigation-drawer>
     <v-main>
+      <v-row v-if="debug" justify="center" no-gutters class="mb-4">
+        <v-alert icon="mdi-console" >
+          <v-col class="text-center mt-2" cols="12">
+              {{ height }} {{ name }} {{ width }}
+            </v-col>
+
+        </v-alert>
+
+          </v-row>
       <RouterView />
     </v-main>
   </v-app>
@@ -189,6 +202,7 @@ import moment from "moment";
 import millify from "millify";
 import bech32 from "bech32";
 import axios from "axios";
+import { computed } from "vue";
 
 import { setMsg } from "@/libs/msgType";
 import cosmosConfig from "@/cosmos.config";
@@ -223,6 +237,7 @@ window.Apex = {
 
 export default {
   data: () => ({
+    debug: true,
     millify: millify,
     moment: moment,
     cosmosConfig: cosmosConfig,
@@ -236,7 +251,24 @@ export default {
   }),
   setup() {
     const store = useAppStore();
-    return { store };
+    const { name, width } = useDisplay()
+
+    const height = computed(() => {
+      
+      switch (name.value) {
+        case 'xs': return 220
+        case 'sm': return 400
+        case 'md': return 500
+        case 'lg': return 600
+        case 'xl': return 800
+        case 'xxl': return 1200
+      }
+
+      return undefined
+    });
+
+
+    return { store, height, name, width };
   },
   watch: {
     searchData(hash) {
@@ -269,6 +301,7 @@ export default {
   },
   async mounted() {
     const { mobile } = useDisplay();
+    console.log(this.$vuetify.display.mobile)
 
     await this.store.initRpc();
     await this.store.getSdkVersion();
@@ -316,7 +349,7 @@ export default {
       const message = JSON.stringify({
         method: "subscribe",
         params: {
-          query: "tm.event='Tx'" // tm.event='Tx' AND mint.owner='ownerAddress'
+          query: "tm.event='Tx'", // tm.event='Tx' AND mint.owner='ownerAddress'
         },
         id: "1",
         jsonrpc: "2.0",
@@ -385,6 +418,7 @@ export default {
       this.lastTxs = [];
     },
   },
+ 
 };
 </script>
 
@@ -399,7 +433,6 @@ export default {
   animation: pulse 1.5s infinite;
 }
 .footerNav {
- 
   left: 0;
   bottom: 0;
   width: 100%;

@@ -9,6 +9,7 @@ import ValidatorDetailsView from "../views/ValidatorDetailsView.vue";
 import AddressView from "../views/AddressView.vue";
 import GamesView from "../views/GamesView.vue";
 import ParametersView from "../views/ParametersView.vue";
+import StoresFinderView from "../views/StoresFinderView.vue";
 
 import NotFoundView from "../views/NotFoundView.vue";
 
@@ -64,6 +65,11 @@ const router = createRouter({
       path: "/parameters",
       name: "parameters",
       component: ParametersView,
+    },
+    {
+      path: "/stores-finder",
+      name: "storesfinder",
+      component: StoresFinderView,
     },
     { path: "/:pathMatch(.*)*", name: "NotFound", component: NotFoundView },
   ],

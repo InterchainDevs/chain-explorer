@@ -4,7 +4,7 @@
       <v-col>
         <h1>Validator detail</h1>
       </v-col>
-<!--       <v-col cols="auto" class="mt-1">
+      <!--       <v-col cols="auto" class="mt-1">
         <span class="me-1 text-h6">Top validator</span>
 
         <v-icon class="mt-n2" color="error" icon="mdi-fire-circle"></v-icon>
@@ -12,8 +12,13 @@
     </v-row>
   </v-sheet>
 
-  <v-sheet border rounded="lg" class="mb-2">    
-    <v-card :disabled="loading" :loading="loading" class="mx-auto"  elevation="0">
+  <v-sheet border rounded="lg" class="mb-2">
+    <v-card
+      :disabled="loading"
+      :loading="loading"
+      class="mx-auto"
+      elevation="0"
+    >
       <template v-slot:loader="{ isActive }">
         <v-progress-linear
           :active="isActive"
@@ -47,69 +52,63 @@
     </v-card>
 
     <v-row no-gutters>
-      <v-col
-        cols="12"
-        sm="6"
-      >
+      <v-col cols="12" sm="6">
         <v-sheet :height="400" border class="ma-2 pa-2">
           <v-table>
-          <tbody>
-            <tr>
-              <td>Validator address</td>
-              <td align="right">
-                <v-list>
-                  <v-list-item
-                    :title="this.store.detailValidator.operatorAddress"
-                  ></v-list-item>
-                </v-list>
-              </td>
-            </tr>
-            <tr>
-              <td>Account address</td>
-              <td align="right">
-                <v-list>
-                  <v-list-item 
-                    :title="this.selfDelegationAddr"
-                  ></v-list-item>
-                </v-list>
-              </td>
-            </tr>
-            <tr>
-              <td>Contact</td>
-              <td align="right">
-                <v-list>
-                  <v-btn
-                    class="pa-2"
-                    :href="store.detailValidator.description?.website"
-                    target="_blank"
-                  >
-                    Website
-                  </v-btn>
-                </v-list>
-              </td>
+            <tbody>
+              <tr>
+                <td>Validator address</td>
+                <td align="right">
+                  <v-list>
+                    <v-list-item
+                      :title="this.store.detailValidator.operatorAddress"
+                    ></v-list-item>
+                  </v-list>
+                </td>
+              </tr>
+              <tr>
+                <td>Account address</td>
+                <td align="right">
+                  <v-list>
+                    <v-list-item :title="this.selfDelegationAddr"></v-list-item>
+                  </v-list>
+                </td>
+              </tr>
+              <tr>
+                <td>Contact</td>
+                <td align="right">
+                  <v-list>
+                    <v-btn
+                      class="pa-2"
+                      :href="store.detailValidator.description?.website"
+                      target="_blank"
+                    >
+                      Website
+                    </v-btn>
+                  </v-list>
+                </td>
               </tr>
             </tbody>
-        </v-table>
+          </v-table>
         </v-sheet>
       </v-col>
-      <v-col
-        cols="12"
-        sm="6"
-      >
+      <v-col cols="12" sm="6">
         <v-sheet :height="400" border class="ma-2 pa-2">
-          <v-data-table :items="store.allValidatorDelegations" items-per-page="5">
-          <template v-slot:item.delegation="{ item }">
-            <v-chip label :to="'../address/'+item.delegation "> {{ item.delegation }}  </v-chip>
-          </template>
-        </v-data-table>
+          <v-data-table
+            :items="store.allValidatorDelegations"
+            items-per-page="5"
+          >
+            <template v-slot:item.delegation="{ item }">
+              <v-chip label :to="'../address/' + item.delegation">
+                {{ item.delegation }}
+              </v-chip>
+            </template>
+          </v-data-table>
         </v-sheet>
       </v-col>
     </v-row>
 
-
-    <v-row>    
-
- 
+    <v-row>
       <v-col cols="12" sm="2" class="ml-4">
         <v-sheet
           border
@@ -119,10 +118,10 @@
           Self delegation tokens
           <v-divider class="mb-7"></v-divider>
           <div class="text-end">
-            <v-chip label> {{ selfDelegationTokens / 1000000 }}  BCNA</v-chip>
+            <v-chip label> {{ selfDelegationTokens / 1000000 }} BCNA</v-chip>
           </div>
         </v-sheet>
-      </v-col>    
+      </v-col>
 
       <v-col cols="12" sm="2" class="ml-4">
         <v-sheet
@@ -151,7 +150,7 @@
           </div>
         </v-sheet>
       </v-col>
-      
+
       <v-col cols="12" sm="2" class="ml-2">
         <v-sheet
           border
@@ -161,10 +160,12 @@
           Total Bonded
           <v-divider class="mb-7"></v-divider>
           <div class="text-end">
-            <v-chip label> {{ store.detailValidator.tokens / 1000000 }} BCNA</v-chip>
+            <v-chip label>
+              {{ store.detailValidator.tokens / 1000000 }} BCNA</v-chip
+            >
           </div>
         </v-sheet>
-      </v-col> 
+      </v-col>
 
       <v-col cols="12" sm="2" class="ml-2">
         <v-sheet
@@ -175,14 +176,20 @@
           Commission Rates
           <v-divider class="mb-7"></v-divider>
           <div class="text-end">
-            <v-chip label> {{ store.detailValidator.commission?.commissionRates.rate / 10000000000000000 }} %</v-chip>
+            <v-chip label>
+              {{
+                store.detailValidator.commission?.commissionRates.rate /
+                10000000000000000
+              }}
+              %</v-chip
+            >
           </div>
         </v-sheet>
       </v-col>
-    </v-row> 
+    </v-row>
   </v-sheet>
 
-<!--   <v-row no-gutters>
+  <!--   <v-row no-gutters>
     <v-col cols="12" sm="6">
       <v-sheet border rounded="lg" class="pa-2 mr-4">
         <h4 class="text-h5 font-weight-bold mb-4">Outstanding Rewards</h4>
@@ -194,7 +201,7 @@
     </v-col>
   </v-row> -->
 
-<!--   <v-row no-gutters>
+  <!--   <v-row no-gutters>
     <v-col cols="12" sm="12">
       <v-sheet border rounded="lg" class="pa-2 mt-4">
         <h4 class="text-h5 font-weight-bold mb-4">All delegations</h4>
@@ -231,41 +238,47 @@ export default {
   },
   async mounted() {
     await this.store.initRpc();
-    this.valAddress = this.$route.params.address; 
-    this.store.getDetailsValidator(this.valAddress); 
+    this.valAddress = this.$route.params.address;
+    this.store.getDetailsValidator(this.valAddress);
     const decode = bech32.decode(this.valAddress);
     const encode = bech32.encode("bcna", decode.words);
-    this.selfDelegationAddr = encode
+    this.selfDelegationAddr = encode;
 
     const getSelfDelegation = await axios(
-      "https://lcd.bitcanna.io/cosmos/staking/v1beta1/delegations/" + this.selfDelegationAddr
+      "https://lcd.bitcanna.io/cosmos/staking/v1beta1/delegations/" +
+        this.selfDelegationAddr,
     );
-    const found = getSelfDelegation.data.delegation_responses.find((element) => element.delegation.validator_address === this.valAddress);
+    const found = getSelfDelegation.data.delegation_responses.find(
+      (element) => element.delegation.validator_address === this.valAddress,
+    );
     this.selfDelegationTokens = found?.balance.amount;
 
     const getAddressKey = await axios(
-      "https://lcd.bitcanna.io/cosmos/staking/v1beta1/validators/" + this.valAddress
+      "https://lcd.bitcanna.io/cosmos/staking/v1beta1/validators/" +
+        this.valAddress,
     );
     const addressKey = getAddressKey.data.validator.consensus_pubkey.key;
     this.addressKey = addressKey;
 
     const getSigningAddress = await axios(
-      "https://lcd.bitcanna.io/cosmos/base/tendermint/v1beta1/validatorsets/latest"
+      "https://lcd.bitcanna.io/cosmos/base/tendermint/v1beta1/validatorsets/latest",
     );
-    const signingAddress = getSigningAddress.data.validators.find((element) => element.pub_key.key === this.addressKey);
-    this.signingAddress = signingAddress?.address; 
+    const signingAddress = getSigningAddress.data.validators.find(
+      (element) => element.pub_key.key === this.addressKey,
+    );
+    this.signingAddress = signingAddress?.address;
 
     const getMissingBlocks = await axios(
-      "https://lcd.bitcanna.io/cosmos/slashing/v1beta1/signing_infos/" + this.signingAddress
+      "https://lcd.bitcanna.io/cosmos/slashing/v1beta1/signing_infos/" +
+        this.signingAddress,
     );
-    const missingBlocks = getMissingBlocks.data.val_signing_info.missed_blocks_counter;
-    console.log(missingBlocks)
-    this.missingBlocks = missingBlocks
+    const missingBlocks =
+      getMissingBlocks.data.val_signing_info.missed_blocks_counter;
+    console.log(missingBlocks);
+    this.missingBlocks = missingBlocks;
     this.pageLoaded = true;
-
   },
 };
- 
 </script>
 <style>
 .transparent-body {

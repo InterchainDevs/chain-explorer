@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-col cols="12" xs='12' md="8">
+    <v-col cols="12" xs="12" md="8">
       <v-sheet
         border
         rounded="lg"
@@ -15,9 +15,9 @@
         ></apexchart>
       </v-sheet>
     </v-col>
-    <v-col cols="12" xs='6' md="4">
+    <v-col cols="12" xs="6" md="4">
       <v-row no-gutters>
-        <v-col cols="12" sm='6'>
+        <v-col cols="12" sm="6">
           <v-sheet
             border
             rounded="lg"
@@ -59,13 +59,10 @@
             <div class="text-end">
               <v-chip label class="mr-2">
                 {{ millify(totalSupply) }} BCNA
-                  <v-tooltip 
-                    activator="parent" 
-                    location="top"
-                      > ${{ millify(totalSupply * tokenPrice) }} 
-                  </v-tooltip>
+                <v-tooltip activator="parent" location="top">
+                  ${{ millify(totalSupply * tokenPrice) }}
+                </v-tooltip>
               </v-chip>
-
             </div>
           </v-sheet>
         </v-col>
@@ -81,13 +78,10 @@
             <div class="text-end">
               <v-chip label class="mr-2">
                 {{ millify(totalBounded) }} BCNA
-                  <v-tooltip 
-                    activator="parent" 
-                    location="top"
-                      > ${{ millify(totalBounded * tokenPrice) }} 
-                  </v-tooltip>
+                <v-tooltip activator="parent" location="top">
+                  ${{ millify(totalBounded * tokenPrice) }}
+                </v-tooltip>
               </v-chip>
-
             </div>
           </v-sheet>
         </v-col>
@@ -164,10 +158,11 @@
         <v-divider class="mt-8"></v-divider>
         <v-table>
           <tbody>
-            <tr v-for="item in randomValidators" :key="item.name" >
-              
+            <tr v-for="item in randomValidators" :key="item.name">
               <td>
-                <v-chip label :to="'validator/'+item.operator_address"> {{ item.description.moniker.substring(0, 15) }} </v-chip>
+                <v-chip label :to="'validator/' + item.operator_address">
+                  {{ item.description.moniker.substring(0, 15) }}
+                </v-chip>
               </td>
               <td>
                 {{ (item.commission.commission_rates.rate * 100).toFixed(0) }}%
@@ -176,7 +171,6 @@
                 <v-chip label color="green"> Online </v-chip>
               </td>
               <td></td>
- 
             </tr>
           </tbody>
         </v-table>
@@ -295,7 +289,9 @@ export default {
     /* let getOhlc = await axios.get(
       "https://api.coingecko.com/api/v3/coins/bitcanna/ohlc?days=7&vs_currency=usd",
     ); */
-    let getOhlc = await axios.get('https://gist.githubusercontent.com/atmoner/01b2228336092fce49feee68254617b2/raw/7f90f05dc99e582413903510ad82eadd09d4027b/sample_ohcv.json')
+    let getOhlc = await axios.get(
+      "https://gist.githubusercontent.com/atmoner/01b2228336092fce49feee68254617b2/raw/7f90f05dc99e582413903510ad82eadd09d4027b/sample_ohcv.json",
+    );
     // handle success
     //console.log(getOhlc);
     for (let i = 0; i < getOhlc.data.length; i++) {
@@ -360,9 +356,7 @@ export default {
       ),
     ];
     // Get last block
-    await this.store.getBlockNow()
-
-    
+    await this.store.getBlockNow();
   },
   methods: {},
 };

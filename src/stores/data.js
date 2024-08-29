@@ -83,8 +83,9 @@ export const useAppStore = defineStore("app", {
       const queryBase = new base.ServiceClientImpl(this.rpcClient);
       let blockNow = await queryBase.GetLatestBlock({});
 
-      
-      this.blockNow = new Intl.NumberFormat().format(blockNow.block.header.height);
+      this.blockNow = new Intl.NumberFormat().format(
+        blockNow.block.header.height,
+      );
     },
 
     async getPriceNow() {
@@ -294,14 +295,13 @@ export const useAppStore = defineStore("app", {
         finalTxs = resultSender.data.tx_responses.concat(
           getRecipient.data.tx_responses,
         );
-        this.totalAddressTx = Number(getRecipient.data.total) + Number(resultSender.data.total);
+        this.totalAddressTx =
+          Number(getRecipient.data.total) + Number(resultSender.data.total);
       } else if (resultSender.data) {
-        finalTxs = resultSender.data.tx_responses; 
+        finalTxs = resultSender.data.tx_responses;
       } else if (getRecipient.data) {
-        finalTxs = getRecipient.data.tx_responses; 
+        finalTxs = getRecipient.data.tx_responses;
       }
-
-
 
       console.log("finalTxs", finalTxs);
 
@@ -316,7 +316,6 @@ export const useAppStore = defineStore("app", {
       }
 
       this.allAddressTx = finalTxs;
-      
     },
     async getAllValidators() {
       let getAllValidators = await fetch(
