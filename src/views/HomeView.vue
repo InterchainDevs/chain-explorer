@@ -27,7 +27,7 @@
             <v-divider class="mb-7"></v-divider>
 
             <div class="text-end">
-              <v-chip label> 14,755,246 </v-chip>
+              <v-chip label> {{ store.blockNow }} </v-chip>
             </div>
           </v-sheet>
         </v-col>
@@ -187,6 +187,7 @@
 <script>
 import axios from "axios";
 import millify from "millify";
+import { useAppStore } from "@/stores/data";
 
 import { setMsg } from "@/libs/msgType";
 
@@ -286,7 +287,10 @@ export default {
       ],
     },
   }),
-
+  setup() {
+    const store = useAppStore();
+    return { store };
+  },
   async mounted() {
     /* let getOhlc = await axios.get(
       "https://api.coingecko.com/api/v3/coins/bitcanna/ohlc?days=7&vs_currency=usd",
@@ -355,7 +359,10 @@ export default {
             getTokenNomics.data.pool.not_bonded_tokens),
       ),
     ];
-    console.log(this.series2);
+    // Get last block
+    await this.store.getBlockNow()
+
+    
   },
   methods: {},
 };

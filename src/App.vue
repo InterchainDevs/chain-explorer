@@ -315,7 +315,9 @@ export default {
       console.log("Connected on bitcanna blockchain from WebSocket");
       const message = JSON.stringify({
         method: "subscribe",
-        params: ["tm.event='Tx'"],
+        params: {
+          query: "tm.event='Tx'" // tm.event='Tx' AND mint.owner='ownerAddress'
+        },
         id: "1",
         jsonrpc: "2.0",
       });

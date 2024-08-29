@@ -15,6 +15,7 @@ import * as gov from "cosmjs-types/cosmos/gov/v1beta1/query";
 import * as bank from "cosmjs-types/cosmos/bank/v1beta1/query";
 import * as distrib from "cosmjs-types/cosmos/distribution/v1beta1/query";
 import * as mint from "cosmjs-types/cosmos/mint/v1beta1/query";
+import * as base from "cosmjs-types/cosmos/base/tendermint/v1beta1/query";
 
 export const useAppStore = defineStore("app", {
   state: () => ({
@@ -77,6 +78,13 @@ export const useAppStore = defineStore("app", {
         }
       }
       this.sdkVersion = getSdk.data.application_version.cosmos_sdk_version;
+    },
+    async getBlockNow() {
+      const queryBase = new base.ServiceClientImpl(this.rpcClient);
+      let blockNow = await queryBase.GetLatestBlock({});
+
+      
+      this.blockNow = new Intl.NumberFormat().format(blockNow.block.header.height);
     },
 
     async getPriceNow() {
