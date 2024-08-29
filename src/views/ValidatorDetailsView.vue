@@ -12,9 +12,8 @@
     </v-row>
   </v-sheet>
 
-  <v-sheet border rounded="lg" class="mb-2">
-    
-    <v-card :disabled="loading" :loading="loading" class="mx-auto">
+  <v-sheet border rounded="lg" class="mb-2">    
+    <v-card :disabled="loading" :loading="loading" class="mx-auto"  elevation="0">
       <template v-slot:loader="{ isActive }">
         <v-progress-linear
           :active="isActive"
@@ -45,12 +44,15 @@
           {{ store.detailValidator.description?.details }}
         </div>
       </v-card-text>
-
     </v-card>
 
-    <v-row>    
-      <v-col cols="12" sm="6" class="ml-2">
-        <v-table>
+    <v-row no-gutters>
+      <v-col
+        cols="12"
+        sm="6"
+      >
+        <v-sheet :height="400" border class="ma-2 pa-2">
+          <v-table>
           <tbody>
             <tr>
               <td>Validator address</td>
@@ -88,11 +90,26 @@
               </tr>
             </tbody>
         </v-table>
+        </v-sheet>
       </v-col>
-
+      <v-col
+        cols="12"
+        sm="6"
+      >
+        <v-sheet :height="400" border class="ma-2 pa-2">
+          <v-data-table :items="store.allValidatorDelegations" items-per-page="5">
+          <template v-slot:item.delegation="{ item }">
+            <v-chip label :to="'../address/'+item.delegation "> {{ item.delegation }}  </v-chip>
+          </template>
+        </v-data-table>
+        </v-sheet>
+      </v-col>
     </v-row>
-    
-    <v-row >
+
+
+    <v-row>    
+
+ 
       <v-col cols="12" sm="2" class="ml-4">
         <v-sheet
           border
@@ -162,7 +179,7 @@
           </div>
         </v-sheet>
       </v-col>
-    </v-row>
+    </v-row> 
   </v-sheet>
 
 <!--   <v-row no-gutters>
@@ -177,7 +194,7 @@
     </v-col>
   </v-row> -->
 
-  <v-row no-gutters>
+<!--   <v-row no-gutters>
     <v-col cols="12" sm="12">
       <v-sheet border rounded="lg" class="pa-2 mt-4">
         <h4 class="text-h5 font-weight-bold mb-4">All delegations</h4>
@@ -185,12 +202,11 @@
           <template v-slot:item.delegation="{ item }">
             <v-chip label :to="'../address/'+item.delegation "> {{ item.delegation }}  </v-chip>
           </template>
-
         </v-data-table>
       </v-sheet>
     </v-col>
  
-  </v-row>
+  </v-row> -->
 </template>
 <script>
 import { Tendermint37Client } from "@cosmjs/tendermint-rpc";
