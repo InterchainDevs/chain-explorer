@@ -1,5 +1,5 @@
 <template>
-  <v-sheet border rounded="lg" class="mb-2 pa-4">
+  <v-sheet border rounded="lg" class="mb-4 pa-4">
     <v-row no-gutters>
       <v-col>
         <h4 class="text-truncate text-sm-h5 font-weight-bold">{{ address }}</h4>
@@ -14,7 +14,7 @@
 
   <v-row no-gutters>
     <v-col cols="12" xs="12" md="8">
-      <v-sheet min-height="430" border rounded="lg" class="mb-2 pa-4">
+      <v-sheet min-height="430" border rounded="lg" class="mb-4 pa-4">
         <h4 class="text-h5 font-weight-bold mb-4">Delegations</h4>
 
         <v-data-table
@@ -24,7 +24,7 @@
       </v-sheet>
     </v-col>
     <v-col cols="12" xs="12" md="4">
-      <v-sheet min-height="430" border rounded="lg" class="mb-2 ml-md-4 pa-4">
+      <v-sheet min-height="430" border rounded="lg" class="mb-4 ml-md-4 pa-4">
         <v-list>
           <v-list-item
             prepend-avatar="https://raw.githubusercontent.com/cosmostation/chainlist/master/chain/bitcanna/asset/bcna.png"
@@ -34,7 +34,7 @@
           </v-list-item>
         </v-list>
 
-        <v-divider class="mt-2"></v-divider>
+        <v-divider class="mt-4"></v-divider>
         <v-table>
           <tbody>
             <tr>

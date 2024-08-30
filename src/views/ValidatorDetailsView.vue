@@ -1,5 +1,5 @@
 <template>
-  <v-sheet border rounded="lg" class="mb-2 pa-4">
+  <v-sheet border rounded="lg" class="mb-4 pa-4">
     <v-row no-gutters>
       <v-col>
         <h1>Validator detail</h1>
@@ -53,7 +53,7 @@
 
     <v-row no-gutters>
       <v-col cols="12" sm="6">
-        <v-sheet :height="400" border class="ma-2 pa-2">
+        <v-sheet :height="400" border class="ma-2 pa-2" rounded="lg">
           <v-table>
             <tbody>
               <tr>
@@ -93,7 +93,7 @@
         </v-sheet>
       </v-col>
       <v-col cols="12" sm="6">
-        <v-sheet :height="400" border class="ma-2 pa-2">
+        <v-sheet :height="400" border class="ma-2 pa-2" rounded="lg">
           <v-data-table
             v-model:page="page"
             :items="store.allValidatorDelegations"
