@@ -95,13 +95,25 @@
       <v-col cols="12" sm="6">
         <v-sheet :height="400" border class="ma-2 pa-2">
           <v-data-table
+            v-model:page="page"
             :items="store.allValidatorDelegations"
-            items-per-page="5"
+            :items-per-page="itemsPerPage"
+            hide-details
+            
           >
             <template v-slot:item.delegation="{ item }">
               <v-chip label :to="'../address/' + item.delegation">
                 {{ item.delegation }}
               </v-chip>
+            </template>
+            <template v-slot:bottom>
+              <div class="text-center pt-2">
+                <v-pagination
+                  v-model="page"
+                  :length="pageCount"
+                  :total-visible="4"
+                ></v-pagination>
+              </div>
             </template>
           </v-data-table>
         </v-sheet>
@@ -227,6 +239,8 @@ export default {
   name: "BlocksView",
   data: () => ({
     banner,
+    page: 1,
+    itemsPerPage: 5,
     valAddress: "",
     selfDelegationAddr: "",
     selfDelegationTokens: "",
@@ -275,9 +289,19 @@ export default {
     const missingBlocks =
       getMissingBlocks.data.val_signing_info.missed_blocks_counter;
     console.log(missingBlocks);
+
+
+    document.title = this.$route.meta.title + " - " + this.store.detailValidator.description?.moniker  + " | BitCanna Explorer";
+    document.head.querySelector('meta[name="description"]').content = this.$route.meta.title + " - " + this.store.detailValidator.description?.moniker  + " | BitCanna Explorer";
+
     this.missingBlocks = missingBlocks;
     this.pageLoaded = true;
   },
+  computed: {
+      pageCount () {
+        return Math.ceil(this.store.allValidatorDelegations.length / this.itemsPerPage)
+      },
+    },
 };
 </script>
 <style>

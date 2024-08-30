@@ -20,6 +20,10 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: HomeView,
+      meta: {
+        title: "Bitcanna dashboard",
+        content: "My page meta description",
+      },
     },
     {
       path: "/tx/:txhash",
@@ -30,11 +34,19 @@ const router = createRouter({
       path: "/blocks",
       name: "blocklist",
       component: BlocksView,
+      meta: {
+        title: "Last blocks",
+        content: "",
+      },
     },
     {
       path: "/block/:id",
       name: "blockdetail",
       component: BlockDetailsView,
+      meta: {
+        title: "Details block",
+        content: "",
+      },
     },
     {
       path: "/validators",
@@ -45,6 +57,10 @@ const router = createRouter({
       path: "/validator/:address",
       name: "validatorsDetails",
       component: ValidatorDetailsView,
+      meta: {
+        title: "Validator details",
+        content: "",
+      },
     },
     {
       path: "/address/:address",
@@ -70,6 +86,10 @@ const router = createRouter({
       path: "/stores-finder",
       name: "storesfinder",
       component: StoresFinderView,
+      meta: {
+        title: "Stores finder",
+        content: "",
+      },
     },
     { path: "/:pathMatch(.*)*", name: "NotFound", component: NotFoundView },
   ],

@@ -110,6 +110,10 @@ export default {
     );
     this.blockInfo = getBlockInfo.data;
 
+    document.title = this.$route.meta.title + " - " + this.blockId + " | BitCanna Explorer";
+    document.head.querySelector('meta[name="description"]').content = this.$route.meta.title + " - " + this.blockId + " | BitCanna Explorer";
+
+
     for (let i = 0; i < this.blockInfo.block.data.txs.length; i++) {
       const decodedTx = decodeTxRaw(
         fromBase64(this.blockInfo.block.data.txs[i]),

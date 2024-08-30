@@ -182,14 +182,12 @@
     </v-navigation-drawer>
     <v-main>
       <v-row v-if="debug" justify="center" no-gutters class="mb-4">
-        <v-alert icon="mdi-console" >
+        <v-alert icon="mdi-console">
           <v-col class="text-center mt-2" cols="12">
-              {{ height }} {{ name }} {{ width }}
-            </v-col>
-
+            {{ height }} {{ name }} {{ width }}
+          </v-col>
         </v-alert>
-
-          </v-row>
+      </v-row>
       <RouterView />
     </v-main>
   </v-app>
@@ -203,6 +201,7 @@ import millify from "millify";
 import bech32 from "bech32";
 import axios from "axios";
 import { computed } from "vue";
+import { useMeta } from "vue-meta";
 
 import { setMsg } from "@/libs/msgType";
 import cosmosConfig from "@/cosmos.config";
@@ -237,7 +236,7 @@ window.Apex = {
 
 export default {
   data: () => ({
-    debug: true,
+    debug: false,
     millify: millify,
     moment: moment,
     cosmosConfig: cosmosConfig,
@@ -251,22 +250,26 @@ export default {
   }),
   setup() {
     const store = useAppStore();
-    const { name, width } = useDisplay()
+    const { name, width } = useDisplay();
 
     const height = computed(() => {
-      
       switch (name.value) {
-        case 'xs': return 220
-        case 'sm': return 400
-        case 'md': return 500
-        case 'lg': return 600
-        case 'xl': return 800
-        case 'xxl': return 1200
+        case "xs":
+          return 220;
+        case "sm":
+          return 400;
+        case "md":
+          return 500;
+        case "lg":
+          return 600;
+        case "xl":
+          return 800;
+        case "xxl":
+          return 1200;
       }
 
-      return undefined
+      return undefined;
     });
-
 
     return { store, height, name, width };
   },
@@ -300,12 +303,16 @@ export default {
     },
   },
   async mounted() {
+
+
     const { mobile } = useDisplay();
-    console.log(this.$vuetify.display.mobile)
+    console.log(this.$vuetify.display.mobile);
 
     await this.store.initRpc();
     await this.store.getSdkVersion();
     await this.store.getAllValidators();
+
+    this.metaInfo();
 
     /*     this.socket = new WebSocket('wss://rpc.bitcanna.io/websocket'); 
     //this.socket = new WebSocket('wss://rpc.osmosis.zone/websocket'); 
@@ -342,8 +349,23 @@ export default {
     this.socket.onerror = (error) => {
       console.error('WebSocket encountered an error:', error);
     }; */
+
+
   },
   methods: {
+    metaInfo() {
+      return {
+        title: "test meta data with vue",
+        metaInfo: [
+          {
+            vmid: "description",
+            name: "description",
+            content:
+              "hello world, this is an example of adding a description with vueMeta",
+          },
+        ],
+      };
+    },
     sendMessage(content) {
       console.log("Connected on bitcanna blockchain from WebSocket");
       const message = JSON.stringify({
@@ -418,7 +440,6 @@ export default {
       this.lastTxs = [];
     },
   },
- 
 };
 </script>
 
