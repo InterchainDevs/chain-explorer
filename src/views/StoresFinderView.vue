@@ -210,9 +210,7 @@
                     ></v-rating>
                     <span class="ml-2">{{ item.raw.rating }}</span>
 
-                    <div class="text-grey ml-2">
-                       - ({{ item.raw.reviews }})
-                    </div>
+                    <div class="text-grey ml-2">- ({{ item.raw.reviews }})</div>
                   </v-row>
 
                   <div class="mt-4 text-subtitle-1 text-capitalize">
@@ -235,23 +233,17 @@
 
                 <v-divider class="mx-4 mb-1"></v-divider>
 
-
-
                 <div class="px-4 mb-4 mt-4">
                   <v-icon
-                    class="mr-2" 
+                    class="mr-2"
                     icon="mdi-clock-time-nine-outline"
                     size="small"
                   ></v-icon>
-                  <span
-                      class="text-truncate"
-                      style="max-width: 200px"
-                    >
+                  <span class="text-truncate" style="max-width: 200px">
                     {{ item.raw.description }}
-                    </span>
-                  
+                  </span>
                 </div>
-<!-- 
+                <!-- 
                 <v-card-actions>
                   <v-btn
                     color="deep-purple-lighten-2"
@@ -367,7 +359,7 @@ export default {
       },
     ],
 
-    search: ""
+    search: "",
   }),
   async mounted() {
     //this.$store.dispatch('fetchItems');
@@ -384,7 +376,8 @@ export default {
     //console.log(result);
 
     document.title = this.$route.meta.title + " | BitCanna Explorer";
-    document.head.querySelector('meta[name="description"]').content = this.$route.meta.title + " | BitCanna Explorer";
+    document.head.querySelector('meta[name="description"]').content =
+      this.$route.meta.title + " | BitCanna Explorer";
   },
   methods: {
     async selectCountry(country) {

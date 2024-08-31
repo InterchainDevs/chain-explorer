@@ -28,9 +28,12 @@
           <v-row class="mb-6" no-gutters>
             <v-col>
               <v-avatar class="mr-4">
-              <v-img :alt="store.detailValidator.description?.moniker" :src="getImageUrl(this.store.detailValidator.operatorAddress)"></v-img>
-            </v-avatar>
-             {{ store.detailValidator.description?.moniker }}
+                <v-img
+                  :alt="store.detailValidator.description?.moniker"
+                  :src="getImageUrl(this.store.detailValidator.operatorAddress)"
+                ></v-img>
+              </v-avatar>
+              {{ store.detailValidator.description?.moniker }}
             </v-col>
           </v-row>
         </v-card-title>
@@ -97,7 +100,6 @@
             :items="store.allValidatorDelegations"
             :items-per-page="itemsPerPage"
             hide-details
-            
           >
             <template v-slot:item.delegation="{ item }">
               <v-chip label :to="'../address/' + item.delegation">
@@ -264,27 +266,37 @@ export default {
       getMissingBlocks.data.val_signing_info.missed_blocks_counter;
     console.log(missingBlocks);
 
-
-    document.title = this.$route.meta.title + " - " + this.store.detailValidator.description?.moniker  + " | BitCanna Explorer";
-    document.head.querySelector('meta[name="description"]').content = this.$route.meta.title + " - " + this.store.detailValidator.description?.moniker  + " | BitCanna Explorer";
+    document.title =
+      this.$route.meta.title +
+      " - " +
+      this.store.detailValidator.description?.moniker +
+      " | BitCanna Explorer";
+    document.head.querySelector('meta[name="description"]').content =
+      this.$route.meta.title +
+      " - " +
+      this.store.detailValidator.description?.moniker +
+      " | BitCanna Explorer";
 
     this.missingBlocks = missingBlocks;
     this.pageLoaded = true;
   },
   methods: {
     getImageUrl(name) {
-      let createUrl = new URL(`../assets/moniker/${name}.png`, import.meta.url).href 
-       if (createUrl.includes("undefined")) {
-        return this.image
+      let createUrl = new URL(`../assets/moniker/${name}.png`, import.meta.url)
+        .href;
+      if (createUrl.includes("undefined")) {
+        return this.image;
       }
-      return createUrl
+      return createUrl;
     },
   },
   computed: {
-      pageCount () {
-        return Math.ceil(this.store.allValidatorDelegations.length / this.itemsPerPage)
-      },
+    pageCount() {
+      return Math.ceil(
+        this.store.allValidatorDelegations.length / this.itemsPerPage,
+      );
     },
+  },
 };
 </script>
 <style>

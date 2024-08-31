@@ -50,7 +50,7 @@ export const useAppStore = defineStore("app", {
     distribParams: [],
     slashingParams: [],
 
-    // Wallet 
+    // Wallet
     addrWallet: "",
     nameWallet: "",
     isLogged: false,
@@ -63,7 +63,7 @@ export const useAppStore = defineStore("app", {
       await this.getSdkVersion();
       await this.getAllValidators();
       await this.getBlockNow();
-  
+
       this.dataLoaded = true;
     },
     async initRpc() {
@@ -481,7 +481,7 @@ export const useAppStore = defineStore("app", {
       this.allProposals = allProposals.proposals;
     },
     async keplrConnect() {
-console.log(this.setChainSelected)
+      console.log(this.setChainSelected);
       await window.keplr.experimentalSuggestChain({
         chainId: cosmosConfig[this.setChainSelected].chainId,
         chainName: cosmosConfig[this.setChainSelected].name,
@@ -491,17 +491,29 @@ console.log(this.setChainSelected)
           coinType: 118,
         },
         bech32Config: {
-          bech32PrefixAccAddr: cosmosConfig[this.setChainSelected].coinLookup.addressPrefix,
-          bech32PrefixAccPub: cosmosConfig[this.setChainSelected].coinLookup.addressPrefix + "pub",
-          bech32PrefixValAddr: cosmosConfig[this.setChainSelected].coinLookup.addressPrefix + "valoper",
-          bech32PrefixValPub: cosmosConfig[this.setChainSelected].coinLookup.addressPrefix + "valoperpub",
-          bech32PrefixConsAddr: cosmosConfig[this.setChainSelected].coinLookup.addressPrefix + "valcons",
-          bech32PrefixConsPub: cosmosConfig[this.setChainSelected].coinLookup.addressPrefix + "valconspub",
+          bech32PrefixAccAddr:
+            cosmosConfig[this.setChainSelected].coinLookup.addressPrefix,
+          bech32PrefixAccPub:
+            cosmosConfig[this.setChainSelected].coinLookup.addressPrefix +
+            "pub",
+          bech32PrefixValAddr:
+            cosmosConfig[this.setChainSelected].coinLookup.addressPrefix +
+            "valoper",
+          bech32PrefixValPub:
+            cosmosConfig[this.setChainSelected].coinLookup.addressPrefix +
+            "valoperpub",
+          bech32PrefixConsAddr:
+            cosmosConfig[this.setChainSelected].coinLookup.addressPrefix +
+            "valcons",
+          bech32PrefixConsPub:
+            cosmosConfig[this.setChainSelected].coinLookup.addressPrefix +
+            "valconspub",
         },
         currencies: [
           {
             coinDenom: cosmosConfig[this.setChainSelected].coinLookup.viewDenom,
-            coinMinimalDenom: cosmosConfig[this.setChainSelected].coinLookup.chainDenom,
+            coinMinimalDenom:
+              cosmosConfig[this.setChainSelected].coinLookup.chainDenom,
             coinDecimals: 6,
             coinGeckoId: cosmosConfig[this.setChainSelected].coingeckoId,
           },
@@ -509,7 +521,8 @@ console.log(this.setChainSelected)
         feeCurrencies: [
           {
             coinDenom: cosmosConfig[this.setChainSelected].coinLookup.viewDenom,
-            coinMinimalDenom: cosmosConfig[this.setChainSelected].coinLookup.chainDenom,
+            coinMinimalDenom:
+              cosmosConfig[this.setChainSelected].coinLookup.chainDenom,
             coinDecimals: 6,
             coinGeckoId: cosmosConfig[this.setChainSelected].coingeckoId,
             gasPriceStep: {
@@ -521,20 +534,21 @@ console.log(this.setChainSelected)
         ],
         stakeCurrency: {
           coinDenom: cosmosConfig[this.setChainSelected].coinLookup.viewDenom,
-          coinMinimalDenom: cosmosConfig[this.setChainSelected].coinLookup.chainDenom,
+          coinMinimalDenom:
+            cosmosConfig[this.setChainSelected].coinLookup.chainDenom,
           coinDecimals: 6,
           coinGeckoId: cosmosConfig[this.setChainSelected].coingeckoId,
         },
-    })
-      let chainId = cosmosConfig[this.setChainSelected].chainId
+      });
+      let chainId = cosmosConfig[this.setChainSelected].chainId;
 
       await window.keplr.enable(chainId);
       const offlineSigner = await window.getOfflineSignerAuto(chainId);
       const accounts = await offlineSigner.getAccounts();
       const getKey = await window.keplr.getKey(chainId);
-      this.addrWallet = accounts[0].address
-      this.nameWallet = getKey
-      this.isLogged = true
+      this.addrWallet = accounts[0].address;
+      this.nameWallet = getKey;
+      this.isLogged = true;
 
       localStorage.setItem("myBitcannaAddress", this.addrWallet);
       // console.log('addr: '+accounts[0].address)

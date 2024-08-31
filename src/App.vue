@@ -71,28 +71,24 @@
         >Games</v-btn
       >
       <v-spacer></v-spacer>
-      <v-menu
-      
-      transition="slide-x-transition"
-    >
-      <template v-slot:activator="{ props }">
-        <v-btn
-         class="mr-4" 
-          v-bind="props"
-        >
-          {{ cosmosConfig[this.store.setChainSelected].name }}
-        </v-btn>
-      </template>
+      <v-menu transition="slide-x-transition">
+        <template v-slot:activator="{ props }">
+          <v-btn class="mr-4" v-bind="props">
+            {{ cosmosConfig[this.store.setChainSelected].name }}
+          </v-btn>
+        </template>
 
-      <v-list>
-        <v-list-item
-          v-for="(item, i) in cosmosConfig.slice().reverse()"
-          :key="i"
-        >
-          <v-list-item-title @click="changeChain(i)">{{ item.name }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
+        <v-list>
+          <v-list-item
+            v-for="(item, i) in cosmosConfig.slice().reverse()"
+            :key="i"
+          >
+            <v-list-item-title @click="changeChain(i)">{{
+              item.name
+            }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
       <v-responsive max-width="500">
         <v-text-field
           v-model="searchData"
@@ -108,23 +104,23 @@
           @click:append-inner="onClick"
         ></v-text-field>
       </v-responsive>
-      
-      <v-btn v-if="!this.store.isLogged" icon="mdi-dots-vertical" @click="this.store.keplrConnect()">    
+
+      <v-btn
+        v-if="!this.store.isLogged"
+        icon="mdi-dots-vertical"
+        @click="this.store.keplrConnect()"
+      >
         <v-avatar>
-          <v-img
-            alt="keplrImage"
-            :src="keplrImage"
-          ></v-img>
+          <v-img alt="keplrImage" :src="keplrImage"></v-img>
         </v-avatar>
       </v-btn>
 
       <v-avatar v-if="this.store.isLogged" class="mr-4">
         <RouterLink :to="'/address/' + this.store.addrWallet">
-          <v-btn icon="mdi-account" color="#0FB786"></v-btn> 
-        </RouterLink>        
+          <v-btn icon="mdi-account" color="#0FB786"></v-btn>
+        </RouterLink>
       </v-avatar>
     </v-app-bar>
- 
 
     <v-navigation-drawer :width="352">
       <v-table>
@@ -280,11 +276,11 @@ export default {
     searchData: "",
     wsIsStarted: false,
     itemsMenu: [
-        { title: 'Click Me' },
-        { title: 'Click Me' },
-        { title: 'Click Me' },
-        { title: 'Logout' },
-      ],
+      { title: "Click Me" },
+      { title: "Click Me" },
+      { title: "Click Me" },
+      { title: "Logout" },
+    ],
   }),
   setup() {
     const store = useAppStore();
@@ -341,20 +337,17 @@ export default {
     },
   },
   async mounted() {
-
     var myAddress = localStorage.getItem("myBitcannaAddress");
     if (myAddress) {
-      this.store.keplrConnect()
+      this.store.keplrConnect();
     }
-    
+
     const { mobile } = useDisplay();
     console.log(this.$vuetify.display.mobile);
 
     await this.store.initRpc();
     await this.store.getSdkVersion();
     await this.store.getAllValidators();
-
-
 
     /*     this.socket = new WebSocket('wss://rpc.bitcanna.io/websocket'); 
     //this.socket = new WebSocket('wss://rpc.osmosis.zone/websocket'); 
@@ -391,8 +384,6 @@ export default {
     this.socket.onerror = (error) => {
       console.error('WebSocket encountered an error:', error);
     }; */
-
-
   },
   methods: {
     changeChain(i) {

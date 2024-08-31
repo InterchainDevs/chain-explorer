@@ -280,7 +280,6 @@ export default {
         },
       ],
     },
-    
   }),
   setup() {
     const store = useAppStore();
@@ -360,7 +359,8 @@ export default {
     await this.store.getBlockNow();
 
     document.title = this.$route.meta.title;
-    document.head.querySelector('meta[name="description"]').content = this.$route.meta.title;
+    document.head.querySelector('meta[name="description"]').content =
+      this.$route.meta.title;
   },
   methods: {},
 };
