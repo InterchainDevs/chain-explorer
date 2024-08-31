@@ -42,7 +42,7 @@
               <td align="right">
                 <v-list>
                   <v-list-item
-                    :title="store.spendableBalances"
+                    :title="formatNumber(store.spendableBalances)"
                     :subtitle="
                       '$ ' +
                       (store.spendableBalances * store.priceNow).toFixed(2)
@@ -64,7 +64,7 @@
               <td align="right">
                 <v-list>
                   <v-list-item
-                    :title="this.store.totalDelegations"
+                    :title="formatNumber(this.store.totalDelegations)"
                     :subtitle="
                       '$ ' +
                       (this.store.totalDelegations * store.priceNow).toFixed(2)
@@ -78,7 +78,7 @@
               <td align="right">
                 <v-list>
                   <v-list-item
-                    :title="this.store.totalUnbound"
+                    :title="formatNumber(this.store.totalUnbound)"
                     :subtitle="
                       '$ ' +
                       (this.store.totalUnbound * store.priceNow).toFixed(2)
@@ -92,7 +92,7 @@
               <td align="right">
                 <v-list>
                   <v-list-item
-                    :title="this.store.totalRewards"
+                    :title="formatNumber(this.store.totalRewards)"
                     :subtitle="
                       '$ ' +
                       (this.store.totalRewards * store.priceNow).toFixed(2)
@@ -141,7 +141,7 @@
           </td>
           <td>
             <v-chip class="ma-2" label>
-              {{ item.height }}
+              {{ formatNumber(item.height) }}
             </v-chip>
           </td>
           <td>
@@ -208,6 +208,12 @@ export default {
       await this.store.getAddressTx(this.address, this.currentPage);
       this.isLoaded = true;
     },
+    formatNumber(value) {
+      return new Intl.NumberFormat().format(
+        value
+      );
+    },
+  
     truncate(
       fullStr,
       strLen = 8,

@@ -28,18 +28,19 @@
         <tr v-for="(item, index) in store.allValidatorsRpc" :key="item.name">
           <td>{{ index + 1 }}</td>
           <td>
-            <v-avatar class="mr-4">
+
+
+            <v-chip
+ 
+              :to="'/validator/' + item.operatorAddress"
+              >
+              <v-avatar class="mr-4 ml-n2">
               <v-img
                 :alt="item.description.moniker"
                 :src="getImageUrl(item.operatorAddress)"
               ></v-img>
             </v-avatar>
-
-            <v-chip
-              class="ma-2"
-              label
-              :to="'/validator/' + item.operatorAddress"
-              >{{ item.description.moniker }}</v-chip
+              {{ item.description.moniker }}</v-chip
             >
           </td>
           <td>{{ item.tokens / 1000000 }} BCNA</td>
