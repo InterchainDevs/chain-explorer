@@ -2,13 +2,8 @@
   <v-sheet border rounded="lg" class="mb-4 pa-4">
     <v-row no-gutters>
       <v-col>
-        <h1>Validator detail</h1>
+        <h1>Validator details</h1>
       </v-col>
-      <!--       <v-col cols="auto" class="mt-1">
-        <span class="me-1 text-h6">Top validator</span>
-
-        <v-icon class="mt-n2" color="error" icon="mdi-fire-circle"></v-icon>
-      </v-col> -->
     </v-row>
   </v-sheet>
 
@@ -32,7 +27,10 @@
         <v-card-title class="text-h4">
           <v-row class="mb-6" no-gutters>
             <v-col>
-              {{ store.detailValidator.description?.moniker }}
+              <v-avatar class="mr-4">
+              <v-img :alt="store.detailValidator.description?.moniker" :src="getImageUrl(this.store.detailValidator.operatorAddress)"></v-img>
+            </v-avatar>
+             {{ store.detailValidator.description?.moniker }}
             </v-col>
           </v-row>
         </v-card-title>
@@ -200,32 +198,6 @@
       </v-col>
     </v-row>
   </v-sheet>
-
-  <!--   <v-row no-gutters>
-    <v-col cols="12" sm="6">
-      <v-sheet border rounded="lg" class="pa-2 mr-4">
-        <h4 class="text-h5 font-weight-bold mb-4">Outstanding Rewards</h4>
-
-      </v-sheet>
-    </v-col>
-    <v-col cols="12" sm="6">
-      <v-sheet border rounded="lg" class="pa-2"> Commissions </v-sheet>
-    </v-col>
-  </v-row> -->
-
-  <!--   <v-row no-gutters>
-    <v-col cols="12" sm="12">
-      <v-sheet border rounded="lg" class="pa-2 mt-4">
-        <h4 class="text-h5 font-weight-bold mb-4">All delegations</h4>
-        <v-data-table :items="store.allValidatorDelegations">
-          <template v-slot:item.delegation="{ item }">
-            <v-chip label :to="'../address/'+item.delegation "> {{ item.delegation }}  </v-chip>
-          </template>
-        </v-data-table>
-      </v-sheet>
-    </v-col>
- 
-  </v-row> -->
 </template>
 <script>
 import { Tendermint37Client } from "@cosmjs/tendermint-rpc";
@@ -234,11 +206,13 @@ import axios from "axios";
 import { useAppStore } from "@/stores/data";
 
 import banner from "@/assets/bitcanna-banner.jpeg";
+import image from "@/assets/logo-bcna.png";
 
 export default {
   name: "BlocksView",
   data: () => ({
     banner,
+    image: image,
     page: 1,
     itemsPerPage: 5,
     valAddress: "",
@@ -296,6 +270,15 @@ export default {
 
     this.missingBlocks = missingBlocks;
     this.pageLoaded = true;
+  },
+  methods: {
+    getImageUrl(name) {
+      let createUrl = new URL(`../assets/moniker/${name}.png`, import.meta.url).href 
+       if (createUrl.includes("undefined")) {
+        return this.image
+      }
+      return createUrl
+    },
   },
   computed: {
       pageCount () {

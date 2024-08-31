@@ -29,7 +29,7 @@
           <td>{{ index + 1 }}</td>
           <td>
             <v-avatar class="mr-4">
-              <v-img alt="John" :src="image"></v-img>
+              <v-img :alt="item.description.moniker" :src="getImageUrl(item.operatorAddress)"></v-img>
             </v-avatar>
 
             <v-chip
@@ -89,5 +89,14 @@ export default {
   async mounted() {
     await this.store.initRpc();
   },
+  methods: {
+    getImageUrl(name) {
+      let createUrl = new URL(`../assets/moniker/${name}.png`, import.meta.url).href 
+       if (createUrl.includes("undefined")) {
+        return this.image
+      }
+      return createUrl
+    },
+  }, 
 };
 </script>
