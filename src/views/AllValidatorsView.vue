@@ -28,10 +28,7 @@
         <tr v-for="(item, index) in store.allValidatorsRpc" :key="item.name">
           <td>{{ index + 1 }}</td>
           <td>
-
-
-            <v-chip
- 
+            <v-chip 
               :to="'/validator/' + item.operatorAddress"
               >
               <v-avatar class="mr-4 ml-n2">

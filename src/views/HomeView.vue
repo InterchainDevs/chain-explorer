@@ -159,10 +159,20 @@
         <v-table>
           <tbody>
             <tr v-for="item in randomValidators" :key="item.name">
+
+
               <td>
-                <v-chip label :to="'validator/' + item.operator_address">
-                  {{ item.description.moniker.substring(0, 15) }}
-                </v-chip>
+                <v-chip 
+                  :to="'/validator/' + item.operator_address"
+                  >
+                  <v-avatar class="mr-4 ml-n2">
+                  <v-img
+                    :alt="item.description.moniker"
+                    :src="getImageUrl(item.operator_address)"
+                  ></v-img>
+                </v-avatar>
+                  {{ item.description.moniker }}</v-chip
+                >
               </td>
               <td>
                 {{ (item.commission.commission_rates.rate * 100).toFixed(0) }}%
@@ -184,6 +194,7 @@ import millify from "millify";
 import { useAppStore } from "@/stores/data";
 
 import { setMsg } from "@/libs/msgType";
+import image from "@/assets/logo-bcna.png";
 
 window.Apex = {
   chart: {
@@ -214,6 +225,7 @@ window.Apex = {
 export default {
   data: () => ({
     millify: millify,
+    image: image,
     poolStake: {},
     totalSupply: 0,
     totalBounded: 0,
@@ -362,6 +374,16 @@ export default {
     document.head.querySelector('meta[name="description"]').content =
       this.$route.meta.title;
   },
-  methods: {},
+  methods: {
+    getImageUrl(name) {
+      let createUrl = new URL(`../assets/moniker/${name}.png`, import.meta.url)
+        .href;
+      if (createUrl.includes("undefined")) {
+        return this.image;
+      }
+      return createUrl;
+    },
+
+  },
 };
 </script>
