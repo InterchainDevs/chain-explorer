@@ -16,6 +16,7 @@ import * as bank from "cosmjs-types/cosmos/bank/v1beta1/query";
 import * as distrib from "cosmjs-types/cosmos/distribution/v1beta1/query";
 import * as mint from "cosmjs-types/cosmos/mint/v1beta1/query";
 import * as base from "cosmjs-types/cosmos/base/tendermint/v1beta1/query";
+//import * as txSearch from "cosmjs-types/cosmos/tx/v1beta1/service";
 
 export const useAppStore = defineStore("app", {
   state: () => ({
