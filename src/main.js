@@ -39,5 +39,5 @@ app.use(router);
 app.use(vuetify);
 app.use(VueApexCharts);
 
-await router.isReady();
+// await router.isReady();
 app.mount("#app");
