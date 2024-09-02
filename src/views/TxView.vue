@@ -87,17 +87,26 @@
           <tbody>
             <tr>
               <td>Tx hash</td>
-              <td>{{ txHash }}</td>
+              <td class="text-caption">{{ txHash }}</td>
             </tr>
-            <tr v-for="(value, key) in txData.tx?.body.messages[0]" :key="key">
-              <td>
+            <tr v-for="(value, key) in allMessages[0]" :key="key">
+              <td v-if="key !== 'finalData'">
                 {{ key }}
               </td>
-              <td v-if="key === 'amount'">
-                {{ value[0]?.amount / 1000000 }}
-                <strong :style="'color:' + foundChain.color">
+              <td v-if="key === 'amount'"> 
+                <b v-if="value[0]">{{ formatNumber(value[0].amount / 1000000) }}</b>
+                <b v-else>{{ formatNumber(value.amount / 1000000) }}</b>
+                <strong :style="'color:' + foundChain.color" class="ml-2">
                   {{ foundChain.coinLookup.viewDenom }}
                 </strong>
+              </td>
+              <td v-else-if="key === '@type'">
+                <v-chip
+                  label
+                  :color="allMessages[0].finalData?.color"
+                >
+                  {{ allMessages[0].finalData?.typeReadable }}
+                </v-chip> 
               </td>
               <td v-else-if="key === 'proposers'">
                 <strong :style="'color:' + foundChain.color">
@@ -135,9 +144,75 @@
               <td v-else-if="key === 'timeout_height'">
                 revision number: {{ value.revision_number }} / revision height:
                 {{ value.revision_height }}
+              </td> 
+              <td v-else-if="key === 'option'">
+                <v-chip
+                  v-if="value === 'VOTE_OPTION_YES'"
+                  class="ma-2"
+                  label
+                  :color="allMessages[0].finalData?.color"
+                >
+                  YES
+                </v-chip> 
+                <v-chip
+                  v-if="value === 'VOTE_OPTION_NO'"
+                  class="ma-2"
+                  label
+                  color="red"
+                >
+                  NO
+                </v-chip> 
+                <v-chip
+                  v-if="value === 'VOTE_OPTION_ABSTAIN'"
+                  class="ma-2"
+                  label
+                  color="orange"
+                >
+                  ABSTAIN
+                </v-chip> 
+                <v-chip
+                  v-if="value === 'VOTE_OPTION_NO_WITH_VETO'"
+                  class="ma-2"
+                  label
+                  color="orange"
+                >
+                  NO WITH VETO
+                </v-chip> 
               </td>
+              <td v-else-if="key === 'delegator_address'">
+                <v-chip
+                  label
+                  :to="'../address/' + value"
+                >
+                  {{ value }}
+                </v-chip> 
+              </td> 
+              <td v-else-if="key === 'validator_address'">
+                <v-chip
+                  label
+                  :to="'../validator/' + value"
+                >
+                  {{ value }}
+                </v-chip> 
+              </td>
+              <td v-else-if="key === 'from_address'">
+                <v-chip
+                  label
+                  :to="'../address/' + value"
+                >
+                  {{ value }}
+                </v-chip> 
+              </td>
+              <td v-else-if="key === 'to_address'">
+                <v-chip
+                  label
+                  :to="'../address/' + value"
+                >
+                  {{ value }}
+                </v-chip> 
+              </td>
+              <td v-else-if="key !== 'finalData'">{{ value }}</td> 
 
-              <td v-else>{{ value }}</td>
             </tr>
           </tbody>
         </v-table>
@@ -170,8 +245,8 @@
                 </strong>
               </td>
               <td v-else-if="key === 'gas_limit'">
-                {{ txData.tx_response.gas_wanted }} /
-                {{ txData.tx_response.gas_used }}
+                {{ formatNumber(txData.tx_response.gas_wanted) }} /
+                {{ formatNumber(txData.tx_response.gas_used) }}
               </td>
               <td v-else>{{ value }}</td>
             </tr>
@@ -355,6 +430,9 @@ console.log('tessssssst', { query: `tx.hash='${this.$route.params.txhash}'` })
   */
   },
   methods: {
+    formatNumber(value) {
+      return new Intl.NumberFormat().format(value);
+    },
     formatDate(dateString) {
       const date = new Date(dateString);
       // Then specify how you want your dates to be formatted
