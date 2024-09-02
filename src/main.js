@@ -16,8 +16,6 @@ import * as directives from "vuetify/directives";
 
 import VueApexCharts from "vue3-apexcharts";
 
-import { createMetaManager } from "vue-meta";
-
 import "animate.css";
 
 // Fix bigint issue
@@ -40,7 +38,6 @@ app.use(createPinia());
 app.use(router);
 app.use(vuetify);
 app.use(VueApexCharts);
-app.use(createMetaManager()); // add this line
 
 await router.isReady();
 app.mount("#app");
