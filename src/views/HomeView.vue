@@ -1,11 +1,11 @@
 <template>
   <v-row>
-    <v-col cols="12" sm="8">
+    <v-col cols="12" xs="12" md="8">
       <v-sheet
         border
         rounded="lg"
-        height="345"
-        class="mb-2 pa-2 animate__animated animate__backInDown"
+        height="350"
+        class="mb-sm-2 pa-2 animate__animated animate__backInDown"
       >
         <apexchart
           type="candlestick"
@@ -15,19 +15,19 @@
         ></apexchart>
       </v-sheet>
     </v-col>
-    <v-col cols="12" sm="4">
+    <v-col cols="12" xs="6" md="4">
       <v-row no-gutters>
         <v-col cols="12" sm="6">
           <v-sheet
             border
             rounded="lg"
-            class="mr-4 mb-4 pa-2 animate__animated animate__backInUp"
+            class="mr-sm-4 mb-4 pa-2 animate__animated animate__backInUp"
           >
             Block Height
             <v-divider class="mb-7"></v-divider>
 
             <div class="text-end">
-              <v-chip label> 14,755,246 </v-chip>
+              <v-chip label> {{ store.blockNow }} </v-chip>
             </div>
           </v-sheet>
         </v-col>
@@ -35,7 +35,7 @@
           <v-sheet
             border
             rounded="lg"
-            class="pa-2 animate__animated animate__backInUp"
+            class="pa-2 mb-4 animate__animated animate__backInUp"
           >
             Inflation
             <v-divider class="mb-7"></v-divider>
@@ -51,7 +51,7 @@
           <v-sheet
             border
             rounded="lg"
-            class="mr-4 mb-4 pa-2 animate__animated animate__backInUp"
+            class="mr-sm-4 mb-4 pa-2 animate__animated animate__backInUp"
           >
             Total Supply
             <v-divider class="mb-8"></v-divider>
@@ -59,9 +59,10 @@
             <div class="text-end">
               <v-chip label class="mr-2">
                 {{ millify(totalSupply) }} BCNA
+                <v-tooltip activator="parent" location="top">
+                  ${{ millify(totalSupply * tokenPrice) }}
+                </v-tooltip>
               </v-chip>
-
-              <v-chip label> ${{ millify(totalSupply * tokenPrice) }} </v-chip>
             </div>
           </v-sheet>
         </v-col>
@@ -69,7 +70,7 @@
           <v-sheet
             border
             rounded="lg"
-            class="pa-2 animate__animated animate__backInUp"
+            class="pa-2 mb-4 animate__animated animate__backInUp"
           >
             Bonded Tokens
             <v-divider class="mb-8"></v-divider>
@@ -77,9 +78,10 @@
             <div class="text-end">
               <v-chip label class="mr-2">
                 {{ millify(totalBounded) }} BCNA
+                <v-tooltip activator="parent" location="top">
+                  ${{ millify(totalBounded * tokenPrice) }}
+                </v-tooltip>
               </v-chip>
-
-              <v-chip label> ${{ millify(totalBounded * tokenPrice) }} </v-chip>
             </div>
           </v-sheet>
         </v-col>
@@ -89,7 +91,7 @@
           <v-sheet
             border
             rounded="lg"
-            class="mr-4 mb-4 pa-2 animate__animated animate__backInUp"
+            class="mr-sm-4 mb-4 pa-2 animate__animated animate__backInUp"
           >
             Community Pool
             <v-divider class="mb-8"></v-divider>
@@ -105,7 +107,7 @@
             rounded="lg"
             class="pa-2 animate__animated animate__backInUp"
           >
-            Community Pool Value
+            Pool Value
             <v-divider class="mb-8"></v-divider>
 
             <div class="text-end">
@@ -121,9 +123,10 @@
   <v-row no-gutters>
     <v-col cols="12" sm="6">
       <v-sheet
+        min-height="900"
         border
         rounded="lg"
-        class="mr-4 mt-4 pa-6 text-white mx-auto animate__animated animate__backInLeft"
+        class="mr-sm-4 mt-4 pa-6 text-white mx-auto animate__animated animate__backInLeft"
       >
         <h4 class="text-h5 font-weight-bold mb-4">Last Proposals</h4>
         <v-divider class="mt-8"></v-divider>
@@ -146,6 +149,7 @@
     </v-col>
     <v-col cols="12" sm="6">
       <v-sheet
+        min-height="900"
         border
         rounded="lg"
         class="pa-6 mt-4 text-white mx-auto animate__animated animate__backInRight"
@@ -154,10 +158,21 @@
         <v-divider class="mt-8"></v-divider>
         <v-table>
           <tbody>
-            <tr v-for="item in randomValidators" :key="item.name" >
-              
+            <tr v-for="item in randomValidators" :key="item.name">
+
+
               <td>
-                <v-chip label :to="'validator/'+item.operator_address"> {{ item.description.moniker.substring(0, 15) }} </v-chip>
+                <v-chip 
+                  :to="'/validator/' + item.operator_address"
+                  >
+                  <v-avatar class="mr-4 ml-n2">
+                  <v-img
+                    :alt="item.description.moniker"
+                    :src="getImageUrl(item.operator_address)"
+                  ></v-img>
+                </v-avatar>
+                  {{ item.description.moniker }}</v-chip
+                >
               </td>
               <td>
                 {{ (item.commission.commission_rates.rate * 100).toFixed(0) }}%
@@ -166,7 +181,6 @@
                 <v-chip label color="green"> Online </v-chip>
               </td>
               <td></td>
- 
             </tr>
           </tbody>
         </v-table>
@@ -177,8 +191,10 @@
 <script>
 import axios from "axios";
 import millify from "millify";
+import { useAppStore } from "@/stores/data";
 
 import { setMsg } from "@/libs/msgType";
+import image from "@/assets/logo-bcna.png";
 
 window.Apex = {
   chart: {
@@ -209,6 +225,7 @@ window.Apex = {
 export default {
   data: () => ({
     millify: millify,
+    image: image,
     poolStake: {},
     totalSupply: 0,
     totalBounded: 0,
@@ -276,12 +293,17 @@ export default {
       ],
     },
   }),
-
+  setup() {
+    const store = useAppStore();
+    return { store };
+  },
   async mounted() {
-    let getOhlc = await axios.get(
+    /* let getOhlc = await axios.get(
       "https://api.coingecko.com/api/v3/coins/bitcanna/ohlc?days=7&vs_currency=usd",
+    ); */
+    let getOhlc = await axios.get(
+      "https://gist.githubusercontent.com/atmoner/01b2228336092fce49feee68254617b2/raw/7f90f05dc99e582413903510ad82eadd09d4027b/sample_ohcv.json",
     );
-    //let getOhlc = await axios.get('https://gist.githubusercontent.com/atmoner/01b2228336092fce49feee68254617b2/raw/7f90f05dc99e582413903510ad82eadd09d4027b/sample_ohcv.json')
     // handle success
     //console.log(getOhlc);
     for (let i = 0; i < getOhlc.data.length; i++) {
@@ -345,8 +367,23 @@ export default {
             getTokenNomics.data.pool.not_bonded_tokens),
       ),
     ];
-    console.log(this.series2);
+    // Get last block
+    await this.store.getBlockNow();
+
+    document.title = this.$route.meta.title;
+    document.head.querySelector('meta[name="description"]').content =
+      this.$route.meta.title;
   },
-  methods: {},
+  methods: {
+    getImageUrl(name) {
+      let createUrl = new URL(`../assets/moniker/${name}.png`, import.meta.url)
+        .href;
+      if (createUrl.includes("undefined")) {
+        return this.image;
+      }
+      return createUrl;
+    },
+
+  },
 };
 </script>

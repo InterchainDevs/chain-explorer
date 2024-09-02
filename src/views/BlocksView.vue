@@ -54,6 +54,10 @@ export default {
       this.lastblock.push(type);
     }
 
+    document.title = this.$route.meta.title + " | BitCanna Explorer";
+    document.head.querySelector('meta[name="description"]').content =
+      this.$route.meta.title + " | BitCanna Explorer";
+
     this.blocks = height;
     this.isloaded = true;
   },

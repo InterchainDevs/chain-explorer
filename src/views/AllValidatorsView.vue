@@ -28,15 +28,16 @@
         <tr v-for="(item, index) in store.allValidatorsRpc" :key="item.name">
           <td>{{ index + 1 }}</td>
           <td>
-            <v-avatar class="mr-4">
-              <v-img alt="John" :src="image"></v-img>
-            </v-avatar>
-
-            <v-chip
-              class="ma-2"
-              label
+            <v-chip 
               :to="'/validator/' + item.operatorAddress"
-              >{{ item.description.moniker }}</v-chip
+              >
+              <v-avatar class="mr-4 ml-n2">
+              <v-img
+                :alt="item.description.moniker"
+                :src="getImageUrl(item.operatorAddress)"
+              ></v-img>
+            </v-avatar>
+              {{ item.description.moniker }}</v-chip
             >
           </td>
           <td>{{ item.tokens / 1000000 }} BCNA</td>
@@ -88,6 +89,16 @@ export default {
   },
   async mounted() {
     await this.store.initRpc();
+  },
+  methods: {
+    getImageUrl(name) {
+      let createUrl = new URL(`../assets/moniker/${name}.png`, import.meta.url)
+        .href;
+      if (createUrl.includes("undefined")) {
+        return this.image;
+      }
+      return createUrl;
+    },
   },
 };
 </script>

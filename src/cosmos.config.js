@@ -1,7 +1,7 @@
 export default [
   {
     chainId: "bitcanna-dev-6",
-    name: "Bitcanna-testnet",
+    name: "Devnet",
     slot: "Bitcanna-testnet",
     desc: "",
     apiURL: "https://lcd-devnet-6.bitcanna.io",
@@ -33,7 +33,7 @@ export default [
   },
   {
     chainId: "bitcanna-dev-1",
-    name: "BitCanna testnet",
+    name: "Testnet",
     desc: "Harnessing the power of blockchain to create equal opportunities for cannabis-related industries ",
     slot: "bitcanna",
     apiURL: "https://lcd-testnet.bitcanna.io",
@@ -65,7 +65,7 @@ export default [
   },
   {
     chainId: "bitcanna-1",
-    name: "BitCanna",
+    name: "Mainnet",
     desc: "Harnessing the power of blockchain to create equal opportunities for cannabis-related industries ",
     slot: "bitcanna",
     apiURL: "https://lcd.bitcanna.io",

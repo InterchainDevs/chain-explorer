@@ -15,6 +15,8 @@ import * as gov from "cosmjs-types/cosmos/gov/v1beta1/query";
 import * as bank from "cosmjs-types/cosmos/bank/v1beta1/query";
 import * as distrib from "cosmjs-types/cosmos/distribution/v1beta1/query";
 import * as mint from "cosmjs-types/cosmos/mint/v1beta1/query";
+import * as base from "cosmjs-types/cosmos/base/tendermint/v1beta1/query";
+//import * as txSearch from "cosmjs-types/cosmos/tx/v1beta1/service";
 
 export const useAppStore = defineStore("app", {
   state: () => ({
@@ -48,10 +50,21 @@ export const useAppStore = defineStore("app", {
     govParams: [],
     distribParams: [],
     slashingParams: [],
+
+    // Wallet
+    addrWallet: "",
+    nameWallet: "",
+    isLogged: false,
+    setChainSelected: 2,
   }),
   actions: {
     async refresh() {
+      //await this.keplrConnect()
       await this.initRpc();
+      await this.getSdkVersion();
+      await this.getAllValidators();
+      await this.getBlockNow();
+
       this.dataLoaded = true;
     },
     async initRpc() {
@@ -77,6 +90,14 @@ export const useAppStore = defineStore("app", {
         }
       }
       this.sdkVersion = getSdk.data.application_version.cosmos_sdk_version;
+    },
+    async getBlockNow() {
+      const queryBase = new base.ServiceClientImpl(this.rpcClient);
+      let blockNow = await queryBase.GetLatestBlock({});
+
+      this.blockNow = new Intl.NumberFormat().format(
+        blockNow.block.header.height,
+      );
     },
 
     async getPriceNow() {
@@ -286,14 +307,13 @@ export const useAppStore = defineStore("app", {
         finalTxs = resultSender.data.tx_responses.concat(
           getRecipient.data.tx_responses,
         );
-        this.totalAddressTx = Number(getRecipient.data.total) + Number(resultSender.data.total);
+        this.totalAddressTx =
+          Number(getRecipient.data.total) + Number(resultSender.data.total);
       } else if (resultSender.data) {
-        finalTxs = resultSender.data.tx_responses; 
+        finalTxs = resultSender.data.tx_responses;
       } else if (getRecipient.data) {
-        finalTxs = getRecipient.data.tx_responses; 
+        finalTxs = getRecipient.data.tx_responses;
       }
-
-
 
       console.log("finalTxs", finalTxs);
 
@@ -308,7 +328,6 @@ export const useAppStore = defineStore("app", {
       }
 
       this.allAddressTx = finalTxs;
-      
     },
     async getAllValidators() {
       let getAllValidators = await fetch(
@@ -461,6 +480,79 @@ export const useAppStore = defineStore("app", {
       const queryProposals = new gov.QueryClientImpl(this.rpcClient);
       let allProposals = await queryProposals.Params({ paramsType: "voting" });
       this.allProposals = allProposals.proposals;
+    },
+    async keplrConnect() {
+      console.log(this.setChainSelected);
+      await window.keplr.experimentalSuggestChain({
+        chainId: cosmosConfig[this.setChainSelected].chainId,
+        chainName: cosmosConfig[this.setChainSelected].name,
+        rpc: cosmosConfig[this.setChainSelected].rpcURL,
+        rest: cosmosConfig[this.setChainSelected].apiURL,
+        bip44: {
+          coinType: 118,
+        },
+        bech32Config: {
+          bech32PrefixAccAddr:
+            cosmosConfig[this.setChainSelected].coinLookup.addressPrefix,
+          bech32PrefixAccPub:
+            cosmosConfig[this.setChainSelected].coinLookup.addressPrefix +
+            "pub",
+          bech32PrefixValAddr:
+            cosmosConfig[this.setChainSelected].coinLookup.addressPrefix +
+            "valoper",
+          bech32PrefixValPub:
+            cosmosConfig[this.setChainSelected].coinLookup.addressPrefix +
+            "valoperpub",
+          bech32PrefixConsAddr:
+            cosmosConfig[this.setChainSelected].coinLookup.addressPrefix +
+            "valcons",
+          bech32PrefixConsPub:
+            cosmosConfig[this.setChainSelected].coinLookup.addressPrefix +
+            "valconspub",
+        },
+        currencies: [
+          {
+            coinDenom: cosmosConfig[this.setChainSelected].coinLookup.viewDenom,
+            coinMinimalDenom:
+              cosmosConfig[this.setChainSelected].coinLookup.chainDenom,
+            coinDecimals: 6,
+            coinGeckoId: cosmosConfig[this.setChainSelected].coingeckoId,
+          },
+        ],
+        feeCurrencies: [
+          {
+            coinDenom: cosmosConfig[this.setChainSelected].coinLookup.viewDenom,
+            coinMinimalDenom:
+              cosmosConfig[this.setChainSelected].coinLookup.chainDenom,
+            coinDecimals: 6,
+            coinGeckoId: cosmosConfig[this.setChainSelected].coingeckoId,
+            gasPriceStep: {
+              low: 0,
+              average: 0,
+              high: 0,
+            },
+          },
+        ],
+        stakeCurrency: {
+          coinDenom: cosmosConfig[this.setChainSelected].coinLookup.viewDenom,
+          coinMinimalDenom:
+            cosmosConfig[this.setChainSelected].coinLookup.chainDenom,
+          coinDecimals: 6,
+          coinGeckoId: cosmosConfig[this.setChainSelected].coingeckoId,
+        },
+      });
+      let chainId = cosmosConfig[this.setChainSelected].chainId;
+
+      await window.keplr.enable(chainId);
+      const offlineSigner = await window.getOfflineSignerAuto(chainId);
+      const accounts = await offlineSigner.getAccounts();
+      const getKey = await window.keplr.getKey(chainId);
+      this.addrWallet = accounts[0].address;
+      this.nameWallet = getKey;
+      this.isLogged = true;
+
+      localStorage.setItem("myBitcannaAddress", this.addrWallet);
+      // console.log('addr: '+accounts[0].address)
     },
   },
 });

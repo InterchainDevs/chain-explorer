@@ -10,7 +10,7 @@
   <v-sheet
     border
     rounded="lg"
-    class="pa-2 mb-4 animate__animated animate__backInRight"
+    class="mb-4 pa-4 animate__animated animate__backInRight"
   >
     <h4 class="text-h5 font-weight-bold ma-2">Minting Parameters</h4>
     <v-divider class="mb-2"></v-divider>
@@ -60,9 +60,7 @@
           <td>Annual Provisions</td>
           <td class="text-right">
             <v-chip class="ma-2" label>
-              {{
-                Number(store?.mintParams[0]?.annualProvisions).toFixed(2)
-              }}
+              {{ Number(store?.mintParams[0]?.annualProvisions).toFixed(2) }}
               BCNA
             </v-chip>
           </td>
@@ -70,6 +68,7 @@
       </tbody>
     </v-table>
   </v-sheet>
+
   <v-sheet
     border
     rounded="lg"
@@ -130,6 +129,7 @@
       </tbody>
     </v-table>
   </v-sheet>
+
   <v-sheet
     border
     rounded="lg"
@@ -156,9 +156,7 @@
                   <td>Quorum</td>
                   <td class="text-right">
                     <v-chip class="ma-2" label>
-                      {{
-                        store?.govParams.tallying?.tally_params.quorum * 100
-                      }}
+                      {{ store?.govParams.tallying?.tally_params.quorum * 100 }}
                       %
                     </v-chip>
                   </td>

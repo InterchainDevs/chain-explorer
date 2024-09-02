@@ -1,5 +1,5 @@
 <template>
-  {{ this.$route.params.txhash }}
+  <!-- {{ this.$route.params.txhash }} -->
   <v-row v-if="isloaded && txStatus !== 0" no-gutters>
     <v-col>
       <v-alert
@@ -15,8 +15,8 @@
     </v-col>
   </v-row>
   <v-row>
-    <v-col>
-      <v-sheet border class="ma-2 pa-2" rounded="lg">
+    <v-col cols="12" sm="6">
+      <v-sheet border class="pa-2" rounded="lg">
         <h3 class="ma-2">
           <v-icon color="white" icon="mdi-state-machine" class="mr-2"></v-icon>
           Tx status
@@ -44,7 +44,7 @@
         </span>
       </v-sheet>
     </v-col>
-    <v-col>
+    <!-- <v-col>
       <v-sheet border class="ma-2 pa-2" rounded="lg">
         <h3 class="ma-2">
           <v-icon color="white" icon="mdi-counter" class="mr-2"></v-icon>
@@ -56,24 +56,24 @@
           <strong :style="'color: white'"> messages </strong>
         </p>
       </v-sheet>
-    </v-col>
+    </v-col> -->
     <v-col>
-      <v-sheet border class="ma-2 pa-2" rounded="lg">
+      <v-sheet border class="mb-4 pa-2" rounded="lg">
         <h3 class="ma-2">
           <v-icon color="white" icon="mdi-calendar-range" class="mr-2"></v-icon>
-          Date transaction
+          Date
         </h3>
         <v-divider />
         <p class="mt-6 text-right">
-          {{ txData.tx_response?.timestamp }}
+          {{ moment(txData.tx_response?.timestamp).format('MMMM Do YYYY, h:mm:ss a') }}
         </p>
       </v-sheet>
     </v-col>
   </v-row>
 
-  <v-row no-gutters>
-    <v-col>
-      <v-sheet border class="ma-2 pa-2" min-height="400" rounded="lg">
+  <v-row >
+    <v-col cols="12" sm="6">
+      <v-sheet border class="mb-4 pa-2" height="400" rounded="lg">
         <h3 class="ma-2 pa-2">
           <v-icon
             color="white"
@@ -143,8 +143,8 @@
         </v-table>
       </v-sheet>
     </v-col>
-    <v-col>
-      <v-sheet border class="ma-2 pa-2" min-height="400" rounded="lg">
+    <v-col cols="12" sm="6">
+      <v-sheet border class="mb-4 pa-2" min-height="400" rounded="lg">
         <h3 class="ma-2 pa-2">
           <v-icon
             :color="foundChain.color"
@@ -221,7 +221,7 @@
       <json-viewer :value="txData" theme="jv-dark"></json-viewer>
     </v-sheet> -->
 
-  <v-sheet border class="ma-2 pa-2" rounded="lg">
+  <v-sheet border class="mb-4 pa-2" rounded="lg">
     <v-table>
       <thead>
         <tr>
@@ -231,8 +231,17 @@
       </thead>
       <tbody>
         <tr v-for="item in allMessages" :key="item.name">
-          <td>{{ item["@type"] }}</td>
-          <td>{{ txData.tx_response?.timestamp }}</td>
+          
+          <td>
+            <v-chip
+              class="ma-2"
+              label
+              :color="item.finalData?.color"
+            >
+              {{ item.finalData?.typeReadable }}
+            </v-chip>
+          </td>
+          <td>{{ moment(item.finalData?.timestamp).format('MMMM Do YYYY, h:mm:ss a') }}</td>
         </tr>
       </tbody>
     </v-table>
@@ -241,12 +250,12 @@
 
 <script>
 import axios from "axios";
-import { Tendermint37Client } from "@cosmjs/tendermint-rpc";
-import { toAscii, toHex } from "@cosmjs/encoding";
-import { decodeTxRaw } from "@cosmjs/proto-signing";
+import moment from "moment"; 
 
 import JsonViewer from "vue-json-viewer";
 import cosmosConfig from "@/cosmos.config";
+import { useAppStore } from "@/stores/data";
+import { setMsg } from "@/libs/msgType";
 
 export default {
   name: "DetailTx",
@@ -255,6 +264,7 @@ export default {
   },
   data: () => ({
     cosmosConfig: cosmosConfig,
+    moment,
     txHash: "",
     chain: "",
     foundChain: "",
@@ -267,10 +277,20 @@ export default {
     isloaded: false,
     allMessages: [],
   }),
-
+  setup() {
+    const store = useAppStore();
+    return { store };
+  },
   async mounted() {
+
+    await this.store.initRpc();
+
     this.txHash = this.$route.params.txhash;
     this.foundChain = cosmosConfig[2];
+
+    
+    //this.store.searchTx(this.$route.params.txhash);
+
 
     const allProposals = await axios(
       "https://lcd.bitcanna.io//cosmos/tx/v1beta1/txs/" + this.txHash,
@@ -291,13 +311,28 @@ export default {
     this.foundChain = cosmosConfig[2];
 
     const allProposals = await axios(
-      "https://lcd.bitcanna.io//cosmos/tx/v1beta1/txs/" + this.txHash,
+      "https://lcd.bitcanna.io/cosmos/tx/v1beta1/txs/" + this.txHash,
     );
     console.log(allProposals.data);
     this.txData = allProposals.data;
     this.totalMessages = allProposals.data.tx.body.messages.length;
     this.txStatus = allProposals.data.tx_response.code;
     this.txMsgStatus = allProposals.data.tx_response.raw_log;
+
+    for (let message of this.allMessages) {
+      console.log("message", message);
+      let formatMsg = setMsg(
+        message['@type'],
+        "",
+        Date.now(),
+        "",
+        allProposals.data.tx_response.txhash,
+      );
+
+      console.log("formatMsg", formatMsg);
+      message.finalData = formatMsg;
+    }
+ 
 
     //this.formatedData = setMsgTx(this.txData, this.foundChain)
     this.isloaded = true;
