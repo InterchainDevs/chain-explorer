@@ -197,10 +197,11 @@
         </v-list>
       </div>
       <template v-slot:append>
-        <v-footer class="bg-grey-lighten-1">
+        <v-footer >
           <v-row justify="center" no-gutters>
             <v-col class="text-center mt-2" cols="12">
-              {{ new Date().getFullYear() }} — <strong>BitCanna</strong>
+              <!-- {{ new Date().getFullYear() }} — <strong>BitCanna</strong> -->
+                Dev with 💚 for <strong>BitCanna</strong>
             </v-col>
           </v-row>
         </v-footer>

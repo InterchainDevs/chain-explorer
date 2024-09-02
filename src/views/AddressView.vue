@@ -20,7 +20,14 @@
         <v-data-table
           :items="store.allAddressDelegations"
           items-per-page="4"
-        ></v-data-table>
+        >
+        
+            <template v-slot:item.validator_address="{ item }">              
+              <v-chip label :to="'../validator/' + item.validator_address">
+                {{ item.validator_address }}
+              </v-chip>
+            </template>        
+        </v-data-table>
       </v-sheet>
     </v-col>
     <v-col cols="12" xs="12" md="4">
