@@ -209,11 +209,9 @@ export default {
       this.isLoaded = true;
     },
     formatNumber(value) {
-      return new Intl.NumberFormat().format(
-        value
-      );
+      return new Intl.NumberFormat().format(value);
     },
-  
+
     truncate(
       fullStr,
       strLen = 8,

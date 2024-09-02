@@ -65,13 +65,17 @@
         </h3>
         <v-divider />
         <p class="mt-6 text-right">
-          {{ moment(txData.tx_response?.timestamp).format('MMMM Do YYYY, h:mm:ss a') }}
+          {{
+            moment(txData.tx_response?.timestamp).format(
+              "MMMM Do YYYY, h:mm:ss a",
+            )
+          }}
         </p>
       </v-sheet>
     </v-col>
   </v-row>
 
-  <v-row >
+  <v-row>
     <v-col cols="12" sm="6">
       <v-sheet border class="mb-4 pa-2" height="400" rounded="lg">
         <h3 class="ma-2 pa-2">
@@ -93,20 +97,19 @@
               <td v-if="key !== 'finalData'">
                 {{ key }}
               </td>
-              <td v-if="key === 'amount'"> 
-                <b v-if="value[0]">{{ formatNumber(value[0].amount / 1000000) }}</b>
+              <td v-if="key === 'amount'">
+                <b v-if="value[0]">{{
+                  formatNumber(value[0].amount / 1000000)
+                }}</b>
                 <b v-else>{{ formatNumber(value.amount / 1000000) }}</b>
                 <strong :style="'color:' + foundChain.color" class="ml-2">
                   {{ foundChain.coinLookup.viewDenom }}
                 </strong>
               </td>
               <td v-else-if="key === '@type'">
-                <v-chip
-                  label
-                  :color="allMessages[0].finalData?.color"
-                >
+                <v-chip label :color="allMessages[0].finalData?.color">
                   {{ allMessages[0].finalData?.typeReadable }}
-                </v-chip> 
+                </v-chip>
               </td>
               <td v-else-if="key === 'proposers'">
                 <strong :style="'color:' + foundChain.color">
@@ -144,7 +147,7 @@
               <td v-else-if="key === 'timeout_height'">
                 revision number: {{ value.revision_number }} / revision height:
                 {{ value.revision_height }}
-              </td> 
+              </td>
               <td v-else-if="key === 'option'">
                 <v-chip
                   v-if="value === 'VOTE_OPTION_YES'"
@@ -153,7 +156,7 @@
                   :color="allMessages[0].finalData?.color"
                 >
                   YES
-                </v-chip> 
+                </v-chip>
                 <v-chip
                   v-if="value === 'VOTE_OPTION_NO'"
                   class="ma-2"
@@ -161,7 +164,7 @@
                   color="red"
                 >
                   NO
-                </v-chip> 
+                </v-chip>
                 <v-chip
                   v-if="value === 'VOTE_OPTION_ABSTAIN'"
                   class="ma-2"
@@ -169,7 +172,7 @@
                   color="orange"
                 >
                   ABSTAIN
-                </v-chip> 
+                </v-chip>
                 <v-chip
                   v-if="value === 'VOTE_OPTION_NO_WITH_VETO'"
                   class="ma-2"
@@ -177,42 +180,29 @@
                   color="orange"
                 >
                   NO WITH VETO
-                </v-chip> 
+                </v-chip>
               </td>
               <td v-else-if="key === 'delegator_address'">
-                <v-chip
-                  label
-                  :to="'../address/' + value"
-                >
+                <v-chip label :to="'../address/' + value">
                   {{ value }}
-                </v-chip> 
-              </td> 
+                </v-chip>
+              </td>
               <td v-else-if="key === 'validator_address'">
-                <v-chip
-                  label
-                  :to="'../validator/' + value"
-                >
+                <v-chip label :to="'../validator/' + value">
                   {{ value }}
-                </v-chip> 
+                </v-chip>
               </td>
               <td v-else-if="key === 'from_address'">
-                <v-chip
-                  label
-                  :to="'../address/' + value"
-                >
+                <v-chip label :to="'../address/' + value">
                   {{ value }}
-                </v-chip> 
+                </v-chip>
               </td>
               <td v-else-if="key === 'to_address'">
-                <v-chip
-                  label
-                  :to="'../address/' + value"
-                >
+                <v-chip label :to="'../address/' + value">
                   {{ value }}
-                </v-chip> 
+                </v-chip>
               </td>
-              <td v-else-if="key !== 'finalData'">{{ value }}</td> 
-
+              <td v-else-if="key !== 'finalData'">{{ value }}</td>
             </tr>
           </tbody>
         </v-table>
@@ -306,17 +296,18 @@
       </thead>
       <tbody>
         <tr v-for="item in allMessages" :key="item.name">
-          
           <td>
-            <v-chip
-              class="ma-2"
-              label
-              :color="item.finalData?.color"
-            >
+            <v-chip class="ma-2" label :color="item.finalData?.color">
               {{ item.finalData?.typeReadable }}
             </v-chip>
           </td>
-          <td>{{ moment(item.finalData?.timestamp).format('MMMM Do YYYY, h:mm:ss a') }}</td>
+          <td>
+            {{
+              moment(item.finalData?.timestamp).format(
+                "MMMM Do YYYY, h:mm:ss a",
+              )
+            }}
+          </td>
         </tr>
       </tbody>
     </v-table>
@@ -325,7 +316,7 @@
 
 <script>
 import axios from "axios";
-import moment from "moment"; 
+import moment from "moment";
 
 import JsonViewer from "vue-json-viewer";
 import cosmosConfig from "@/cosmos.config";
@@ -357,15 +348,12 @@ export default {
     return { store };
   },
   async mounted() {
-
     await this.store.initRpc();
 
     this.txHash = this.$route.params.txhash;
     this.foundChain = cosmosConfig[2];
 
-    
     //this.store.searchTx(this.$route.params.txhash);
-
 
     const allProposals = await axios(
       "https://lcd.bitcanna.io//cosmos/tx/v1beta1/txs/" + this.txHash,
@@ -397,7 +385,7 @@ export default {
     for (let message of this.allMessages) {
       console.log("message", message);
       let formatMsg = setMsg(
-        message['@type'],
+        message["@type"],
         "",
         Date.now(),
         "",
@@ -407,7 +395,6 @@ export default {
       console.log("formatMsg", formatMsg);
       message.finalData = formatMsg;
     }
- 
 
     //this.formatedData = setMsgTx(this.txData, this.foundChain)
     this.isloaded = true;

@@ -64,7 +64,13 @@
                     <v-list-item>
                       <v-list-item-content>
                         <v-list-item-title>
-                          <v-chip label :to="'../validator/' + this.store.detailValidator.operatorAddress">
+                          <v-chip
+                            label
+                            :to="
+                              '../validator/' +
+                              this.store.detailValidator.operatorAddress
+                            "
+                          >
                             {{ this.store.detailValidator.operatorAddress }}
                           </v-chip>
                         </v-list-item-title>
@@ -76,12 +82,14 @@
               <tr>
                 <td>Account address</td>
                 <td align="right">
- 
                   <v-list>
                     <v-list-item>
                       <v-list-item-content>
                         <v-list-item-title>
-                          <v-chip label :to="'../address/' + this.selfDelegationAddr">
+                          <v-chip
+                            label
+                            :to="'../address/' + this.selfDelegationAddr"
+                          >
                             {{ this.selfDelegationAddr }}
                           </v-chip>
                         </v-list-item-title>
