@@ -61,9 +61,21 @@
                 <td>Validator address</td>
                 <td align="right">
                   <v-list>
-                    <v-list-item
-                      :title="this.store.detailValidator.operatorAddress"
-                    ></v-list-item>
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title>
+                          <v-chip
+                            label
+                            :to="
+                              '../validator/' +
+                              this.store.detailValidator.operatorAddress
+                            "
+                          >
+                            {{ this.store.detailValidator.operatorAddress }}
+                          </v-chip>
+                        </v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
                   </v-list>
                 </td>
               </tr>
@@ -71,7 +83,18 @@
                 <td>Account address</td>
                 <td align="right">
                   <v-list>
-                    <v-list-item :title="this.selfDelegationAddr"></v-list-item>
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title>
+                          <v-chip
+                            label
+                            :to="'../address/' + this.selfDelegationAddr"
+                          >
+                            {{ this.selfDelegationAddr }}
+                          </v-chip>
+                        </v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
                   </v-list>
                 </td>
               </tr>
@@ -80,7 +103,7 @@
                 <td align="right">
                   <v-list>
                     <v-btn
-                      class="pa-2"
+                      class="pa-2 mr-4"
                       :href="store.detailValidator.description?.website"
                       target="_blank"
                     >

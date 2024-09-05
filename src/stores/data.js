@@ -216,6 +216,8 @@ export const useAppStore = defineStore("app", {
     },
 
     async getDelegations(addrWallet) {
+      // TODO: fix this 
+      this.allAddressDelegations = [];
       const getDelegations = await axios(
         cosmosConfig[2].apiURL +
           "/cosmos/distribution/v1beta1/delegators/" +

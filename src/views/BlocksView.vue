@@ -24,7 +24,7 @@
           <tr v-for="item in lastblock" :key="item.name">
             <td>
               <v-chip class="ma-2" label :to="'/block/' + item.header.height">
-                {{ item.header.height }}
+                {{ formatNumber(item.header.height) }}
               </v-chip>
             </td>
             <td>{{ item.header.time }}</td>
@@ -60,6 +60,11 @@ export default {
 
     this.blocks = height;
     this.isloaded = true;
+  },
+  methods: {
+    formatNumber(value) {
+      return new Intl.NumberFormat().format(value);
+    },
   },
 };
 </script>

@@ -159,18 +159,14 @@
         <v-table>
           <tbody>
             <tr v-for="item in randomValidators" :key="item.name">
-
-
               <td>
-                <v-chip 
-                  :to="'/validator/' + item.operator_address"
-                  >
+                <v-chip :to="'/validator/' + item.operator_address">
                   <v-avatar class="mr-4 ml-n2">
-                  <v-img
-                    :alt="item.description.moniker"
-                    :src="getImageUrl(item.operator_address)"
-                  ></v-img>
-                </v-avatar>
+                    <v-img
+                      :alt="item.description.moniker"
+                      :src="getImageUrl(item.operator_address)"
+                    ></v-img>
+                  </v-avatar>
                   {{ item.description.moniker }}</v-chip
                 >
               </td>
@@ -383,7 +379,6 @@ export default {
       }
       return createUrl;
     },
-
   },
 };
 </script>

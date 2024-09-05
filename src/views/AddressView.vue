@@ -5,7 +5,7 @@
         <h4 class="text-truncate text-sm-h5 font-weight-bold">{{ address }}</h4>
       </v-col>
       <v-col cols="auto" class="mt-1">
-        <h4 class="text-sm-h5 font-weight-bold">
+        <h4 v-if="isLoaded" class="text-sm-h5 font-weight-bold">
           $ {{ store.fiatWalletValue }}
         </h4>
       </v-col>
@@ -14,17 +14,24 @@
 
   <v-row no-gutters>
     <v-col cols="12" xs="12" md="8">
-      <v-sheet min-height="430" border rounded="lg" class="mb-4 pa-4">
+      <v-sheet min-height="440" border rounded="lg" class="mb-4 pa-4">
         <h4 class="text-h5 font-weight-bold mb-4">Delegations</h4>
 
         <v-data-table
           :items="store.allAddressDelegations"
           items-per-page="4"
-        ></v-data-table>
+        >
+        
+            <template v-slot:item.validator_address="{ item }">              
+              <v-chip label :to="'../validator/' + item.validator_address">
+                {{ item.validator_address }}
+              </v-chip>
+            </template>        
+        </v-data-table>
       </v-sheet>
     </v-col>
     <v-col cols="12" xs="12" md="4">
-      <v-sheet min-height="430" border rounded="lg" class="mb-4 ml-md-4 pa-4">
+      <v-sheet border rounded="lg" min-height="440" class="mb-4 ml-md-4 pa-4">
         <v-list>
           <v-list-item
             prepend-avatar="https://raw.githubusercontent.com/cosmostation/chainlist/master/chain/bitcanna/asset/bcna.png"
@@ -42,6 +49,7 @@
               <td align="right">
                 <v-list>
                   <v-list-item
+                    v-if="isLoaded"
                     :title="formatNumber(store.spendableBalances)"
                     :subtitle="
                       '$ ' +
@@ -55,7 +63,7 @@
               <td>Vested</td>
               <td align="right">
                 <v-list>
-                  <v-list-item :title="0.0" :subtitle="'$ 0.00'"></v-list-item>
+                  <v-list-item v-if="isLoaded" :title="0.0" :subtitle="'$ 0.00'"></v-list-item>
                 </v-list>
               </td>
             </tr>
@@ -64,6 +72,7 @@
               <td align="right">
                 <v-list>
                   <v-list-item
+                    v-if="isLoaded"
                     :title="formatNumber(this.store.totalDelegations)"
                     :subtitle="
                       '$ ' +
@@ -78,6 +87,7 @@
               <td align="right">
                 <v-list>
                   <v-list-item
+                    v-if="isLoaded"
                     :title="formatNumber(this.store.totalUnbound)"
                     :subtitle="
                       '$ ' +
@@ -92,6 +102,7 @@
               <td align="right">
                 <v-list>
                   <v-list-item
+                    v-if="isLoaded"
                     :title="formatNumber(this.store.totalRewards)"
                     :subtitle="
                       '$ ' +
@@ -106,6 +117,88 @@
       </v-sheet>
     </v-col>
   </v-row>
+
+  <!-- Nft view -->
+  <v-sheet
+    v-if="allAddressNft.length > 0"
+    class="mx-auto mb-4 "
+    elevation="8" 
+    border
+    rounded="lg"
+  > 
+  <v-row no-gutters>
+      <v-col>
+        <h4 class="text-truncate text-sm-h5 font-weight-bold ml-4 mt-4">NFT Owner</h4>
+      </v-col>
+  </v-row>
+  
+    <v-slide-group 
+      class="pa-4"
+      selected-class="bg-primary"
+      show-arrows
+    >
+      <v-slide-group-item
+        v-for="n in allAddressNft"
+        :key="n"
+        v-slot="{ isSelected, toggle, selectedClass }"
+      >
+
+
+  <v-card
+    :disabled="loading"
+    :loading="loading" 
+    max-height="500"
+    max-width="274"
+    border
+    :class="['ma-4', selectedClass]"
+  >
+    <template v-slot:loader="{ isActive }">
+      <v-progress-linear
+        :active="isActive"
+        color="deep-purple"
+        height="4"
+        indeterminate
+      ></v-progress-linear>
+    </template>
+
+    <v-img
+      height="300"
+      :src="n.image"
+      cover
+    ></v-img>
+
+    <v-card-item>
+      <v-card-title>{{ n.name }}</v-card-title>
+
+
+    </v-card-item>
+
+    <v-card-text>
+
+      <div class="my-2 text-subtitle-1">
+        {{ n.collection.symbol }}
+      </div>
+
+      <div>{{ n.description }}</div>
+    </v-card-text>
+
+<!--     <v-card-actions>
+      <v-btn
+        color="deep-purple-lighten-2"
+        text="Reserve"
+        block
+        border
+        @click="reserve"
+      ></v-btn>
+    </v-card-actions> -->
+  </v-card>
+ 
+      </v-slide-group-item>
+    </v-slide-group>
+ 
+  </v-sheet>
+
+
 
   <v-sheet border rounded="lg">
     <h4 class="text-h5 font-weight-bold ma-4">
@@ -171,6 +264,8 @@
 import { Tendermint37Client } from "@cosmjs/tendermint-rpc";
 import { useAppStore } from "@/stores/data";
 import moment from "moment";
+import bech32 from "bech32";
+import axios from "axios";
 
 import banner from "@/assets/bitcanna-banner.jpeg";
 
@@ -182,6 +277,7 @@ export default {
     address: "",
     currentPage: 1,
     isLoaded: false,
+    allAddressNft: [],
   }),
   setup() {
     const store = useAppStore();
@@ -196,9 +292,29 @@ export default {
     await this.store.getStakingModule(this.address);
     await this.store.getDistribModule(this.address);
     await this.store.getDelegations(this.address);
-    await this.store.getAddressTx(this.address, 1);
     await this.store.getPriceNow();
     await this.store.getWalletAmount();
+
+    await this.store.getAddressTx(this.address, 1);
+
+    const decode = bech32.decode(this.address);
+    const starsAddr = bech32.encode("stars", decode.words);
+
+    const getMyNft = await axios.get(
+    "https://wallet.bitcanna.io/api/nfts/" +
+      starsAddr 
+    ); 
+
+    console.log(getMyNft.data);
+
+    for (let i = 0; i < getMyNft.data.getMyNft.length; i++) {
+      console.log(getMyNft.data.getMyNft[i]);
+      if (
+          getMyNft.data.getMyNft[i].collection.contractAddress ===
+          "stars1w4dff5myjyzymk8tkpjrzj6gnv352hcdpt2dszweqnff927a9xmqc7e0gv"
+      )  
+      this.allAddressNft.push(getMyNft.data.getMyNft[i]);
+    }
 
     this.isLoaded = true;
   },
@@ -209,11 +325,9 @@ export default {
       this.isLoaded = true;
     },
     formatNumber(value) {
-      return new Intl.NumberFormat().format(
-        value
-      );
+      return new Intl.NumberFormat().format(value);
     },
-  
+
     truncate(
       fullStr,
       strLen = 8,

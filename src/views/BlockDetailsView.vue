@@ -1,7 +1,7 @@
 <template>
   <v-row no-gutters>
-    <v-col cols="12">
-      <v-sheet border rounded="lg" class="mb-4 pa-2">
+    <v-col>
+      <v-sheet border rounded="lg" class="ma-4 pa-2">
         Block Height
         <v-divider class="mb-7"></v-divider>
         <div class="text-end">
@@ -11,8 +11,8 @@
         </div>
       </v-sheet>
     </v-col>
-    <v-col cols="12">
-      <v-sheet border rounded="lg" class="mb-4 pa-2">
+    <v-col>
+      <v-sheet border rounded="lg" class="ma-4 pa-2">
         Proposer Address
         <v-divider class="mb-7"></v-divider>
         <div class="text-end">
@@ -22,8 +22,8 @@
         </div>
       </v-sheet>
     </v-col>
-    <v-col cols="12">
-      <v-sheet border rounded="lg" class="mb-4 pa-2">
+    <v-col>
+      <v-sheet border rounded="lg" class="ma-4 pa-2">
         Signature Status
         <v-divider class="mb-7"></v-divider>
         <div class="text-end">
@@ -36,8 +36,8 @@
     </v-col>
   </v-row>
   <v-row no-gutters>
-    <v-col cols="12">
-      <v-sheet border rounded="lg" class="mb-4 pa-2">
+    <v-col>
+      <v-sheet border rounded="lg" class="ma-4 pa-2">
         <v-table>
           <tbody>
             <tr>
@@ -58,8 +58,8 @@
     </v-col>
   </v-row>
   <v-row v-if="allTransactions.length > 0" no-gutters>
-    <v-col cols="12">
-      <v-sheet border rounded="lg" class="mb-4 pa-2">
+    <v-col cols="12" >
+      <v-sheet border rounded="lg" class="ma-4 pa-2">
         <v-table theme="dark">
           <thead>
             <tr>
