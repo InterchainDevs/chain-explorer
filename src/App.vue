@@ -52,14 +52,14 @@
         >Parameters</v-btn
       >
 
-      <v-btn
+<!--       <v-btn
         class="me-2"
         color="#0FB786"
         height="40"
         variant="outlined"
         to="/stores-finder"
         >Stores Finder</v-btn
-      >
+      > -->
 
       <v-btn
         class="me-2"
