@@ -1,22 +1,20 @@
 <template>
   <v-app id="inspire">
-    <v-app-bar height="72" flat="true">
+ 
+    <v-app-bar >
+      <template v-if="mobile" v-slot:prepend>
+        <v-app-bar-nav-icon @click="drawerMobile = !drawerMobile"></v-app-bar-nav-icon>
+      </template>
       <v-avatar class="mx-2" size="40" variant="flat">
         <v-img :src="image"></v-img>
       </v-avatar>
-
-      <v-btn class="me-2" color="#0FB786" height="40" variant="outlined" to="/"
-        >Dashboard</v-btn
-      >
-
-      <!--       <v-btn
-        class="me-2"
-        color="#0FB786"
-        height="40"
-        variant="outlined" 
-      >Transactions</v-btn> -->
+ 
+      <v-btn v-if="!mobile" class="me-2" color="#0FB786" height="40" variant="outlined" to="/">
+        Dashboard
+      </v-btn>
 
       <v-btn
+        v-if="!mobile"
         class="me-2"
         color="#0FB786"
         height="40"
@@ -26,6 +24,7 @@
       >
 
       <v-btn
+        v-if="!mobile"
         class="me-2"
         color="#0FB786"
         height="40"
@@ -35,6 +34,7 @@
       >
 
       <v-btn
+        v-if="!mobile"
         class="me-2"
         color="#0FB786"
         height="40"
@@ -44,6 +44,7 @@
       >
 
       <v-btn
+        v-if="!mobile"
         class="me-2"
         color="#0FB786"
         height="40"
@@ -62,6 +63,7 @@
       > -->
 
       <v-btn
+        v-if="!mobile"
         class="me-2"
         color="orange"
         height="40"
@@ -70,8 +72,8 @@
         to="/games"
         >Games</v-btn
       >
-      <v-spacer></v-spacer>
-      <v-menu transition="slide-x-transition">
+      <v-spacer v-if="!mobile"></v-spacer>
+<!--       <v-menu transition="slide-x-transition">
         <template v-slot:activator="{ props }">
           <v-btn class="mr-4" v-bind="props">
             {{ cosmosConfig[this.store.setChainSelected].name }}
@@ -88,8 +90,8 @@
             }}</v-list-item-title>
           </v-list-item>
         </v-list>
-      </v-menu>
-      <v-responsive max-width="500">
+      </v-menu> -->
+ 
         <v-text-field
           v-model="searchData"
           density="compact"
@@ -101,12 +103,13 @@
           flat
           hide-details
           single-line
+          height="40"
           @click:append-inner="onClick"
         ></v-text-field>
-      </v-responsive>
+ 
 
       <v-btn
-        v-if="!this.store.isLogged"
+        v-if="!this.store.isLogged && !mobile"
         icon="mdi-dots-vertical"
         @click="this.store.keplrConnect()"
       >
@@ -114,15 +117,32 @@
           <v-img alt="keplrImage" :src="keplrImage"></v-img>
         </v-avatar>
       </v-btn>
-
       <v-avatar v-if="this.store.isLogged" class="mr-4">
         <RouterLink :to="'/address/' + this.store.addrWallet">
           <v-btn icon="mdi-account" color="#0FB786"></v-btn>
         </RouterLink>
       </v-avatar>
     </v-app-bar>
-
-    <v-navigation-drawer :width="352">
+    <v-navigation-drawer
+        v-if="mobile"
+        v-model="drawerMobile"
+        :mobile="mobile"
+        temporary
+        disable-resize-watcher
+      >
+        <v-list 
+          v-for="items in itemsMenu"
+          density="compact"
+          nav
+        >
+          <v-list-item 
+            :prepend-icon="items.icon" 
+            :title="items.title"  
+            :to="items.to"
+          ></v-list-item>
+        </v-list>
+    </v-navigation-drawer>
+    <v-navigation-drawer v-if="!mobile" :width="352">
       <v-table>
         <tbody>
           <tr>
@@ -270,22 +290,53 @@ export default {
     cosmosConfig: cosmosConfig,
     image: image,
     keplrImage: keplrImage,
-
     socket: null,
     lastTxs: [],
-
     searchData: "",
     wsIsStarted: false,
+    drawerMobile: false,
     itemsMenu: [
-      { title: "Click Me" },
-      { title: "Click Me" },
-      { title: "Click Me" },
-      { title: "Logout" },
-    ],
+        {
+          title: 'Dashboard',
+          color: '#0FB786',
+          to: '/',
+          icon: 'mdi-home-account',
+        },
+        {
+          title: 'Blocks',
+          color: '#0FB786',
+          to: '/blocks',
+          icon: 'mdi-view-dashboard',
+        },
+        {
+          title: 'Validators',
+          color: '#0FB786',
+          to: '/validators',
+          icon: 'mdi-consolidate',
+        },
+        {
+          title: 'Proposals',
+          color: '#0FB786',
+          to: '/proposals',
+          icon: 'mdi-vote',
+        },
+        {
+          title: 'Parameters',
+          color: '#0FB786',
+          to: '/parameters',
+          icon: 'mdi-cog-outline',
+        },
+        {
+          title: 'Games',
+          color: '#0FB786',
+          to: '/games',
+          icon: 'mdi-cog-outline',
+        },
+      ],
   }),
   setup() {
     const store = useAppStore();
-    const { name, width } = useDisplay();
+    const { name, width, mobile } = useDisplay();
 
     const height = computed(() => {
       switch (name.value) {
@@ -306,7 +357,7 @@ export default {
       return undefined;
     });
 
-    return { store, height, name, width };
+    return { store, height, name, width, mobile };
   },
   watch: {
     searchData(hash) {
@@ -345,46 +396,12 @@ export default {
 
     const { mobile } = useDisplay();
     console.log(this.$vuetify.display.mobile);
+    console.log("Mobile: ", mobile.value);
 
     await this.store.initRpc();
     await this.store.getSdkVersion();
     await this.store.getAllValidators();
 
-    /*     this.socket = new WebSocket('wss://rpc.bitcanna.io/websocket'); 
-    //this.socket = new WebSocket('wss://rpc.osmosis.zone/websocket'); 
-
-    this.socket.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      if (message.result.events === undefined) {
-        return;
-      }
-
-      let formatMsg = setMsg(
-          message.result.events['message.action'][0],
-          '',
-          Date.now(),
-          '',
-          message.result.events['tx.hash'][0],
-      )
-
-      // Add new transaction to the list
-      this.lastTxs.unshift(formatMsg);
-
-      // Keep only the last 5 transactions
-      if (this.lastTxs.length > 9) {
-        this.lastTxs.pop();
-      }
-      console.log(message.result.events);
-    };
-
-    this.socket.onopen = () => {
-      console.log('WebSocket connection established');
-      this.sendMessage();
-    };
-
-    this.socket.onerror = (error) => {
-      console.error('WebSocket encountered an error:', error);
-    }; */
   },
   methods: {
     changeChain(i) {
@@ -405,11 +422,9 @@ export default {
     },
     async testTxHash(hashTx) {
       try {
-        console.log(hashTx);
-        const testHash = await axios(
+        await axios(
           "https://lcd.bitcanna.io/cosmos/tx/v1beta1/txs/" + hashTx,
         );
-        console.log(testHash);
         return true;
       } catch (error) {
         console.log(error);
@@ -441,7 +456,6 @@ export default {
         if (this.lastTxs.length > 9) {
           this.lastTxs.pop();
         }
-        console.log(message.result.events);
       };
 
       this.socket.onopen = () => {
