@@ -58,7 +58,7 @@
       </v-sheet>
     </v-col> -->
     <v-col>
-      <v-sheet border class="mb-4 pa-2" rounded="lg">
+      <v-sheet border class="pa-2" rounded="lg">
         <h3 class="ma-2">
           <v-icon color="white" icon="mdi-calendar-range" class="mr-2"></v-icon>
           Date
@@ -209,7 +209,7 @@
       </v-sheet>
     </v-col>
     <v-col cols="12" sm="6">
-      <v-sheet border class="mb-4 pa-2" height="100%" rounded="lg">
+      <v-sheet border class="pa-2" height="100%" rounded="lg">
         <h3 class="ma-2 pa-2">
           <v-icon
             :color="foundChain.color"
@@ -286,7 +286,7 @@
       <json-viewer :value="txData" theme="jv-dark"></json-viewer>
     </v-sheet> -->
 
-  <v-sheet border class="mb-4 mt-4 pa-2" rounded="lg">
+  <v-sheet border class="my-6 pa-2" rounded="lg">
     <v-table>
       <thead>
         <tr>

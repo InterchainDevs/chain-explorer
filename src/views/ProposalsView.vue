@@ -2,7 +2,7 @@
   <v-sheet
     border
     rounded="lg"
-    class="mb-4 pa-4 animate__animated animate__backInLeft"
+    class="mt-7 mb-6 pa-4 animate__animated animate__backInLeft"
   >
     <h1>All proposals</h1>
   </v-sheet>

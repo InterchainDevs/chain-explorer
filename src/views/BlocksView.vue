@@ -2,7 +2,7 @@
   <v-sheet
     border
     rounded="lg"
-    class="mb-4 pa-4 animate__animated animate__backInLeft"
+    class="mt-7 mb-6 pa-4 animate__animated animate__backInLeft"
   >
     <h1>Last Blocks</h1>
   </v-sheet>
@@ -10,7 +10,7 @@
     <v-sheet
       border
       rounded="lg"
-      class="mb-2 pa-2 animate__animated animate__backInRight"
+      class="mb-2 pa-4 animate__animated animate__backInRight"
     >
       <v-table>
         <thead>
