@@ -25,6 +25,7 @@
                   :alt="store.detailValidator.description?.moniker"
                   :src="getImageUrl(this.store.detailValidator.operatorAddress)"
                 ></v-img>
+                
               </v-avatar>
               {{ store.detailValidator.description?.moniker }}
             </v-col>
@@ -155,7 +156,11 @@
                       <v-list-item-content>
                         <v-list-item-title>
                           <td class="text-body-2">
-                            {{ this.store.detailValidator.operatorAddress }}
+ 
+                            <v-chip label >
+                              {{ this.store.detailValidator.operatorAddress }}
+                          </v-chip>
+                          <CopyClipboard v-if="pageLoaded" :dataToClip="this.store.detailValidator.operatorAddress" />
                           </td>  
                         </v-list-item-title>
                       </v-list-item-content>
@@ -173,6 +178,7 @@
                           <v-chip label :to="'../address/' + this.selfDelegationAddr">
                             {{ this.selfDelegationAddr }}
                           </v-chip>
+                          <CopyClipboard v-if="pageLoaded" :dataToClip="this.selfDelegationAddr" />
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
@@ -241,9 +247,11 @@
             hide-details
           >
             <template v-slot:item.delegation="{ item }">
-              <v-chip label :to="'../address/' + item.delegation">
+              <CopyClipboard v-if="pageLoaded" :dataToClip="item.delegation" />
+              <v-chip label :to="'../address/' + item.delegation" class="ml-2">
                 {{ item.delegation }}
               </v-chip>
+              
             </template>
             <template v-slot:bottom>
               <div class="text-center pt-2">
@@ -272,9 +280,9 @@ import banner from "@/assets/bitcanna-banner.jpeg";
 import image from "@/assets/logo-bcna.png";
 
 export default {
-  name: "BlocksView",
+  name: "BlocksView", 
   data: () => ({
-    banner,
+    banner, 
     image: image,
     page: 1,
     itemsPerPage: 5,
@@ -286,6 +294,7 @@ export default {
     bondedStatus: "",
     jailedStatus: "",
     securityContact: "",
+    pageLoaded: false,
   }),
   setup() {
     const store = useAppStore();
@@ -362,6 +371,7 @@ export default {
       this.store.detailValidator.description?.moniker +
       " | BitCanna Explorer";
 
+    this.pageLoaded = true;
   },
   methods: {
     getImageUrl(name) {
