@@ -27,7 +27,13 @@
                 {{ formatNumber(item.header.height) }}
               </v-chip>
             </td>
-            <td>{{ item.header.time }}</td>
+            <td>
+              {{               
+                moment(item.header.time).format(
+                  "MMMM Do YYYY, h:mm:ss a",
+                )
+              }}
+            </td>
             <td>{{ item.numTxs }}</td>
           </tr>
         </tbody>
@@ -37,10 +43,12 @@
 </template>
 <script>
 import { Tendermint37Client } from "@cosmjs/tendermint-rpc";
+import moment from "moment";
 
 export default {
   name: "BlocksView",
   data: () => ({
+    moment,
     blocks: [],
     isloaded: false,
     lastblock: [],
