@@ -2,7 +2,7 @@
   <v-sheet
     border
     rounded="lg"
-    class="mt-7 mb-6 pa-4 animate__animated animate__backInLeft"
+    class="mb-6 pa-4 animate__animated animate__backInLeft"
   >
     <h1>Bitcanna Parameters</h1>
   </v-sheet>
@@ -10,7 +10,7 @@
   <v-sheet
     border
     rounded="lg"
-    class="mb-6 pa-4 animate__animated animate__backInRight"
+    class="mb-6 pa-4 animate__animated animate__fadeInUpBig"
   >
     <h4 class="text-h5 font-weight-bold ma-2">Minting Parameters</h4>
     <v-divider class="mb-2"></v-divider>
@@ -133,7 +133,7 @@
   <v-sheet
     border
     rounded="lg"
-    class="mb-6 pa-2 animate__animated animate__backInRight"
+    class="mb-6 pa-2 animate__animated animate__fadeInUpBig"
   >
     <h4 class="text-h5 font-weight-bold ma-2">Governance Parameters</h4>
     <v-divider class="mb-2"></v-divider>
@@ -258,7 +258,7 @@
   <v-sheet
     border
     rounded="lg"
-    class="pa-2 mb-4 animate__animated animate__backInRight"
+    class="pa-2 mb-4 animate__animated animate__fadeInUpBig"
   >
     <h4 class="text-h5 font-weight-bold ma-2">Slashing Parameters</h4>
     <v-divider class="mb-2"></v-divider>

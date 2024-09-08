@@ -2,7 +2,7 @@
   <v-sheet
     border
     rounded="lg"
-    class="mt-7 mb-6 pa-4 animate__animated animate__backInLeft"
+    class="mb-6 pa-4 animate__animated animate__backInLeft"
   >
     <h1>All proposals</h1>
   </v-sheet>
@@ -12,7 +12,7 @@
       <v-sheet
         border
         rounded="lg"
-        class="pa-2 animate__animated animate__backInRight"
+        class="pa-2 animate__animated animate__fadeInUpBig"
       >
         <v-table>
           <thead>

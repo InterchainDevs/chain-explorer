@@ -127,8 +127,7 @@
         v-if="mobile"
         v-model="drawerMobile"
         :mobile="mobile"
-        temporary
-        disable-resize-watcher
+        temporary 
       >
         <v-list 
           v-for="items in itemsMenu"
@@ -330,7 +329,7 @@ export default {
           title: 'Games',
           color: '#0FB786',
           to: '/games',
-          icon: 'mdi-cog-outline',
+          icon: 'mdi-gamepad-variant',
         },
       ],
   }),

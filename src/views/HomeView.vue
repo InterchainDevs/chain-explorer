@@ -152,7 +152,7 @@
         min-height="900"
         border
         rounded="lg"
-        class="pa-6 ml-md-3 text-white mx-auto animate__animated animate__backInRight"
+        class="pa-6 ml-md-3 text-white mx-auto animate__animated animate__fadeInUpBig"
       >
         <h4 class="text-h5 font-weight-bold mb-4">Random Validators</h4>
         <v-divider class="mt-8"></v-divider>
