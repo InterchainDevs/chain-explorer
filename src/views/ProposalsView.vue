@@ -83,8 +83,6 @@ export default {
     let getPrpoposals = await axios.get(
       "https://lcd.bitcanna.io/cosmos/gov/v1beta1/proposals?proposal_status=PROPOSAL_STATUS_UNSPECIFIED",
     );
-
-    console.log(getPrpoposals.data.proposals);
     this.getProposals = getPrpoposals.data.proposals.reverse();
   },
 };

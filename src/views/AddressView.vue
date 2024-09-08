@@ -288,7 +288,6 @@ export default {
   async mounted() {
     await this.store.initRpc();
     this.address = this.$route.params.address;
-    console.log(this.address);
     //this.store.getWalletAmount(this.address);
     await this.store.getBankModule(this.address);
     await this.store.getStakingModule(this.address);
@@ -306,11 +305,8 @@ export default {
     "https://wallet.bitcanna.io/api/nfts/" +
       starsAddr 
     ); 
-
-    console.log(getMyNft.data);
-
-    for (let i = 0; i < getMyNft.data.getMyNft.length; i++) {
-      console.log(getMyNft.data.getMyNft[i]);
+ 
+    for (let i = 0; i < getMyNft.data.getMyNft.length; i++) { 
       if (
           getMyNft.data.getMyNft[i].collection.contractAddress ===
           "stars1w4dff5myjyzymk8tkpjrzj6gnv352hcdpt2dszweqnff927a9xmqc7e0gv"

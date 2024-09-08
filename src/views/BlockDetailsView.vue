@@ -142,8 +142,6 @@ export default {
         );
         if (foundMsgType) {
           const msg = foundMsgType[1].decode(decodedTx.body.messages[j].value);
-          console.log(decodedTx);
-
           let formatMsg = setMsg(
             decodedTx.body.messages[j].typeUrl,
             "",
@@ -151,9 +149,6 @@ export default {
             "",
             "",
           );
-
-
-
           this.allTransactions.push({
             type: decodedTx.body.messages[j].typeUrl,
             message: msg,

@@ -317,10 +317,7 @@ export const useAppStore = defineStore("app", {
         finalTxs = getRecipient.data.tx_responses;
       }
 
-      console.log("finalTxs", finalTxs);
-
       for (let i of finalTxs) {
-        console.log("test", i);
         i.txhash = i.txhash;
         i.height = i.height;
         i.timestamp = i.timestamp;
@@ -392,8 +389,6 @@ export const useAppStore = defineStore("app", {
           console.error(error);
         }
       }
-
-      //console.log(allValidators)
     },
     async getParams() {
       const getConfigMint = await axios(
@@ -448,8 +443,6 @@ export const useAppStore = defineStore("app", {
       this.govParams = finalGov;
       this.distribParams = getDistribParams.data.params;
       this.slashingParams = getSlashingParams.data.params;
-
-      console.log("getSlashingParams", getSlashingParams.data.params);
     },
 
     async getDetailsValidator(address) {
@@ -484,7 +477,6 @@ export const useAppStore = defineStore("app", {
       this.allProposals = allProposals.proposals;
     },
     async keplrConnect() {
-      console.log(this.setChainSelected);
       await window.keplr.experimentalSuggestChain({
         chainId: cosmosConfig[this.setChainSelected].chainId,
         chainName: cosmosConfig[this.setChainSelected].name,

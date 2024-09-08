@@ -358,7 +358,6 @@ export default {
     const allProposals = await axios(
       "https://lcd.bitcanna.io//cosmos/tx/v1beta1/txs/" + this.txHash,
     );
-    console.log(allProposals.data);
     this.txData = allProposals.data;
     this.totalMessages = allProposals.data.tx.body.messages.length;
     this.allMessages = allProposals.data.tx.body.messages;
@@ -369,21 +368,18 @@ export default {
     this.isloaded = true;
   },
   async updated() {
-    console.log("updated");
     this.txHash = this.$route.params.txhash;
     this.foundChain = cosmosConfig[2];
 
     const allProposals = await axios(
       "https://lcd.bitcanna.io/cosmos/tx/v1beta1/txs/" + this.txHash,
     );
-    console.log(allProposals.data);
     this.txData = allProposals.data;
     this.totalMessages = allProposals.data.tx.body.messages.length;
     this.txStatus = allProposals.data.tx_response.code;
     this.txMsgStatus = allProposals.data.tx_response.raw_log;
 
     for (let message of this.allMessages) {
-      console.log("message", message);
       let formatMsg = setMsg(
         message["@type"],
         "",
@@ -391,8 +387,6 @@ export default {
         "",
         allProposals.data.tx_response.txhash,
       );
-
-      console.log("formatMsg", formatMsg);
       message.finalData = formatMsg;
     }
 
@@ -400,21 +394,6 @@ export default {
     this.isloaded = true;
   },
   async created() {
-    /* 
-  this.txHash = this.$route.params.txhash;  
-  this.chain = this.$route.params.chain;  
- 
-  console.log('tessssssst', this.$route.params.txhash)
-console.log('tessssssst', { query: `tx.hash='${this.$route.params.txhash}'` })
-  console.log('this.$route.params.hash', this.$route.params.txhash)
-  const client = await Tendermint37Client.connect("https://rpc.bitcanna.io/"); 
-  const result = await client.txSearch({ query: `tx.hash='${this.$route.params.txhash}'` });
-  const tx = decodeTxRaw(result);
-  console.log('result', tx)
-
-  this.txData = result
-  this.txStatus = result.code
-  */
   },
   methods: {
     formatNumber(value) {
@@ -422,7 +401,6 @@ console.log('tessssssst', { query: `tx.hash='${this.$route.params.txhash}'` })
     },
     formatDate(dateString) {
       const date = new Date(dateString);
-      // Then specify how you want your dates to be formatted
       return new Intl.DateTimeFormat("default", { dateStyle: "long" }).format(
         date,
       );
