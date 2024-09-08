@@ -147,7 +147,7 @@
                             <v-chip label >
                               {{ this.store.detailValidator.operatorAddress }}
                           </v-chip>
-                          <CopyClipboard v-if="pageLoaded" :dataToClip="this.store.detailValidator.operatorAddress" />
+                          <!-- <CopyClipboard v-if="pageLoaded" :dataToClip="this.store.detailValidator.operatorAddress" /> -->
                           </td>  
                         </v-list-item-title>
                       </v-list-item-content>
@@ -165,7 +165,7 @@
                           <v-chip label :to="'../address/' + this.selfDelegationAddr">
                             {{ this.selfDelegationAddr }}
                           </v-chip>
-                          <CopyClipboard v-if="pageLoaded" :dataToClip="this.selfDelegationAddr" />
+                          <!-- <CopyClipboard v-if="pageLoaded" :dataToClip="this.selfDelegationAddr" /> -->
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
@@ -234,7 +234,7 @@
             hide-details
           >
             <template v-slot:item.delegation="{ item }">
-              <CopyClipboard v-if="pageLoaded" :dataToClip="item.delegation" />
+              <!-- <CopyClipboard v-if="pageLoaded" :dataToClip="item.delegation" /> -->
               <v-chip label :to="'../address/' + item.delegation" class="ml-2">
                 {{ item.delegation }}
               </v-chip>

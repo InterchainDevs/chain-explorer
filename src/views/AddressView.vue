@@ -22,7 +22,7 @@
           items-per-page="4"
         >        
             <template v-slot:item.validator_address="{ item }">     
-              <CopyClipboard :dataToClip="item.validator_address" />          
+              <!-- <CopyClipboard :dataToClip="item.validator_address" />    -->       
               <v-chip label :to="'../validator/' + item.validator_address" class="ml-2">
                 {{ item.validator_address }}
               </v-chip>
@@ -227,7 +227,8 @@
             </v-chip>
           </td>
 
-          <td><CopyClipboard :dataToClip="item.txhash" /> 
+          <td>
+            <!-- <CopyClipboard :dataToClip="item.txhash" />  -->
             <v-chip label :to="'/tx/' + item.txhash" class="ml-2">
               
               {{ truncate(item.txhash) }}
