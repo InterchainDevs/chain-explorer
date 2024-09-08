@@ -119,7 +119,7 @@ export default {
         subtitle: "Play to bitcanna farmer and try to earn some tokens!",
         advanced: false,
         status: "DevNet",
-        playable: true,
+        playable: false,
         contract: "1234567869",
       },
       {

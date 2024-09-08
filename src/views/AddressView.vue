@@ -20,8 +20,7 @@
         <v-data-table
           :items="store.allAddressDelegations"
           items-per-page="4"
-        >
-        
+        >        
             <template v-slot:item.validator_address="{ item }">     
               <CopyClipboard :dataToClip="item.validator_address" />          
               <v-chip label :to="'../validator/' + item.validator_address" class="ml-2">

@@ -1,5 +1,4 @@
 <template>
-
   <v-sheet border rounded="lg" class="mb-2">
     <v-card
       :disabled="loading"
@@ -7,16 +6,9 @@
       class="mx-auto"
       elevation="0"
     >
-      <template v-slot:loader="{ isActive }">
-        <v-progress-linear
-          :active="isActive"
-          color="deep-purple"
-          height="4"
-          indeterminate
-        ></v-progress-linear>
-      </template>
+ 
 
-      <v-img class="d-flex align-end" height="233" :src="banner" cover>
+      <v-img rounded="lg" class="d-flex align-end" height="233" :src="banner" cover>
         <v-card-title  v-for="n in 1" :key="n" class="text-h4">
           <v-row no-gutters>
             <v-col>
@@ -35,26 +27,18 @@
           </v-row>
         </v-card-title>
       </v-img>
-
-      <v-card-item>
-        <v-card-subtitle>
-          <span class="me-1 text-h6 font-weight-bold">Validator description</span>
-        </v-card-subtitle>
-      </v-card-item>
-
-      <v-card-text>
-        <div class="text-subtitle-1">
-          {{ store.detailValidator.description?.details }}
-        </div>
-      </v-card-text>
     </v-card>
+  </v-sheet>
 
-    <v-row class="d-flex justify-space-between ma-1">
+
+
+
+  <v-row class="d-flex justify-space-between mt-2 mb-2">
       <v-col cols="6" md="2">
         <v-sheet
           border
           rounded="lg"
-          class="pa-2 animate__animated animate__backInUp"
+          class="pa-2 mt-2 animate__animated animate__backInDown"
         >
           Status
           <v-divider class="mb-7"></v-divider>
@@ -79,7 +63,7 @@
         <v-sheet
           border
           rounded="lg"
-          class="pa-2 animate__animated animate__backInUp"
+          class="mt-2 pa-2 animate__animated animate__backInDown"
         >
           Missed blocks
           <v-divider class="mb-7"></v-divider>
@@ -95,7 +79,7 @@
         <v-sheet
           border
           rounded="lg"
-          class="pa-2 animate__animated animate__backInUp"
+          class="mt-2 pa-2 animate__animated animate__backInDown"
         >
           Total delegations
           <v-divider class="mb-7"></v-divider>
@@ -111,7 +95,7 @@
         <v-sheet
           border
           rounded="lg"
-          class="pa-2 animate__animated animate__backInUp"
+          class="mt-2 pa-2 animate__animated animate__backInDown"
         >
           Commission rate
           <v-divider class="mb-7"></v-divider>
@@ -127,7 +111,7 @@
         <v-sheet
           border
           rounded="lg"
-          class="pa-2 animate__animated animate__backInUp"
+          class="mt-2 pa-2 animate__animated animate__backInDown"
         >
           Total bonded
           <v-divider class="mb-7"></v-divider>
@@ -140,9 +124,12 @@
       </v-col>
     </v-row>
 
-    <v-row no-gutters>
+
+
+
+    <v-row class="d-flex justify-space-between mt-2 mb-2">
       <v-col cols="12" md="6">
-        <v-sheet :min-height="420" border class="ma-3 pa-1" rounded="lg">
+        <v-sheet :min-height="420" border rounded="lg">
           <v-table>
             <div class="text-h6 pa-3">
               Validator details
@@ -239,7 +226,7 @@
       </v-col>
 
       <v-col cols="12" md="6">
-        <v-sheet :min-height="420" border class="ma-3 pa-2" rounded="lg">
+        <v-sheet :min-height="420" border rounded="lg">
           <v-data-table
             v-model:page="page"
             :items="store.allValidatorDelegations"
@@ -267,7 +254,7 @@
       </v-col>
     </v-row>
 
-  </v-sheet>
+ 
 </template>
 
 <script>
@@ -347,7 +334,7 @@ export default {
         this.valAddress,
     );
     this.rewardCommission = 
-      getRewardCommission.data.commission[0].amount;
+      getRewardCommission.data.commission[0]?.amount;
 
     const getValidatorStatus = await axios(
       "https://lcd.bitcanna.io/cosmos/staking/v1beta1/validators/" +

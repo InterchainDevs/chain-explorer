@@ -1,20 +1,20 @@
-<template> 
-    <v-chip
-      v-if="!textCopied"
-      class="ml-2" 
-      label 
-      @click="copyCode"
-    >
-      <v-icon icon="mdi-content-copy"></v-icon> 
-    </v-chip> 
-    <v-chip 
-      v-if="textCopied"
-      label  
-      color="success"
-      class="ml-2"
-    >
-      <v-icon icon="mdi-check-bold"></v-icon> 
-    </v-chip>  
+<template>
+  <v-chip
+    v-if="!textCopied"
+    class="ml-2" 
+    label 
+    @click="copyCode"
+  >
+    <v-icon icon="mdi-content-copy"></v-icon> 
+  </v-chip> 
+  <v-chip 
+    v-if="textCopied"
+    label  
+    color="success"
+    class="ml-2"
+  >
+    <v-icon icon="mdi-check-bold"></v-icon> 
+  </v-chip>  
 </template>
 <script>
 export default {
