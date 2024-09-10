@@ -63,11 +63,12 @@ export function setMsg(msg, msgData, addrGet, timestamp, allVal, txHash) {
       color = "#f15249";
       icon = "Unstake.svg";
       finalHash = txHash;
-      /*       msgData = {
-        delegator_address: msg.delegator_address,
-        validator_address: foundVal?.name,
-        amount: msg.amount.amount / 1000000,
-      }; */
+      msgData = {
+        delegator_address: msgData.delegator_address,
+        //validator_address: foundVal?.name,
+        amount: msgData.amount.amount / 1000000,
+      };
+      console.log('Unbond', msgData);
       break;
     case "/cosmos.gov.v1beta1.MsgSubmitProposal":
       type = msg["@type"];
