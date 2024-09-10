@@ -134,7 +134,8 @@
           <tbody>
             <tr v-for="item in allProposals" :key="item.name">
               <td>{{ item.id }}</td>
-              <td>{{ item.messages[0].content.title }}</td>
+              <td v-if="!mobile">{{ item.messages[0].content.title }}</td>
+              <td v-else class="d-inline-block text-truncate" style="max-width: 150px;">{{ item.messages[0].content.title }}</td>
               <td v-if="item.status === 'PROPOSAL_STATUS_PASSED'">
                 <v-icon
                   color="green-darken-2"
@@ -187,6 +188,7 @@
 <script>
 import axios from "axios";
 import millify from "millify";
+import { useDisplay } from "vuetify";
 import { useAppStore } from "@/stores/data";
 
 import { setMsg } from "@/libs/msgType";
@@ -291,7 +293,9 @@ export default {
   }),
   setup() {
     const store = useAppStore();
-    return { store };
+    const { mobile } = useDisplay();
+
+    return { store, mobile };
   },
   async mounted() {
     /* let getOhlc = await axios.get(

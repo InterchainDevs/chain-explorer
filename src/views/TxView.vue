@@ -183,6 +183,7 @@
                 </v-chip>
               </td>
               <td v-else-if="key === 'delegator_address'">
+                
                 <v-chip label :to="'../address/' + value">
                   {{ value }}
                 </v-chip>
@@ -292,6 +293,7 @@
         <tr>
           <th class="text-left">Message type</th>
           <th class="text-left">Date</th>
+          <th class="text-left">Amount</th>
         </tr>
       </thead>
       <tbody>
@@ -303,11 +305,18 @@
           </td>
           <td>
             {{
-              moment(item.finalData?.timestamp).format(
+              moment(txData.tx_response?.timestamp).format(
                 "MMMM Do YYYY, h:mm:ss a",
               )
             }}
           </td>
+          <td v-if="item.finalData?.msgData.amount">
+            {{ item.finalData.msgData.amount }}
+            <strong :style="'color:' + foundChain.color">
+              {{ foundChain.coinLookup.viewDenom }}
+            </strong>
+          </td>
+          <td v-else>-</td>
         </tr>
       </tbody>
     </v-table>
@@ -321,7 +330,7 @@ import moment from "moment";
 import JsonViewer from "vue-json-viewer";
 import cosmosConfig from "@/cosmos.config";
 import { useAppStore } from "@/stores/data";
-import { setMsg } from "@/libs/msgType";
+import { setMsg } from "@/libs/msgTypeTxDetail";
 
 export default {
   name: "DetailTx",
@@ -349,6 +358,7 @@ export default {
   },
   async mounted() {
     await this.store.initRpc();
+    await this.store.getAllValidators();
 
     this.txHash = this.$route.params.txhash;
     this.foundChain = cosmosConfig[2];
@@ -379,12 +389,15 @@ export default {
     this.txStatus = allProposals.data.tx_response.code;
     this.txMsgStatus = allProposals.data.tx_response.raw_log;
 
+    console.log(this.store.allValidators);
+
     for (let message of this.allMessages) {
       let formatMsg = setMsg(
         message["@type"],
+        message,
         "",
         Date.now(),
-        "",
+        this.store.allValidators,
         allProposals.data.tx_response.txhash,
       );
       message.finalData = formatMsg;
