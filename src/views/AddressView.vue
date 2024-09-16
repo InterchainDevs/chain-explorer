@@ -301,7 +301,7 @@ export default {
     const decode = bech32.decode(this.address);
     const starsAddr = bech32.encode("stars", decode.words);
 
-    const getMyNft = await axios.get(
+    /* const getMyNft = await axios.get(
     "https://wallet.bitcanna.io/api/nfts/" +
       starsAddr 
     ); 
@@ -312,7 +312,44 @@ export default {
           "stars1w4dff5myjyzymk8tkpjrzj6gnv352hcdpt2dszweqnff927a9xmqc7e0gv"
       )  
       this.allAddressNft.push(getMyNft.data.getMyNft[i]);
-    }
+    } */
+    var collectionAddr = "stars1w4dff5myjyzymk8tkpjrzj6gnv352hcdpt2dszweqnff927a9xmqc7e0gv"
+    var ownerAddrOrName = starsAddr
+    var query = /* GraphQL */`query CollectionOwnerDistributon($collectionAddr: String, $ownerAddrOrName: String) {
+      tokens(collectionAddr: $collectionAddr, ownerAddrOrName: $ownerAddrOrName) {
+        tokens {
+          tokenId
+          name
+          collection {
+            contractAddress
+          }
+          media {
+            image {
+              baseUrl
+            }
+          }
+        }
+      }
+    }`
+    
+    let returnData = await fetch("https://graphql.mainnet.stargaze-apis.com/graphql", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        query,
+        variables: { collectionAddr, ownerAddrOrName },
+      }),
+    })
+    let finalNftReturn = JSON.parse(await returnData.text())
+
+    if(finalNftReturn.data.tokens.tokens.length > 0) {
+      for (let i = 0; i < finalNftReturn.data.tokens.tokens.length; i++) { 
+        this.allAddressNft.push(finalNftReturn.data.tokens.tokens[i]);
+      }
+    }    
 
     this.isLoaded = true;
   },
