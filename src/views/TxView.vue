@@ -395,8 +395,6 @@ export default {
     this.txStatus = allProposals.data.tx_response.code;
     this.txMsgStatus = allProposals.data.tx_response.raw_log;
 
-    console.log(this.store.allValidators);
-
     for (let message of this.allMessages) {
       let formatMsg = setMsg(
         message["@type"],

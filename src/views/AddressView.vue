@@ -18,15 +18,24 @@
         <h4 class="text-h5 font-weight-bold mb-4">Delegations</h4>
 
         <v-data-table
+        :headers="headers"
           :items="store.allAddressDelegations"
           items-per-page="4"
         >        
-            <template v-slot:item.validator_address="{ item }">     
-              <CopyClipboard :dataToClip="item.validator_address" />  
+          <template v-slot:header.validator_address="{ column }">
+            Validator address
+          </template>
+          <template v-slot:item.moniker="{ item }">
+              <v-chip label :to="'../validator/' + item.validator_address">
+                {{ item.moniker }}
+              </v-chip> 
+            </template>   
+            <template v-slot:item.validator_address="{ item }">
               <v-chip label :to="'../validator/' + item.validator_address" class="ml-2">
                 {{ item.validator_address }}
               </v-chip>
-            </template>        
+              <CopyClipboard :dataToClip="item.validator_address" />  
+            </template>
         </v-data-table>
       </v-sheet>
     </v-col>
@@ -280,6 +289,11 @@ export default {
     currentPage: 1,
     isLoaded: false,
     allAddressNft: [],
+    headers: [
+      { title: 'Moniker', value: 'moniker' },
+      { title: 'Validator address', value: 'validator_address' },      
+      { title: 'Reward', value: 'reward' },
+    ]
   }),
   setup() {
     const store = useAppStore();
