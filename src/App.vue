@@ -364,11 +364,20 @@ export default {
         const decode = bech32.decode(hash);
         const encode = bech32.encode("bcna", decode.words);
         this.searchData = "";
-        this.$router.push({
-          path: "/address/",
-          name: "detailaddress",
-          params: { address: encode },
-        });
+        if (decode.prefix === "bcna") {
+          this.$router.push({
+            path: "/address/",
+            name: "detailaddress",
+            params: { address: encode },
+          });
+        }
+        if (decode.prefix === "bcnavaloper") {
+          this.$router.push({
+            path: "/validator/",
+            name: "validatorsDetails",
+            params: { address: hash },
+          });
+        }
         return;
       } catch (error) {
         //console.log(error);
