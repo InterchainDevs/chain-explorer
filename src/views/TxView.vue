@@ -209,7 +209,7 @@
                   {{ value }}
                 </v-chip>
               </td>
-              <td v-else-if="key !== 'finalData'">{{ value }}</td>
+              <!-- <td v-else-if="key !== 'finalData'">{{ value }}</td> -->
             </tr>
           </tbody>
         </v-table>
