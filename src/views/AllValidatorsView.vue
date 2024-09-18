@@ -18,7 +18,7 @@
           <th class="text-left">Moniker</th>
           <th class="text-left">Delegations</th>
           <th class="text-left">Commission</th>
-          <th class="text-left">Voting Power Cumulative</th>
+          <th class="text-left">Voting Power</th>
           <th class="text-left">Cumulative Share</th>
           <th>Website</th>
         </tr>

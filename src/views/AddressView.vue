@@ -1,10 +1,10 @@
 <template>
-  <v-sheet border rounded="lg" class="mt-7 mb-6 pa-4">
+  <v-sheet border rounded="lg" class="mb-6 pa-4">
     <v-row no-gutters>
       <v-col>
         <h4 class="text-truncate text-sm-h5 font-weight-bold">{{ address }}</h4>
       </v-col>
-      <v-col cols="auto" class="mt-1">
+      <v-col cols="auto">
         <h4 v-if="isLoaded" class="text-sm-h5 font-weight-bold">
           $ {{ store.fiatWalletValue }}
         </h4>

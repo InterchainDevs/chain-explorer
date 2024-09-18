@@ -7,7 +7,6 @@
       elevation="0"
     >
  
-
       <v-img rounded="lg" class="d-flex align-end" height="233" :src="banner" cover>
         <v-card-title  v-for="n in 1" :key="n" class="text-h4">
           <v-row no-gutters>
@@ -29,9 +28,6 @@
       </v-img>
     </v-card>
   </v-sheet>
-
-
-
 
   <v-row class="d-flex justify-space-between mt-2 mb-2">
       <v-col cols="6" md="2">
@@ -124,9 +120,6 @@
       </v-col>
     </v-row>
 
-
-
-
     <v-row class="d-flex justify-space-between mt-2 mb-2">
       <v-col cols="12" md="6">
         <v-sheet :min-height="420" border rounded="lg">
@@ -143,10 +136,9 @@
                       <v-list-item-content>
                         <v-list-item-title>
                           <td class="text-body-2">
- 
-                            <v-chip label >
+                            <v-chip label>
                               {{ this.store.detailValidator.operatorAddress }}
-                          </v-chip>
+                            </v-chip>
                           <CopyClipboard v-if="pageLoaded" :dataToClip="this.store.detailValidator.operatorAddress" />
                           </td>  
                         </v-list-item-title>
@@ -253,7 +245,6 @@
         </v-sheet>
       </v-col>
     </v-row>
-
  
 </template>
 

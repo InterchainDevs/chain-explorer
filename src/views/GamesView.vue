@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mt-7">
+  <v-card>
     <v-data-iterator :items="games" :items-per-page="3" :search="search">
       <template v-slot:header>
         <v-toolbar class="px-2">
