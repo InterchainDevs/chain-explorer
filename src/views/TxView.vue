@@ -95,7 +95,13 @@
             </tr>
             <tr v-for="(value, key) in allMessages[0]" :key="key">
               <td v-if="key !== 'finalData'">
-                {{ key }}
+                <span v-if="key === 'delegator_address'">Delegator address</span>
+                <span v-else-if="key === 'validator_address'">Validator address</span>
+                <span v-else-if="key === 'proposal_id'">Proposal id</span>
+                <span v-else-if="key === 'to_address'">To address</span>
+                <span v-else-if="key === 'from_address'">From address</span>
+ 
+                <span v-else>{{ key }}</span>
               </td>
               <td v-if="key === 'amount'">
                 <b v-if="value[0]">{{
