@@ -7,7 +7,7 @@ import vue from "@vitejs/plugin-vue";
 export default defineConfig({
   //base: process.env.NODE_ENV === "production" ? "/chain-explorer/" : "/",
   server: {
-    host: process.env.NODE_ENV === "production" ? "88.198.13.163" : "0.0.0.0",
+    host: process.env.NODE_ENV === "production" ? "0.0.0.0" : "0.0.0.0",
     port: 5175,
   },
   plugins: [vue()],
