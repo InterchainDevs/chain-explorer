@@ -23,7 +23,7 @@
         </h3>
         <v-divider />
         <span v-if="isloaded && txStatus !== 0">
-          <p class="mt-6 text-right">
+          <p class="mt-2 pa-2 text-right">
             <v-icon
               color="red-darken-2"
               icon="mdi-close-thick"
@@ -33,7 +33,7 @@
           </p>
         </span>
         <span v-else>
-          <p class="mt-6 text-right">
+          <p class="mt-2 pa-2 text-right">
             <v-icon
               color="green-darken-2"
               icon="mdi-check-bold"
@@ -64,7 +64,7 @@
           Date
         </h3>
         <v-divider />
-        <p class="mt-6 text-right">
+        <p class="mt-2 pa-2 text-right">
           {{
             moment(txData.tx_response?.timestamp).format(
               "MMMM Do YYYY, h:mm:ss a",
