@@ -4,8 +4,8 @@
       <v-sheet
         border
         rounded="lg"
-        height="350"
-        class="mb-sm-2 pa-2 animate__animated animate__backInDown"
+        height="342"
+        class="mb-0 mb-md-6 pa-2 animate__animated animate__backInDown"
       >
         <apexchart
           type="candlestick"
@@ -21,7 +21,7 @@
           <v-sheet
             border
             rounded="lg"
-            class="mr-sm-4 mb-4 pa-2 animate__animated animate__backInUp"
+            class="mr-sm-4 mb-6 mb-md-4 pa-2 animate__animated animate__backInUp"
           >
             Block Height
             <v-divider class="mb-7"></v-divider>
@@ -35,7 +35,7 @@
           <v-sheet
             border
             rounded="lg"
-            class="pa-2 mb-4 animate__animated animate__backInUp"
+            class="pa-2 mb-6 mb-md-4 animate__animated animate__backInUp"
           >
             Inflation
             <v-divider class="mb-7"></v-divider>
@@ -51,7 +51,7 @@
           <v-sheet
             border
             rounded="lg"
-            class="mr-sm-4 mb-4 pa-2 animate__animated animate__backInUp"
+            class="mr-sm-4 mb-6 mb-md-4 pa-2 animate__animated animate__backInUp"
           >
             Total Supply
             <v-divider class="mb-8"></v-divider>
@@ -70,7 +70,7 @@
           <v-sheet
             border
             rounded="lg"
-            class="pa-2 mb-4 animate__animated animate__backInUp"
+            class="pa-2 mb-6 mb-md-4 animate__animated animate__backInUp"
           >
             Bonded Tokens
             <v-divider class="mb-8"></v-divider>
@@ -91,10 +91,10 @@
           <v-sheet
             border
             rounded="lg"
-            class="mr-sm-4 mb-4 pa-2 animate__animated animate__backInUp"
+            class="pa-2 mb-6 mb-md-4 mr-sm-4 animate__animated animate__backInUp"
           >
             Community Pool
-            <v-divider class="mb-8"></v-divider>
+            <v-divider class="mb-6"></v-divider>
 
             <div class="text-end">
               <v-chip label> {{ millify(totalCommunityPool) }} BCNA </v-chip>
@@ -105,10 +105,10 @@
           <v-sheet
             border
             rounded="lg"
-            class="pa-2 animate__animated animate__backInUp"
+            class="pa-2 mb-6 mb-md-4 animate__animated animate__backInUp"
           >
             Pool Value
-            <v-divider class="mb-8"></v-divider>
+            <v-divider class="mb-6"></v-divider>
 
             <div class="text-end">
               <v-chip label>
@@ -126,7 +126,7 @@
         min-height="900"
         border
         rounded="lg"
-        class="mr-sm-4 mt-4 pa-6 text-white mx-auto animate__animated animate__backInLeft"
+        class="pa-6 mr-sm-3 mb-6 text-white mx-auto animate__animated animate__backInLeft"
       >
         <h4 class="text-h5 font-weight-bold mb-4">Last Proposals</h4>
         <v-divider class="mt-8"></v-divider>
@@ -134,7 +134,8 @@
           <tbody>
             <tr v-for="item in allProposals" :key="item.name">
               <td>{{ item.id }}</td>
-              <td>{{ item.messages[0].content.title }}</td>
+              <td v-if="!mobile">{{ item.messages[0].content.title }}</td>
+              <td v-else class="d-inline-block text-truncate" style="max-width: 150px;">{{ item.messages[0].content.title }}</td>
               <td v-if="item.status === 'PROPOSAL_STATUS_PASSED'">
                 <v-icon
                   color="green-darken-2"
@@ -152,7 +153,7 @@
         min-height="900"
         border
         rounded="lg"
-        class="pa-6 mt-4 text-white mx-auto animate__animated animate__backInRight"
+        class="pa-6 ml-md-3 text-white mx-auto animate__animated animate__fadeInUpBig"
       >
         <h4 class="text-h5 font-weight-bold mb-4">Random Validators</h4>
         <v-divider class="mt-8"></v-divider>
@@ -187,6 +188,7 @@
 <script>
 import axios from "axios";
 import millify from "millify";
+import { useDisplay } from "vuetify";
 import { useAppStore } from "@/stores/data";
 
 import { setMsg } from "@/libs/msgType";
@@ -291,14 +293,19 @@ export default {
   }),
   setup() {
     const store = useAppStore();
-    return { store };
+    const { mobile } = useDisplay();
+
+    return { store, mobile };
   },
   async mounted() {
     /* let getOhlc = await axios.get(
       "https://api.coingecko.com/api/v3/coins/bitcanna/ohlc?days=7&vs_currency=usd",
     ); */
-    let getOhlc = await axios.get(
+    /* let getOhlc = await axios.get(
       "https://gist.githubusercontent.com/atmoner/01b2228336092fce49feee68254617b2/raw/7f90f05dc99e582413903510ad82eadd09d4027b/sample_ohcv.json",
+    ); */
+    let getOhlc = await axios.get(
+      "https://bcnaracle-api.bitcanna.io/api/ohcl",
     );
     // handle success
     //console.log(getOhlc);

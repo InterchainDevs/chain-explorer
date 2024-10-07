@@ -1,7 +1,7 @@
 <template>
-  <v-row no-gutters>
-    <v-col>
-      <v-sheet border rounded="lg" class="ma-4 pa-2">
+  <v-row no-gutters >
+    <v-col cols="12" md="3" lg="4">
+      <v-sheet border rounded="lg" class="mb-6 mr-0 mr-md-3 pa-2">
         Block Height
         <v-divider class="mb-7"></v-divider>
         <div class="text-end">
@@ -11,8 +11,8 @@
         </div>
       </v-sheet>
     </v-col>
-    <v-col>
-      <v-sheet border rounded="lg" class="ma-4 pa-2">
+    <v-col cols="12" md="6" lg="4">
+      <v-sheet border rounded="lg" class="mb-6 mx-0 mx-md-3 pa-2">
         Proposer Address
         <v-divider class="mb-7"></v-divider>
         <div class="text-end">
@@ -22,8 +22,8 @@
         </div>
       </v-sheet>
     </v-col>
-    <v-col>
-      <v-sheet border rounded="lg" class="ma-4 pa-2">
+    <v-col cols="12" md="3" lg="4">
+      <v-sheet border rounded="lg" class="mb-6 ml-0 ml-md-3 pa-2">
         Signature Status
         <v-divider class="mb-7"></v-divider>
         <div class="text-end">
@@ -37,16 +37,25 @@
   </v-row>
   <v-row no-gutters>
     <v-col>
-      <v-sheet border rounded="lg" class="ma-4 pa-2">
+      <v-sheet border rounded="lg" class="mb-6 pa-2">
         <v-table>
           <tbody>
             <tr>
               <td>Block time</td>
-              <td>{{ blockInfo.block?.header.time }}</td>
+              <td>              
+              {{               
+                moment(blockInfo.block?.header.time).format(
+                  "MMMM Do YYYY, h:mm:ss a",
+                )
+              }}</td>
             </tr>
             <tr>
               <td>ChainId</td>
-              <td>{{ blockInfo.block?.header.chain_id }}</td>
+              <td>
+                <v-chip label>
+                  {{ blockInfo.block?.header.chain_id }}
+                </v-chip>
+              </td>
             </tr>
             <tr>
               <td>Proposer Address</td>
@@ -59,7 +68,7 @@
   </v-row>
   <v-row v-if="allTransactions.length > 0" no-gutters>
     <v-col cols="12" >
-      <v-sheet border rounded="lg" class="ma-4 pa-2">
+      <v-sheet border rounded="lg" class="pa-2">
         <v-table theme="dark">
           <thead>
             <tr>
@@ -69,8 +78,11 @@
           </thead>
           <tbody>
             <tr v-for="item in allTransactions" :key="item.name">
-              <td>{{ item.type }}</td>
-              <td>{{ item.calories }}</td>
+              <td>
+                <v-chip class="ma-2" label :color="item.formatMsg.color">
+                  {{ item.formatMsg.typeReadable }} 
+                </v-chip> </td>
+              <td><!--  {{ item.formatMsg }} --></td>
             </tr>
           </tbody>
         </v-table>
@@ -87,10 +99,14 @@ import { Tendermint37Client } from "@cosmjs/tendermint-rpc";
 import { decodeTxRaw } from "@cosmjs/proto-signing";
 import { fromBase64, fromUtf8 } from "@cosmjs/encoding";
 import axios from "axios";
+import moment from "moment";
+
+import { setMsg } from "@/libs/msgType";
 
 export default {
   name: "BlocksView",
   data: () => ({
+    moment,
     blocks: [],
     isloaded: false,
     lastblock: [],
@@ -126,10 +142,17 @@ export default {
         );
         if (foundMsgType) {
           const msg = foundMsgType[1].decode(decodedTx.body.messages[j].value);
-          console.log(msg);
+          let formatMsg = setMsg(
+            decodedTx.body.messages[j].typeUrl,
+            "",
+            "",
+            "",
+            "",
+          );
           this.allTransactions.push({
             type: decodedTx.body.messages[j].typeUrl,
             message: msg,
+            formatMsg: formatMsg,
           });
         } else {
           console.log(

@@ -23,7 +23,7 @@
               v-for="item in items"
               :key="item.title"
               cols="12"
-              sm="6"
+              md="6"
               lg="4"
               class="animate__animated animate__backInLeft"
             >
@@ -119,7 +119,7 @@ export default {
         subtitle: "Play to bitcanna farmer and try to earn some tokens!",
         advanced: false,
         status: "DevNet",
-        playable: true,
+        playable: false,
         contract: "1234567869",
       },
       {

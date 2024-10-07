@@ -2,7 +2,7 @@
   <v-sheet
     border
     rounded="lg"
-    class="mb-4 pa-4 animate__animated animate__backInLeft"
+    class="mb-6 pa-4 animate__animated animate__backInLeft"
   >
     <h1>Last Blocks</h1>
   </v-sheet>
@@ -10,7 +10,7 @@
     <v-sheet
       border
       rounded="lg"
-      class="mb-2 pa-2 animate__animated animate__backInRight"
+      class="mb-2 pa-4 animate__animated animate__fadeInUpBig"
     >
       <v-table>
         <thead>
@@ -27,7 +27,13 @@
                 {{ formatNumber(item.header.height) }}
               </v-chip>
             </td>
-            <td>{{ item.header.time }}</td>
+            <td>
+              {{               
+                moment(item.header.time).format(
+                  "MMMM Do YYYY, h:mm:ss a",
+                )
+              }}
+            </td>
             <td>{{ item.numTxs }}</td>
           </tr>
         </tbody>
@@ -37,10 +43,12 @@
 </template>
 <script>
 import { Tendermint37Client } from "@cosmjs/tendermint-rpc";
+import moment from "moment";
 
 export default {
   name: "BlocksView",
   data: () => ({
+    moment,
     blocks: [],
     isloaded: false,
     lastblock: [],

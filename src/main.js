@@ -16,6 +16,8 @@ import * as directives from "vuetify/directives";
 
 import VueApexCharts from "vue3-apexcharts";
 
+import CopyClipboard from "@/components/CopyClipboard.vue";
+
 import "animate.css";
 
 // Fix bigint issue
@@ -32,6 +34,9 @@ const vuetify = createVuetify({
     defaultTheme: "dark",
   },
 });
+
+
+app.component('CopyClipboard', CopyClipboard)
 
 app.use(createPinia());
 

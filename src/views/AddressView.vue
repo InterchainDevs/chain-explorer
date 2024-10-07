@@ -1,10 +1,10 @@
 <template>
-  <v-sheet border rounded="lg" class="mb-4 pa-4">
+  <v-sheet border rounded="lg" class="mb-6 pa-4">
     <v-row no-gutters>
       <v-col>
         <h4 class="text-truncate text-sm-h5 font-weight-bold">{{ address }}</h4>
       </v-col>
-      <v-col cols="auto" class="mt-1">
+      <v-col cols="auto">
         <h4 v-if="isLoaded" class="text-sm-h5 font-weight-bold">
           $ {{ store.fiatWalletValue }}
         </h4>
@@ -14,24 +14,33 @@
 
   <v-row no-gutters>
     <v-col cols="12" xs="12" md="8">
-      <v-sheet min-height="440" border rounded="lg" class="mb-4 pa-4">
+      <v-sheet min-height="440" border rounded="lg" class="mb-6 mr-md-3 pa-4">
         <h4 class="text-h5 font-weight-bold mb-4">Delegations</h4>
 
         <v-data-table
+        :headers="headers"
           :items="store.allAddressDelegations"
           items-per-page="4"
-        >
-        
-            <template v-slot:item.validator_address="{ item }">              
+        >        
+          <template v-slot:header.validator_address="{ column }">
+            Validator address
+          </template>
+          <template v-slot:item.moniker="{ item }">
               <v-chip label :to="'../validator/' + item.validator_address">
+                {{ item.moniker }}
+              </v-chip> 
+            </template>   
+            <template v-slot:item.validator_address="{ item }">
+              <v-chip label :to="'../validator/' + item.validator_address" class="ml-2">
                 {{ item.validator_address }}
               </v-chip>
-            </template>        
+              <CopyClipboard :dataToClip="item.validator_address" />  
+            </template>
         </v-data-table>
       </v-sheet>
     </v-col>
     <v-col cols="12" xs="12" md="4">
-      <v-sheet border rounded="lg" min-height="440" class="mb-4 ml-md-4 pa-4">
+      <v-sheet border rounded="lg" min-height="440" class="mb-6 ml-md-3 pa-4">
         <v-list>
           <v-list-item
             prepend-avatar="https://raw.githubusercontent.com/cosmostation/chainlist/master/chain/bitcanna/asset/bcna.png"
@@ -228,7 +237,9 @@
           </td>
 
           <td>
-            <v-chip label :to="'/tx/' + item.txhash">
+            <!-- <CopyClipboard :dataToClip="item.txhash" />  -->
+            <v-chip label :to="'/tx/' + item.txhash" class="ml-2">
+              
               {{ truncate(item.txhash) }}
             </v-chip>
           </td>
@@ -278,6 +289,11 @@ export default {
     currentPage: 1,
     isLoaded: false,
     allAddressNft: [],
+    headers: [
+      { title: 'Moniker', value: 'moniker' },
+      { title: 'Validator address', value: 'validator_address' },      
+      { title: 'Reward', value: 'reward' },
+    ]
   }),
   setup() {
     const store = useAppStore();
@@ -286,7 +302,6 @@ export default {
   async mounted() {
     await this.store.initRpc();
     this.address = this.$route.params.address;
-    console.log(this.address);
     //this.store.getWalletAmount(this.address);
     await this.store.getBankModule(this.address);
     await this.store.getStakingModule(this.address);
@@ -300,21 +315,55 @@ export default {
     const decode = bech32.decode(this.address);
     const starsAddr = bech32.encode("stars", decode.words);
 
-    const getMyNft = await axios.get(
+    /* const getMyNft = await axios.get(
     "https://wallet.bitcanna.io/api/nfts/" +
       starsAddr 
     ); 
-
-    console.log(getMyNft.data);
-
-    for (let i = 0; i < getMyNft.data.getMyNft.length; i++) {
-      console.log(getMyNft.data.getMyNft[i]);
+ 
+    for (let i = 0; i < getMyNft.data.getMyNft.length; i++) { 
       if (
           getMyNft.data.getMyNft[i].collection.contractAddress ===
           "stars1w4dff5myjyzymk8tkpjrzj6gnv352hcdpt2dszweqnff927a9xmqc7e0gv"
       )  
       this.allAddressNft.push(getMyNft.data.getMyNft[i]);
-    }
+    } */
+    var collectionAddr = "stars1w4dff5myjyzymk8tkpjrzj6gnv352hcdpt2dszweqnff927a9xmqc7e0gv"
+    var ownerAddrOrName = starsAddr
+    var query = /* GraphQL */`query CollectionOwnerDistributon($collectionAddr: String, $ownerAddrOrName: String) {
+      tokens(collectionAddr: $collectionAddr, ownerAddrOrName: $ownerAddrOrName) {
+        tokens {
+          tokenId
+          name
+          collection {
+            contractAddress
+          }
+          media {
+            image {
+              baseUrl
+            }
+          }
+        }
+      }
+    }`
+    
+    let returnData = await fetch("https://graphql.mainnet.stargaze-apis.com/graphql", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        query,
+        variables: { collectionAddr, ownerAddrOrName },
+      }),
+    })
+    let finalNftReturn = JSON.parse(await returnData.text())
+
+    if(finalNftReturn.data.tokens.tokens.length > 0) {
+      for (let i = 0; i < finalNftReturn.data.tokens.tokens.length; i++) { 
+        this.allAddressNft.push(finalNftReturn.data.tokens.tokens[i]);
+      }
+    }    
 
     this.isLoaded = true;
   },

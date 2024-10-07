@@ -2,14 +2,14 @@
   <v-sheet
     border
     rounded="lg"
-    class="mb-4 pa-4 animate__animated animate__backInLeft"
+    class="mb-6 pa-4 animate__animated animate__backInLeft"
   >
     <h1>All validators</h1>
   </v-sheet>
   <v-sheet
     border
     rounded="lg"
-    class="mb-2 pa-2 animate__animated animate__backInRight"
+    class="mb-2 pa-2 animate__animated animate__fadeInUpBig"
   >
     <v-table>
       <thead>
@@ -18,7 +18,7 @@
           <th class="text-left">Moniker</th>
           <th class="text-left">Delegations</th>
           <th class="text-left">Commission</th>
-          <th class="text-left">Voting Power Cumulative</th>
+          <th class="text-left">Voting Power</th>
           <th class="text-left">Cumulative Share</th>
           <th>Website</th>
         </tr>

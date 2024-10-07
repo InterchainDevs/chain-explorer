@@ -2,7 +2,7 @@
   <v-sheet
     border
     rounded="lg"
-    class="mb-4 pa-4 animate__animated animate__backInLeft"
+    class="mb-6 pa-4 animate__animated animate__backInLeft"
   >
     <h1>Bitcanna Parameters</h1>
   </v-sheet>
@@ -10,7 +10,7 @@
   <v-sheet
     border
     rounded="lg"
-    class="mb-4 pa-4 animate__animated animate__backInRight"
+    class="mb-6 pa-2 animate__animated animate__fadeInUpBig"
   >
     <h4 class="text-h5 font-weight-bold ma-2">Minting Parameters</h4>
     <v-divider class="mb-2"></v-divider>
@@ -72,7 +72,7 @@
   <v-sheet
     border
     rounded="lg"
-    class="pa-2 mb-4 animate__animated animate__backInLeft"
+    class="mb-6 pa-2 animate__animated animate__backInLeft"
   >
     <h4 class="text-h5 font-weight-bold ma-2">Staking Parameters</h4>
     <v-divider class="mb-2"></v-divider>
@@ -133,7 +133,7 @@
   <v-sheet
     border
     rounded="lg"
-    class="pa-2 mb-4 animate__animated animate__backInRight"
+    class="mb-6 pa-2 animate__animated animate__fadeInUpBig"
   >
     <h4 class="text-h5 font-weight-bold ma-2">Governance Parameters</h4>
     <v-divider class="mb-2"></v-divider>
@@ -141,7 +141,7 @@
       <tbody>
         <tr>
           <td>Voting period</td>
-          <td>
+          <td class="text-right">
             <v-chip class="ma-2" label>
               {{ store?.govParams.voting?.voting_params.voting_period }}
             </v-chip>
@@ -149,7 +149,7 @@
         </tr>
         <tr>
           <td>Tallying</td>
-          <td>
+          <td class="px-0">
             <v-table>
               <tbody>
                 <tr>
@@ -190,7 +190,7 @@
         </tr>
         <tr>
           <td>Min deposit</td>
-          <td>
+          <td class="text-right">
             <v-chip class="ma-2" label>
               {{
                 store?.govParams.deposit?.deposit_params.min_deposit[0].amount /
@@ -202,7 +202,7 @@
         </tr>
         <tr>
           <td>Max deposit period</td>
-          <td>
+          <td class="text-right">
             <v-chip class="ma-2" label>
               {{ store?.govParams.deposit?.deposit_params.max_deposit_period }}
             </v-chip>
@@ -214,7 +214,7 @@
   <v-sheet
     border
     rounded="lg"
-    class="pa-2 mb-4 animate__animated animate__backInLeft"
+    class="mb-6 pa-2 animate__animated animate__backInLeft"
   >
     <h4 class="text-h5 font-weight-bold ma-2">Distribution Parameters</h4>
     <v-divider class="mb-2"></v-divider>
@@ -258,7 +258,7 @@
   <v-sheet
     border
     rounded="lg"
-    class="pa-2 mb-4 animate__animated animate__backInRight"
+    class="pa-2 mb-4 animate__animated animate__fadeInUpBig"
   >
     <h4 class="text-h5 font-weight-bold ma-2">Slashing Parameters</h4>
     <v-divider class="mb-2"></v-divider>

@@ -127,8 +127,7 @@
         v-if="mobile"
         v-model="drawerMobile"
         :mobile="mobile"
-        temporary
-        disable-resize-watcher
+        temporary 
       >
         <v-list 
           v-for="items in itemsMenu"
@@ -330,7 +329,7 @@ export default {
           title: 'Games',
           color: '#0FB786',
           to: '/games',
-          icon: 'mdi-cog-outline',
+          icon: 'mdi-gamepad-variant',
         },
       ],
   }),
@@ -365,11 +364,20 @@ export default {
         const decode = bech32.decode(hash);
         const encode = bech32.encode("bcna", decode.words);
         this.searchData = "";
-        this.$router.push({
-          path: "/address/",
-          name: "detailaddress",
-          params: { address: encode },
-        });
+        if (decode.prefix === "bcna") {
+          this.$router.push({
+            path: "/address/",
+            name: "detailaddress",
+            params: { address: encode },
+          });
+        }
+        if (decode.prefix === "bcnavaloper") {
+          this.$router.push({
+            path: "/validator/",
+            name: "validatorsDetails",
+            params: { address: hash },
+          });
+        }
         return;
       } catch (error) {
         //console.log(error);
@@ -394,10 +402,6 @@ export default {
       this.store.keplrConnect();
     }
 
-    const { mobile } = useDisplay();
-    console.log(this.$vuetify.display.mobile);
-    console.log("Mobile: ", mobile.value);
-
     await this.store.initRpc();
     await this.store.getSdkVersion();
     await this.store.getAllValidators();
@@ -409,7 +413,6 @@ export default {
       this.store.refresh();
     },
     sendMessage(content) {
-      console.log("Connected on bitcanna blockchain from WebSocket");
       const message = JSON.stringify({
         method: "subscribe",
         params: {
@@ -459,7 +462,6 @@ export default {
       };
 
       this.socket.onopen = () => {
-        console.log("WebSocket connection established");
         this.sendMessage();
         this.wsIsStarted = true;
       };

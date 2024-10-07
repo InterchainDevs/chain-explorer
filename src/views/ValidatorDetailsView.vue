@@ -1,12 +1,4 @@
 <template>
-  <v-sheet border rounded="lg" class="mb-4 pa-4">
-    <v-row no-gutters>
-      <v-col>
-        <h1>Validator details</h1>
-      </v-col>
-    </v-row>
-  </v-sheet>
-
   <v-sheet border rounded="lg" class="mb-2">
     <v-card
       :disabled="loading"
@@ -14,48 +6,127 @@
       class="mx-auto"
       elevation="0"
     >
-      <template v-slot:loader="{ isActive }">
-        <v-progress-linear
-          :active="isActive"
-          color="deep-purple"
-          height="4"
-          indeterminate
-        ></v-progress-linear>
-      </template>
-
-      <v-img height="250" :src="banner" cover>
-        <v-card-title class="text-h4">
-          <v-row class="mb-6" no-gutters>
+ 
+      <v-img rounded="lg" class="d-flex align-end" height="233" :src="banner" cover>
+        <v-card-title  v-for="n in 1" :key="n" class="text-h4">
+          <v-row no-gutters>
             <v-col>
               <v-avatar class="mr-4">
                 <v-img
                   :alt="store.detailValidator.description?.moniker"
                   :src="getImageUrl(this.store.detailValidator.operatorAddress)"
                 ></v-img>
+                
               </v-avatar>
               {{ store.detailValidator.description?.moniker }}
             </v-col>
+            <v-btn class="ma-3 pa-2" :href="store.detailValidator.description?.website" target="_blank">
+              Website
+            </v-btn>
           </v-row>
         </v-card-title>
       </v-img>
-
-      <v-card-item>
-        <v-card-subtitle>
-          <span class="me-1 text-h6">Validator description</span>
-        </v-card-subtitle>
-      </v-card-item>
-
-      <v-card-text>
-        <div class="text-h6">
-          {{ store.detailValidator.description?.details }}
-        </div>
-      </v-card-text>
     </v-card>
+  </v-sheet>
 
-    <v-row no-gutters>
-      <v-col cols="12" sm="6">
-        <v-sheet :height="400" border class="ma-2 pa-2" rounded="lg">
+  <v-row class="d-flex justify-space-between mt-2 mb-2">
+      <v-col cols="6" md="2">
+        <v-sheet
+          border
+          rounded="lg"
+          class="pa-2 mt-2 animate__animated animate__backInDown"
+        >
+          Status
+          <v-divider class="mb-7"></v-divider>
+          <div class="text-end">
+            <v-chip
+              v-if="this.bondedStatus == 'BOND_STATUS_BONDED'"
+              class="mx-2"
+              label
+              color="green"> BONDED
+            </v-chip>
+            <v-chip
+              v-if="this.jailedStatus == 'true'"
+              class="mx-2"
+              label
+              color="red"> JAILED
+            </v-chip>
+          </div>
+        </v-sheet>
+      </v-col>
+
+      <v-col cols="6" md="2">
+        <v-sheet
+          border
+          rounded="lg"
+          class="mt-2 pa-2 animate__animated animate__backInDown"
+        >
+          Missed blocks
+          <v-divider class="mb-7"></v-divider>
+          <div class="text-end">
+            <v-chip v-if="pageLoaded" label> 
+              {{ this.missingBlocks }} 
+            </v-chip>
+          </div>
+        </v-sheet>
+      </v-col>
+
+      <v-col cols="6" md="2">
+        <v-sheet
+          border
+          rounded="lg"
+          class="mt-2 pa-2 animate__animated animate__backInDown"
+        >
+          Total delegations
+          <v-divider class="mb-7"></v-divider>
+          <div class="text-end">
+            <v-chip label> 
+              {{ store.allValidatorDelegations.length }} 
+            </v-chip>
+          </div>
+        </v-sheet>
+      </v-col>
+
+      <v-col cols="6" md="2">
+        <v-sheet
+          border
+          rounded="lg"
+          class="mt-2 pa-2 animate__animated animate__backInDown"
+        >
+          Commission rate
+          <v-divider class="mb-7"></v-divider>
+          <div class="text-end">
+            <v-chip label>
+              {{ store.detailValidator.commission?.commissionRates.rate / 10000000000000000 }} %
+            </v-chip>
+          </div>
+        </v-sheet>
+      </v-col>
+
+      <v-col cols="12" md="2" xl="3">
+        <v-sheet
+          border
+          rounded="lg"
+          class="mt-2 pa-2 animate__animated animate__backInDown"
+        >
+          Total bonded
+          <v-divider class="mb-7"></v-divider>
+          <div class="text-end">
+            <v-chip label>
+              {{ (store.detailValidator.tokens / 1000000).toFixed(3) }} BCNA
+            </v-chip>
+          </div>
+        </v-sheet>
+      </v-col>
+    </v-row>
+
+    <v-row class="d-flex justify-space-between mt-2 mb-2">
+      <v-col cols="12" md="6">
+        <v-sheet :min-height="420" border rounded="lg">
           <v-table>
+            <div class="text-h6 pa-3">
+              Validator details
+            </div>
             <tbody>
               <tr>
                 <td>Validator address</td>
@@ -64,15 +135,12 @@
                     <v-list-item>
                       <v-list-item-content>
                         <v-list-item-title>
-                          <v-chip
-                            label
-                            :to="
-                              '../validator/' +
-                              this.store.detailValidator.operatorAddress
-                            "
-                          >
-                            {{ this.store.detailValidator.operatorAddress }}
-                          </v-chip>
+                          <td class="text-body-2">
+                            <v-chip label>
+                              {{ this.store.detailValidator.operatorAddress }}
+                            </v-chip>
+                          <CopyClipboard v-if="pageLoaded" :dataToClip="this.store.detailValidator.operatorAddress" />
+                          </td>  
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
@@ -86,11 +154,25 @@
                     <v-list-item>
                       <v-list-item-content>
                         <v-list-item-title>
-                          <v-chip
-                            label
-                            :to="'../address/' + this.selfDelegationAddr"
-                          >
+                          <v-chip label :to="'../address/' + this.selfDelegationAddr">
                             {{ this.selfDelegationAddr }}
+                          </v-chip>
+                          <CopyClipboard v-if="pageLoaded" :dataToClip="this.selfDelegationAddr" />
+                        </v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list>
+                </td>
+              </tr>
+              <tr>
+                <td>Self delegation</td>
+                <td align="right">
+                  <v-list>
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title>
+                          <v-chip label> 
+                            {{ selfDelegationTokens / 1000000 }} BCNA
                           </v-chip>
                         </v-list-item-title>
                       </v-list-item-content>
@@ -99,16 +181,34 @@
                 </td>
               </tr>
               <tr>
-                <td>Contact</td>
+                <td>Commission</td>
                 <td align="right">
                   <v-list>
-                    <v-btn
-                      class="pa-2 mr-4"
-                      :href="store.detailValidator.description?.website"
-                      target="_blank"
-                    >
-                      Website
-                    </v-btn>
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title>
+                          <v-chip label>
+                            {{ (rewardCommission / 1000000).toFixed(3) }} BCNA
+                          </v-chip>
+                        </v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list>
+                </td>
+              </tr>
+              <tr>
+                <td>Security contact</td>
+                <td align="right">
+                  <v-list>
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title>
+                          <td class="text-body-2">
+                            {{ this.securityContact }}
+                          </td>  
+                        </v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
                   </v-list>
                 </td>
               </tr>
@@ -116,8 +216,9 @@
           </v-table>
         </v-sheet>
       </v-col>
-      <v-col cols="12" sm="6">
-        <v-sheet :height="400" border class="ma-2 pa-2" rounded="lg">
+
+      <v-col cols="12" md="6">
+        <v-sheet :min-height="420" border rounded="lg">
           <v-data-table
             v-model:page="page"
             :items="store.allValidatorDelegations"
@@ -125,9 +226,11 @@
             hide-details
           >
             <template v-slot:item.delegation="{ item }">
-              <v-chip label :to="'../address/' + item.delegation">
+              <CopyClipboard v-if="pageLoaded" :dataToClip="item.delegation" /> 
+              <v-chip label :to="'../address/' + item.delegation" class="ml-2">
                 {{ item.delegation }}
               </v-chip>
+              
             </template>
             <template v-slot:bottom>
               <div class="text-center pt-2">
@@ -142,88 +245,9 @@
         </v-sheet>
       </v-col>
     </v-row>
-
-    <v-row>
-      <v-col cols="12" sm="2" class="ml-4">
-        <v-sheet
-          border
-          rounded="lg"
-          class="mr-4 mb-4 pa-2 animate__animated animate__backInUp"
-        >
-          Self delegation tokens
-          <v-divider class="mb-7"></v-divider>
-          <div class="text-end">
-            <v-chip label> {{ selfDelegationTokens / 1000000 }} BCNA</v-chip>
-          </div>
-        </v-sheet>
-      </v-col>
-
-      <v-col cols="12" sm="2" class="ml-4">
-        <v-sheet
-          border
-          rounded="lg"
-          class="mr-4 mb-4 pa-2 animate__animated animate__backInUp"
-        >
-          Missed blocks
-          <v-divider class="mb-7"></v-divider>
-          <div class="text-end">
-            <v-chip v-if="pageLoaded" label> {{ this.missingBlocks }} </v-chip>
-          </div>
-        </v-sheet>
-      </v-col>
-
-      <v-col cols="12" sm="2" class="ml-4">
-        <v-sheet
-          border
-          rounded="lg"
-          class="mr-4 mb-4 pa-2 animate__animated animate__backInUp"
-        >
-          Total delegations
-          <v-divider class="mb-7"></v-divider>
-          <div class="text-end">
-            <v-chip label> {{ store.allValidatorDelegations.length }} </v-chip>
-          </div>
-        </v-sheet>
-      </v-col>
-
-      <v-col cols="12" sm="2" class="ml-2">
-        <v-sheet
-          border
-          rounded="lg"
-          class="mr-4 mb-4 pa-2 animate__animated animate__backInUp"
-        >
-          Total Bonded
-          <v-divider class="mb-7"></v-divider>
-          <div class="text-end">
-            <v-chip label>
-              {{ store.detailValidator.tokens / 1000000 }} BCNA</v-chip
-            >
-          </div>
-        </v-sheet>
-      </v-col>
-
-      <v-col cols="12" sm="2" class="ml-2">
-        <v-sheet
-          border
-          rounded="lg"
-          class="mr-4 mb-4 pa-2 animate__animated animate__backInUp"
-        >
-          Commission Rates
-          <v-divider class="mb-7"></v-divider>
-          <div class="text-end">
-            <v-chip label>
-              {{
-                store.detailValidator.commission?.commissionRates.rate /
-                10000000000000000
-              }}
-              %</v-chip
-            >
-          </div>
-        </v-sheet>
-      </v-col>
-    </v-row>
-  </v-sheet>
+ 
 </template>
+
 <script>
 import { Tendermint37Client } from "@cosmjs/tendermint-rpc";
 import bech32 from "bech32";
@@ -234,15 +258,20 @@ import banner from "@/assets/bitcanna-banner.jpeg";
 import image from "@/assets/logo-bcna.png";
 
 export default {
-  name: "BlocksView",
+  name: "BlocksView", 
   data: () => ({
-    banner,
+    banner, 
     image: image,
     page: 1,
     itemsPerPage: 5,
     valAddress: "",
     selfDelegationAddr: "",
     selfDelegationTokens: "",
+    pageLoaded: false,
+    rewardCommission: "",
+    bondedStatus: "",
+    jailedStatus: "",
+    securityContact: "",
     pageLoaded: false,
   }),
   setup() {
@@ -287,7 +316,27 @@ export default {
     );
     const missingBlocks =
       getMissingBlocks.data.val_signing_info.missed_blocks_counter;
-    console.log(missingBlocks);
+
+    this.missingBlocks = missingBlocks;
+    this.pageLoaded = true;
+
+    const getRewardCommission = await axios(
+      "https://lcd.bitcanna.io/cosmos/distribution/v1beta1/validators/" +
+        this.valAddress,
+    );
+    this.rewardCommission = 
+      getRewardCommission.data.commission[0]?.amount;
+
+    const getValidatorStatus = await axios(
+      "https://lcd.bitcanna.io/cosmos/staking/v1beta1/validators/" +
+        this.valAddress,
+    );
+    this.bondedStatus = 
+      getValidatorStatus.data.validator.status;
+    this.jailedStatus = 
+      getValidatorStatus.data.validator.jailed;
+    this.securityContact =
+      getValidatorStatus.data.validator.description.security_contact;
 
     document.title =
       this.$route.meta.title +
@@ -300,7 +349,6 @@ export default {
       this.store.detailValidator.description?.moniker +
       " | BitCanna Explorer";
 
-    this.missingBlocks = missingBlocks;
     this.pageLoaded = true;
   },
   methods: {
@@ -322,6 +370,7 @@ export default {
   },
 };
 </script>
+
 <style>
 .transparent-body {
   background: transparent;

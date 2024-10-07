@@ -23,7 +23,7 @@
         </h3>
         <v-divider />
         <span v-if="isloaded && txStatus !== 0">
-          <p class="mt-6 text-right">
+          <p class="mt-2 pa-2 text-right">
             <v-icon
               color="red-darken-2"
               icon="mdi-close-thick"
@@ -33,7 +33,7 @@
           </p>
         </span>
         <span v-else>
-          <p class="mt-6 text-right">
+          <p class="mt-2 pa-2 text-right">
             <v-icon
               color="green-darken-2"
               icon="mdi-check-bold"
@@ -58,13 +58,13 @@
       </v-sheet>
     </v-col> -->
     <v-col>
-      <v-sheet border class="mb-4 pa-2" rounded="lg">
+      <v-sheet border class="pa-2" rounded="lg">
         <h3 class="ma-2">
           <v-icon color="white" icon="mdi-calendar-range" class="mr-2"></v-icon>
           Date
         </h3>
         <v-divider />
-        <p class="mt-6 text-right">
+        <p class="mt-2 pa-2 text-right">
           {{
             moment(txData.tx_response?.timestamp).format(
               "MMMM Do YYYY, h:mm:ss a",
@@ -95,7 +95,13 @@
             </tr>
             <tr v-for="(value, key) in allMessages[0]" :key="key">
               <td v-if="key !== 'finalData'">
-                {{ key }}
+                <span v-if="key === 'delegator_address'">Delegator address</span>
+                <span v-else-if="key === 'validator_address'">Validator address</span>
+                <span v-else-if="key === 'proposal_id'">Proposal id</span>
+                <span v-else-if="key === 'to_address'">To address</span>
+                <span v-else-if="key === 'from_address'">From address</span>
+ 
+                <span v-else>{{ key }}</span>
               </td>
               <td v-if="key === 'amount'">
                 <b v-if="value[0]">{{
@@ -183,6 +189,7 @@
                 </v-chip>
               </td>
               <td v-else-if="key === 'delegator_address'">
+                
                 <v-chip label :to="'../address/' + value">
                   {{ value }}
                 </v-chip>
@@ -202,14 +209,14 @@
                   {{ value }}
                 </v-chip>
               </td>
-              <td v-else-if="key !== 'finalData'">{{ value }}</td>
+              <!-- <td v-else-if="key !== 'finalData'">{{ value }}</td> -->
             </tr>
           </tbody>
         </v-table>
       </v-sheet>
     </v-col>
     <v-col cols="12" sm="6">
-      <v-sheet border class="mb-4 pa-2" height="100%" rounded="lg">
+      <v-sheet border class="pa-2" height="100%" rounded="lg">
         <h3 class="ma-2 pa-2">
           <v-icon
             :color="foundChain.color"
@@ -286,12 +293,13 @@
       <json-viewer :value="txData" theme="jv-dark"></json-viewer>
     </v-sheet> -->
 
-  <v-sheet border class="mb-4 mt-4 pa-2" rounded="lg">
+  <v-sheet border class="my-6 pa-2" rounded="lg">
     <v-table>
       <thead>
         <tr>
           <th class="text-left">Message type</th>
           <th class="text-left">Date</th>
+          <th class="text-left">Amount</th>
         </tr>
       </thead>
       <tbody>
@@ -303,11 +311,18 @@
           </td>
           <td>
             {{
-              moment(item.finalData?.timestamp).format(
+              moment(txData.tx_response?.timestamp).format(
                 "MMMM Do YYYY, h:mm:ss a",
               )
             }}
           </td>
+          <td v-if="item.finalData?.msgData.amount">
+            {{ item.finalData.msgData.amount }}
+            <strong :style="'color:' + foundChain.color">
+              {{ foundChain.coinLookup.viewDenom }}
+            </strong>
+          </td>
+          <td v-else>-</td>
         </tr>
       </tbody>
     </v-table>
@@ -321,7 +336,7 @@ import moment from "moment";
 import JsonViewer from "vue-json-viewer";
 import cosmosConfig from "@/cosmos.config";
 import { useAppStore } from "@/stores/data";
-import { setMsg } from "@/libs/msgType";
+import { setMsg } from "@/libs/msgTypeTxDetail";
 
 export default {
   name: "DetailTx",
@@ -349,6 +364,7 @@ export default {
   },
   async mounted() {
     await this.store.initRpc();
+    await this.store.getAllValidators();
 
     this.txHash = this.$route.params.txhash;
     this.foundChain = cosmosConfig[2];
@@ -358,7 +374,6 @@ export default {
     const allProposals = await axios(
       "https://lcd.bitcanna.io//cosmos/tx/v1beta1/txs/" + this.txHash,
     );
-    console.log(allProposals.data);
     this.txData = allProposals.data;
     this.totalMessages = allProposals.data.tx.body.messages.length;
     this.allMessages = allProposals.data.tx.body.messages;
@@ -369,30 +384,26 @@ export default {
     this.isloaded = true;
   },
   async updated() {
-    console.log("updated");
     this.txHash = this.$route.params.txhash;
     this.foundChain = cosmosConfig[2];
 
     const allProposals = await axios(
       "https://lcd.bitcanna.io/cosmos/tx/v1beta1/txs/" + this.txHash,
     );
-    console.log(allProposals.data);
     this.txData = allProposals.data;
     this.totalMessages = allProposals.data.tx.body.messages.length;
     this.txStatus = allProposals.data.tx_response.code;
     this.txMsgStatus = allProposals.data.tx_response.raw_log;
 
     for (let message of this.allMessages) {
-      console.log("message", message);
       let formatMsg = setMsg(
         message["@type"],
+        message,
         "",
         Date.now(),
-        "",
+        this.store.allValidators,
         allProposals.data.tx_response.txhash,
       );
-
-      console.log("formatMsg", formatMsg);
       message.finalData = formatMsg;
     }
 
@@ -400,21 +411,6 @@ export default {
     this.isloaded = true;
   },
   async created() {
-    /* 
-  this.txHash = this.$route.params.txhash;  
-  this.chain = this.$route.params.chain;  
- 
-  console.log('tessssssst', this.$route.params.txhash)
-console.log('tessssssst', { query: `tx.hash='${this.$route.params.txhash}'` })
-  console.log('this.$route.params.hash', this.$route.params.txhash)
-  const client = await Tendermint37Client.connect("https://rpc.bitcanna.io/"); 
-  const result = await client.txSearch({ query: `tx.hash='${this.$route.params.txhash}'` });
-  const tx = decodeTxRaw(result);
-  console.log('result', tx)
-
-  this.txData = result
-  this.txStatus = result.code
-  */
   },
   methods: {
     formatNumber(value) {
@@ -422,7 +418,6 @@ console.log('tessssssst', { query: `tx.hash='${this.$route.params.txhash}'` })
     },
     formatDate(dateString) {
       const date = new Date(dateString);
-      // Then specify how you want your dates to be formatted
       return new Intl.DateTimeFormat("default", { dateStyle: "long" }).format(
         date,
       );

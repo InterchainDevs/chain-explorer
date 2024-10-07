@@ -2,7 +2,7 @@
   <v-sheet
     border
     rounded="lg"
-    class="mb-4 pa-4 animate__animated animate__backInLeft"
+    class="mb-6 pa-4 animate__animated animate__backInLeft"
   >
     <h1>All proposals</h1>
   </v-sheet>
@@ -12,7 +12,7 @@
       <v-sheet
         border
         rounded="lg"
-        class="pa-2 animate__animated animate__backInRight"
+        class="pa-2 animate__animated animate__fadeInUpBig"
       >
         <v-table>
           <thead>
@@ -83,8 +83,6 @@ export default {
     let getPrpoposals = await axios.get(
       "https://lcd.bitcanna.io/cosmos/gov/v1beta1/proposals?proposal_status=PROPOSAL_STATUS_UNSPECIFIED",
     );
-
-    console.log(getPrpoposals.data.proposals);
     this.getProposals = getPrpoposals.data.proposals.reverse();
   },
 };
