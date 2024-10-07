@@ -243,7 +243,7 @@ export const useAppStore = defineStore("app", {
           const found = this.allValidators.find((element) => element.operator_address === i.validator_address);
           
           i.reward = (i.reward[0].amount / 1000000).toFixed(6);
-          i.moniker = found.description.moniker;
+          i.moniker = found?.description.moniker;
           this.allAddressDelegations.push(i);
         }
       }
