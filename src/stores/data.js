@@ -41,6 +41,7 @@ export const useAppStore = defineStore("app", {
     allAddressDelegations: [],
     allAddressTx: [],
     totalAddressTx: 0,
+    totalVested: 0,
 
     priceNow: 0,
     allValidatorDelegations: [],
@@ -113,10 +114,17 @@ export const useAppStore = defineStore("app", {
         Number(this.spendableBalances) +
         Number(this.totalDelegations) +
         Number(this.totalUnbound) +
-        Number(this.totalRewards);
+        Number(this.totalRewards) + 
+        Number(this.totalVested);
 
       this.totalTokens = totalToken.toFixed(6);
       this.fiatWalletValue = (totalToken * this.priceNow).toFixed(2);
+    },
+    async getVested(addrWallet) {
+      let getVestedAmount = await axios.get(cosmosConfig[2].apiURL + '/cosmos/auth/v1beta1/accounts/' + addrWallet)    
+      if (typeof getVestedAmount.data.account.base_vesting_account !== "undefined") {
+        this.totalVested = (getVestedAmount.data.account.base_vesting_account.original_vesting[0].amount / 1000000)
+      }      
     },
     async getBankModule(addrWallet) {
       const queryBank = new bank.QueryClientImpl(this.rpcClient);

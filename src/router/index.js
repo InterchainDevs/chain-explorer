@@ -31,6 +31,11 @@ const router = createRouter({
       component: TxView,
     },
     {
+      path: "/transaction/:txhash",
+      name: "txdetailsold",
+      component: TxView,
+    },
+    {
       path: "/blocks",
       name: "blocklist",
       component: BlocksView,

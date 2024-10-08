@@ -72,7 +72,7 @@
               <td>Vested</td>
               <td align="right">
                 <v-list>
-                  <v-list-item v-if="isLoaded" :title="0.0" :subtitle="'$ 0.00'"></v-list-item>
+                  <v-list-item v-if="isLoaded" :title="store.totalVested" :subtitle="'$ ' + (store.totalVested * store.priceNow).toFixed(2)"></v-list-item>
                 </v-list>
               </td>
             </tr>
@@ -289,6 +289,7 @@ export default {
     currentPage: 1,
     isLoaded: false,
     allAddressNft: [],
+    totalVested: 0,
     headers: [
       { title: 'Moniker', value: 'moniker' },
       { title: 'Validator address', value: 'validator_address' },      
@@ -307,6 +308,7 @@ export default {
     await this.store.getStakingModule(this.address);
     await this.store.getDistribModule(this.address);
     await this.store.getDelegations(this.address);
+    await this.store.getVested(this.address);
     await this.store.getPriceNow();
     await this.store.getWalletAmount();
 
@@ -364,6 +366,7 @@ export default {
         this.allAddressNft.push(finalNftReturn.data.tokens.tokens[i]);
       }
     }    
+ 
 
     this.isLoaded = true;
   },
