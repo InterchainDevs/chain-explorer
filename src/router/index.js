@@ -68,7 +68,7 @@ const router = createRouter({
       },
     },
     {
-      path: "/address/:address",
+      path: "/account/:address",
       name: "detailaddress",
       component: AddressView,
     },
