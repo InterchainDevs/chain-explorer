@@ -69,6 +69,11 @@ const router = createRouter({
     },
     {
       path: "/account/:address",
+      name: "detailaddresslegacy",
+      component: AddressView,
+    },
+    {
+      path: "/address/:address",
       name: "detailaddress",
       component: AddressView,
     },
