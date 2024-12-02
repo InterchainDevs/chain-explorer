@@ -265,7 +265,7 @@ export const useAppStore = defineStore("app", {
     /* async getAddressTx(addrWallet, page) {
       const getRecipient = await axios(
         cosmosConfig[2].apiURL +
-          "/cosmos/tx/v1beta1/txs?events=transfer.recipient=%27" +
+          "/cosmos/tx/v1beta1/txs?query=transfer.recipient=%27" +
           addrWallet +
           "%27&page=" +
           page +
@@ -288,11 +288,12 @@ export const useAppStore = defineStore("app", {
       this.totalAddressTx = getRecipient.data.total;
     }, */
     async getAddressTx(addrWallet, page) {
+      console.log(store.sdkVersion)
       let getRecipient = [];
       try {
         getRecipient = await axios(
           cosmosConfig[2].apiURL +
-            "/cosmos/tx/v1beta1/txs?events=transfer.recipient=%27" +
+            "/cosmos/tx/v1beta1/txs?query=transfer.recipient=%27" +
             addrWallet +
             "%27&page=" +
             page +
@@ -306,7 +307,7 @@ export const useAppStore = defineStore("app", {
       try {
         resultSender = await axios(
           cosmosConfig[2].apiURL +
-            "/cosmos/tx/v1beta1/txs?events=message.sender=%27" +
+            "/cosmos/tx/v1beta1/txs?query=message.sender=%27" +
             addrWallet +
             "%27&page=" +
             page +
