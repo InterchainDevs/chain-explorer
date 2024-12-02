@@ -288,7 +288,6 @@ export const useAppStore = defineStore("app", {
       this.totalAddressTx = getRecipient.data.total;
     }, */
     async getAddressTx(addrWallet, page) {
-      console.log(store.sdkVersion)
       let getRecipient = [];
       try {
         getRecipient = await axios(
