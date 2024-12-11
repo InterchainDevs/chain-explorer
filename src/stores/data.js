@@ -121,9 +121,11 @@ export const useAppStore = defineStore("app", {
       this.fiatWalletValue = (totalToken * this.priceNow).toFixed(2);
     },
     async getVested(addrWallet) {
-      let getVestedAmount = await axios.get(cosmosConfig[2].apiURL + '/cosmos/auth/v1beta1/accounts/' + addrWallet)    
+      let getVestedAmount = await axios.get(cosmosConfig[2].apiURL + '/cosmos/auth/v1beta1/accounts/' + addrWallet) 
       if (typeof getVestedAmount.data.account.base_vesting_account !== "undefined") {
+        if (Math.floor(Date.now() / 1000) < Number(getVestedAmount.data.account.base_vesting_account.end_time)) {
         this.totalVested = (getVestedAmount.data.account.base_vesting_account.original_vesting[0].amount / 1000000)
+        }
       }      
     },
     async getBankModule(addrWallet) {
